@@ -2,7 +2,7 @@ import React from "react";
 import { useParams } from "react-router";
 
 export default function UserPage() {
-    var { id } = useParams<{ id?: string }>();
+    var { id } = useParams();
 
     return (
         <>

@@ -2,7 +2,7 @@ import React from "react";
 import './App.css';
 
 
-function header_(): JSX.Element{
+function header_(){
 return(
 
 <ul>
