@@ -73,6 +73,20 @@ h1{
 
 }
 
+
+#container-reg{
+  /* background-color: red; */
+  height: 50%;/*50%*/
+  width: 20%;/*20%*/
+  margin: center;
+  margin-bottom: 15.5%;
+  border: 1px solid black;
+ display: flex;
+  flex-direction: column;
+  
+
+}
+
 #container-m{
   /* background-color: yellow; */
   height:100%;
@@ -153,7 +167,7 @@ footer li a{
   width: 100%;
   height: 7%;
   background-color: #333333;
-  padding: 1px;
+  /*padding: 1px;*/
   margin-top: 0px;
   margin-bottom: 0px;
   align-items: center;
