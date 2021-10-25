@@ -1,9 +1,11 @@
 import React from "react";
-import logo from "../Rowan.png";
+import Header from "./Header";
+import Footer from "./Footer";
 
 export default function MainPage() {
     return (
         <>
+            <Header />
             <div className="container" id="container-t">
                 <div className="container">
                     <div className="container" id="container-l">
@@ -36,12 +38,8 @@ export default function MainPage() {
                         <h1>Friends List</h1>
                     </div>
                 </div>
-                <div className="foot">
-                    <a href="#foot">
-                        <img alt="website logo" src={logo} />
-                    </a>
-                </div>
             </div>
+            <Footer />
         </>
     )
 };

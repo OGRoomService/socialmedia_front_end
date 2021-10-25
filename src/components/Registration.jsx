@@ -1,5 +1,6 @@
+import axios from "axios";
 import React, { Component, useState } from "react";
-import logo from '../Rowan.png';
+import Footer from "./Footer";
 
 function SignupFormFunction() {
     const [formData, setFormdata] = useState({
@@ -8,6 +9,29 @@ function SignupFormFunction() {
         pass: "",
         vpass: ""
     });
+
+    const [formErrors, setFormErrors] = useState({});
+
+    const validate = (formData) => {
+        const passwordRegex = new RegExp('(?=.*[a-z])+(?=.*[A-Z])+(?=.*[0-9])+(?=.{10,})');
+        let formErrors = {};
+        let passes = true;
+
+        if (!formData.uname) {
+            formErrors.name = 'Name Required';
+            passes = false;
+        }
+        if (formData.pass !== formData.vpass) {
+            formErrors.vpass = 'Passwords do not match!';
+            passes = false;
+        }
+        if (!formData.pass || !passwordRegex.test(formData.pass)) {
+            formErrors.pass = 'Minimum password length is 10 characters and must contain at least 1 lowercase, 1 uppercase, and 1 number';
+            passes = false;
+        }
+        setFormErrors(formErrors);
+        return passes;
+    }
 
     const handleChange = (e) => {
         const { name, value } = e.currentTarget;
@@ -18,83 +42,93 @@ function SignupFormFunction() {
         })
     }
 
-    const onSubmit = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
 
-        const apiFormData = JSON.stringify({
+        if (!validate(formData)) {
+            console.log("Form validation failed!");
+            return;
+        }
+
+        const body = {
             username: formData.uname,
             email: formData.uemail,
             password: formData.pass
-        })
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin':'*'
-            },
-            
-            body: apiFormData
-        }
+        };
+        const headers = {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': '*',
+            'Access-Control-Allow-Methods': '*'
+        };
 
-        console.log("Calling API to create user:::" + apiFormData);
+        console.log("Calling API to create user:::" + { body });
 
-        fetch("localhost:8080/api/users", requestOptions)
-            .catch(console.log("error"))
-            .then(response => response.json())
-            .catch(console.log("error"));
+        axios.post("http://localhost:8080/api/users", body, { headers })
+            .then(response => console.log(response));
     }
 
     return (
-        <div /*style={{backgroundColor: "#ffcc00"}} */ className="container" id="container-t">
-            <h1 style={{ color: "brown" }} >Rowanspace</h1>
-            <div style={{ backgroundColor: "#fff" }} className="container" id="container-reg">
-                <h1>Signup</h1>
-                <p>Please fill out information below</p>
-                <form
-                    onSubmit={onSubmit}
-                >
-                    <h3>Username</h3>
-                    <input
-                        name="uname"
-                        type="text"
-                        placeholder="username"
-                        onChange={handleChange}
+        <>
+            <div /*style={{backgroundColor: "#ffcc00"}} */ className="container" id="container-t">
+                <h1 style={{ color: "brown" }} >Rowanspace</h1>
+                <div style={{ backgroundColor: "#fff" }} className="container" id="container-reg">
+                    <h1>Signup</h1>
+                    <p>Please fill out information below</p>
+                    <form
+                        onSubmit={handleSubmit}
+                    >
+                        <p>
+                            <label htmlFor="uname">Username</label>
+                            <input
+                                id="uname"
+                                name="uname"
+                                type="text"
+                                placeholder="username"
+                                onChange={handleChange}
                         /* required */ />
-                    <br />
-                    <h3>Email</h3>
-                    <input
-                        name="uemail"
-                        type="email"
-                        placeholder="email"
-                        onChange={handleChange}
+                        </p>
+                        {formErrors.name && <span className="form-error">{formErrors.name}</span>}
+                        <p>
+                            <label htmlFor="uemail">Email</label>
+                            <input
+                                id="uemail"
+                                name="uemail"
+                                type="email"
+                                placeholder="email"
+                                onChange={handleChange}
                         /* required */ />
-                    <br />
-                    <h3>Password</h3>
-                    <input
-                        name="pass"
-                        type="password"
-                        placeholder="Password"
-                        onChange={handleChange}
+                        </p>
+                        <p>
+                            <label htmlFor="pass">Password</label>
+                            <input
+                                id="pass"
+                                name="pass"
+                                type="password"
+                                placeholder="Password"
+                                onChange={handleChange}
                         /* required */ />
-                    <br />
-                    <h3>Confirm password</h3>
-                    <input
-                        name="vpass"
-                        type="password"
-                        placeholder="Confirm Password"
-                        onChange={handleChange}
+                        </p>
+                        <p>
+                            <label htmlFor="vpass">Confirm password</label>
+                            <input
+                                id="vpass"
+                                name="vpass"
+                                type="password"
+                                placeholder="Confirm Password"
+                                onChange={handleChange}
                         /* required */ />
-                    <br />
-                    <input type="submit" />
-                </form>
+                        </p>
+                        {formErrors.pass && <span className="form-error">{formErrors.pass}</span>}
+                        <br />
+                        {formErrors.vpass && <span className="form-error">{formErrors.vpass}</span>}
+                        <br />
+                        <input type="submit" value="Sign Up" />
+                    </form>
+                </div>
             </div>
-            <div style={{ marginTop: "0em" }} className="foot">
-                <a href="#foot">
-                    <img alt="website logo" src={logo} />
-                </a>
-            </div>
-        </div>
+            <Footer />
+        </>
     )
 }
 
