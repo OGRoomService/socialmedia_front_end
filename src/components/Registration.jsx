@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { Component, useState } from "react";
 import Footer from "./Footer";
+import '../styles/register.css';
 
 function SignupFormFunction() {
     const [formData, setFormdata] = useState({
@@ -70,8 +71,8 @@ function SignupFormFunction() {
 
     return (
         <>
+        <h2 /*style={{ color: "brown" }}*/>Rowanspace</h2>
             <div /*style={{backgroundColor: "#ffcc00"}} */ className="container" id="container-t">
-                <h1 style={{ color: "brown" }} >Rowanspace</h1>
                 <div style={{ backgroundColor: "#fff" }} className="container" id="container-reg">
                     <h1>Signup</h1>
                     <p>Please fill out information below</p>
@@ -120,9 +121,7 @@ function SignupFormFunction() {
                         /* required */ />
                         </p>
                         {formErrors.pass && <span className="form-error">{formErrors.pass}</span>}
-                        <br />
                         {formErrors.vpass && <span className="form-error">{formErrors.vpass}</span>}
-                        <br />
                         <input type="submit" value="Sign Up" />
                     </form>
                 </div>

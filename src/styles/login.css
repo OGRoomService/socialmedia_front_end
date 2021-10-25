@@ -1,0 +1,58 @@
+.containerL{
+    width: 100%;
+    /* border: 2px solid blue; */
+    /*margin: 0 auto;*/
+    display: flex;
+    flex-direction: row;
+    /*justify-content: center;*/
+    height:100%;
+    
+    
+  }
+
+  #containerL-m{
+    position: fixed;
+    top: 10%;
+    left: 44%;
+    height: 100%;
+    width: 20em;
+    margin-left:0em;
+   /* border: 1px solid black;*/
+    display: flex;
+    flex-direction: column;
+  }
+
+  input[type=text] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+  }
+
+  h1{
+      text-align: center;
+  }
+
+  h2{
+      text-align: left;
+      font-size: 60px;
+  }
+
+  input[type=submit] {
+      width: 10em;
+      height: 3em;
+      background-color: #90ee90;
+  }
+
+  @media only screen and (max-width: 2500px){
+    /* if max width = 600 px or less, apply the styling */
+    input {
+        padding: 5px 20px;
+      }
+
+      input[type=text] {
+        padding: 5px 20px;
+      }
+
+     
+}
