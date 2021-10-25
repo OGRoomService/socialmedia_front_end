@@ -10,6 +10,11 @@
     
   }
 
+  .form-header {
+    font-weight: bold;
+    font-size: 1.5em;
+  }
+
   #containerL-m{
     position: fixed;
     top: 10%;

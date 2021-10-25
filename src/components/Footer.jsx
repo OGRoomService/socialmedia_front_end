@@ -9,7 +9,7 @@ export default class Footer extends Component {
             <div class="containerFoot">
                 <div className="foot">
                     <a href="#foot">
-                        <img alt="website logo" src={logo} />
+                        <img class="logo" alt="website logo" src={logo} />
                     </a>
                 </div>
             </div>
