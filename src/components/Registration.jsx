@@ -1,7 +1,7 @@
-import axios from "axios";
 import React, { Component, useState } from "react";
 import Footer from "./Footer";
 import '../styles/register.css';
+import { useHistory } from 'react-router-dom';
 
 function SignupFormFunction() {
     const [formData, setFormdata] = useState({
@@ -43,6 +43,21 @@ function SignupFormFunction() {
         })
     }
 
+    const handleResponse = (response) => {
+        let status = response.status;
+        
+        console.log("Response Status: " + status);
+        
+        switch(status) {
+            case 500:
+            case 200:
+            case 201:
+                //history.push('/');
+            default:
+                break;
+        }
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -56,17 +71,28 @@ function SignupFormFunction() {
             email: formData.uemail,
             password: formData.pass
         };
-        const headers = {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Headers': '*',
-            'Access-Control-Allow-Methods': '*'
-        };
+        let headers = new Headers();
 
-        console.log("Calling API to create user:::" + { body });
+        headers.append('Content-Type', 'application/json');
+        headers.append('Accept', 'application/json');
+        headers.append('Access-Control-Allow-Origin', '*');
+        headers.append('Access-Control-Allow-Credentials', 'true');
+        headers.append('Access-Control-Allow-Headers', '*');
+        headers.append('POST', 'OPTIONS');
 
-        axios.post("http://localhost:8080/api/users", body, { headers })
-            .then(response => console.log(response));
+        const request = async () => {
+            const response = await fetch("http://localhost:8080/api/users/create", {
+                                            method: 'POST',
+                                            mode: 'cors',
+                                            cache: 'no-cache',
+                                            credentials: 'same-origin',
+                                            headers: headers,
+                                            redirect: 'follow',
+                                            referrerPolicy: 'no-referrer',
+                                            body: JSON.stringify(body)});
+            handleResponse(await response);
+        }
+        request();
     }
 
     return (
@@ -132,23 +158,6 @@ function SignupFormFunction() {
 }
 
 export default class Registration extends Component {
-
-    onSubmit(e) {
-        e.preventDefault();
-        console.log(e.currentTarget.querySelector('input[name="username"]'));
-        /* const requestOptions = {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({})
-        } */
-
-        console.log("Calling API to create user:::");
-
-        /* fetch("localhost:8080/api/users")
-            .then((response) => response.json())
-            .then((data) => console.log(data)); */
-    }
-
     render() {
 
         return (

@@ -3,10 +3,12 @@ import Footer from "./Footer";
 import '../styles/login.css';
 
 function LoginFormFunction() {
-    /* const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState({
         uname: "",
         pass: ""
     });
+
+    const [formErrors, setFormErrors] = useState({});
 
     const handleUpdate = (e) => {
         const {name, value} = e.currentTarget;
@@ -15,25 +17,24 @@ function LoginFormFunction() {
             ...formData,
             [name]: value
         });
-    } */
+    }
 
     const handleSubmit = (e) => {
         console.log("Login attempted");
-        //console.log(formData.uname + " " + formData.pass);
     }
 
     return (
         <>
             <div>
             <h2>Rowanspace</h2>
-                <div class="containerL">
-                    <div class="containerL" id="containerL-m">
+                <div className="containerL">
+                    <div className="containerL" id="containerL-m">
                         <h1>Login</h1>
                         <form
                             onSubmit={handleSubmit}
                         >
                             <label
-                                class="form-header"
+                                className="form-header"
                                 htmlFor="login-username">
                                     Username</label>
                             <input
@@ -41,9 +42,9 @@ function LoginFormFunction() {
                                 name="uname"
                                 type="text"
                                 placeholder="username"
-                                /* onChange={handleUpdate} */
+                                onChange={handleUpdate}
                                 required />
-                            <label class="form-header"
+                            <label className="form-header"
                                 htmlFor="login-password">
                                     Password</label>
                             <input
@@ -51,7 +52,7 @@ function LoginFormFunction() {
                                 name="pass"
                                 type="text"
                                 placeholder="Password"
-                                /* onChange={handleUpdate} */
+                                onChange={handleUpdate}
                                 required />
                             <input type="submit" value="Login"/>
                         </form>
@@ -67,7 +68,9 @@ function LoginFormFunction() {
 export default class LoginPage extends Component {
     render() {
         return (
-            LoginFormFunction()
+            <>
+            <LoginFormFunction />
+            </>
         );
     }
 
