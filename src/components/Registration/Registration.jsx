@@ -1,9 +1,11 @@
 import React, { Component, useState } from "react";
-import Footer from "./Footer";
-import '../styles/register.css';
+import RegistrationUserDetails from "./RegistrationUserDetails";
 import { useHistory } from 'react-router-dom';
+import axios from "axios";
+import Footer from "../Footer";
+import '../../styles/register.css'
 
-function SignupFormFunction() {
+/* function SignupFormFunction() {
     const [formData, setFormdata] = useState({
         uname: "",
         uemail: "",
@@ -71,34 +73,13 @@ function SignupFormFunction() {
             email: formData.uemail,
             password: formData.pass
         };
-        let headers = new Headers();
-
-        headers.append('Content-Type', 'application/json');
-        headers.append('Accept', 'application/json');
-        headers.append('Access-Control-Allow-Origin', '*');
-        headers.append('Access-Control-Allow-Credentials', 'true');
-        headers.append('Access-Control-Allow-Headers', '*');
-        headers.append('POST', 'OPTIONS');
-
-        const request = async () => {
-            const response = await fetch("http://localhost:8080/api/users/create", {
-                                            method: 'POST',
-                                            mode: 'cors',
-                                            cache: 'no-cache',
-                                            credentials: 'same-origin',
-                                            headers: headers,
-                                            redirect: 'follow',
-                                            referrerPolicy: 'no-referrer',
-                                            body: JSON.stringify(body)});
-            handleResponse(await response);
-        }
-        request();
+        useApi(postNewUser, body, handleResponse);
     }
 
     return (
         <>
-        <h2 /*style={{ color: "brown" }}*/>Rowanspace</h2>
-            <div /*style={{backgroundColor: "#ffcc00"}} */ className="container" id="container-t">
+        <h2 >Rowanspace</h2>
+            <div  className="container" id="container-t">
                 <div style={{ backgroundColor: "#fff" }} className="container" id="container-reg">
                     <h1>Signup</h1>
                     <p>Please fill out information below</p>
@@ -113,7 +94,7 @@ function SignupFormFunction() {
                                 type="text"
                                 placeholder="username"
                                 onChange={handleChange}
-                        /* required */ />
+                        />
                         </p>
                         {formErrors.name && <span className="form-error">{formErrors.name}</span>}
                         <p>
@@ -124,7 +105,7 @@ function SignupFormFunction() {
                                 type="email"
                                 placeholder="email"
                                 onChange={handleChange}
-                        /* required */ />
+                         />
                         </p>
                         <p>
                             <label htmlFor="pass">Password</label>
@@ -134,7 +115,7 @@ function SignupFormFunction() {
                                 type="password"
                                 placeholder="Password"
                                 onChange={handleChange}
-                        /* required */ />
+                         />
                         </p>
                         <p>
                             <label htmlFor="vpass">Confirm password</label>
@@ -144,7 +125,7 @@ function SignupFormFunction() {
                                 type="password"
                                 placeholder="Confirm Password"
                                 onChange={handleChange}
-                        /* required */ />
+                         />
                         </p>
                         {formErrors.pass && <span className="form-error">{formErrors.pass}</span>}
                         {formErrors.vpass && <span className="form-error">{formErrors.vpass}</span>}
@@ -155,14 +136,92 @@ function SignupFormFunction() {
             <Footer />
         </>
     )
+} */
+
+function UseApi() {
+    const [data, setData] = useState(null);
+}
+
+const CallApi = () => {
+    /* const [newUser, createNewUser] = PostNewUserEndpoint(); */
+    UseApi();
+
+    const handleResponse = (response) => {
+        let status = response.status;
+        
+        console.log("Response Status: " + status);
+        
+        switch(status) {
+            case 500:
+            case 200:
+            case 201:
+                //useHistory.push('/');
+            default:
+                break;
+        }
+    }
+
+    const body = {
+        username: "test123",
+        email: "email@email.com",
+        password: "supersecurEp@ss123!"
+    };
+    /* const body = {
+        username: this.state.username,
+        email: this.state.email,
+        password: this.state.password
+    }; */
+    /* UseApi(searchRepos, { query: "react" }, handleResponse); */
+    /* createNewUser({
+        body
+    });
+    console.log(newUser); */
 }
 
 export default class Registration extends Component {
-    render() {
+    state = {
+        step: 1,
+        username: '',
+        email: '',
+        password: '',
+        vpassword: ''
+    }
 
+    prevStep = () => {
+        const { step } = this.state;
+        this.setState({ step: step - 1 });
+    }
+
+    nextStep = () => {
+        const { step } = this.state;
+        this.setState({ step: step + 1 });
+        console.log("Next step:::");
+        CallApi();
+    }
+
+    handleChange = input => e => {
+        this.setState({ [input]: e.target.value });
+    }
+
+    render() {
+        const { step } = this.state;
+        const { username, email, password } = this.state;
+        const values = { username, email, password };
         return (
             <>
-                <SignupFormFunction />
+                <h2>Rowanspace</h2>
+                <div className="container" id="container-t">
+                    <div style={{ backgroundColor: "#fff" }} className="container" id="container-reg">
+                        <h1>Signup</h1>
+                        <p>Please fill out information below</p>
+                        <RegistrationUserDetails
+                            nextStep={this.nextStep}
+                            handleChange={this.handleChange}
+                            values={values}
+                        />
+                    </div>
+                </div>
+                <Footer />
             </>
         );
     }
