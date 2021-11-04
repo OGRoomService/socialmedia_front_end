@@ -2,6 +2,7 @@ import React, { Component, useState } from "react";
 import RegistrationUserDetails from "./RegistrationUserDetails";
 import { useHistory } from 'react-router-dom';
 import axios from "axios";
+import { useApi, postNewUser } from "../../api/api";
 import Footer from "../Footer";
 import '../../styles/register.css'
 
@@ -138,13 +139,17 @@ import '../../styles/register.css'
     )
 } */
 
-function UseApi() {
+/* const UseApi = () => {
     const [data, setData] = useState(null);
-}
+} */
 
-const CallApi = () => {
-    /* const [newUser, createNewUser] = PostNewUserEndpoint(); */
-    UseApi();
+/*const CallApi = () => {
+    /* const [newUser, createNewUser] = PostNewUserEndpoint();
+    useApi(postNewUser, {
+        username: "test123",
+        email: "email@email.com",
+        password: "supersecurEp@ss123!"
+    }, '');
 
     const handleResponse = (response) => {
         let status = response.status;
@@ -170,61 +175,61 @@ const CallApi = () => {
         username: this.state.username,
         email: this.state.email,
         password: this.state.password
-    }; */
+    };
     /* UseApi(searchRepos, { query: "react" }, handleResponse); */
     /* createNewUser({
         body
     });
-    console.log(newUser); */
-}
+    console.log(newUser);
+}*/
 
-export default class Registration extends Component {
-    state = {
+export const Registration = () => {
+    const [formData, setFormData] = useState({
         step: 1,
         username: '',
         email: '',
         password: '',
         vpassword: ''
+    });
+
+    const prevStep = () => {
+        setFormData({
+            ...formData,
+            ['step']: formData.step-1
+        });
     }
 
-    prevStep = () => {
-        const { step } = this.state;
-        this.setState({ step: step - 1 });
+    const nextStep = () => {
+        setFormData({
+            ...formData,
+            ['step']: formData.step+1
+        });
+    }
+    
+    const handleChange = e => {
+        const { name, value } = e.currentTarget;
+
+        setFormData({
+            ...formData,
+            [name]: value
+        });
     }
 
-    nextStep = () => {
-        const { step } = this.state;
-        this.setState({ step: step + 1 });
-        console.log("Next step:::");
-        CallApi();
-    }
-
-    handleChange = input => e => {
-        this.setState({ [input]: e.target.value });
-    }
-
-    render() {
-        const { step } = this.state;
-        const { username, email, password } = this.state;
-        const values = { username, email, password };
-        return (
-            <>
-                <h2>Rowanspace</h2>
-                <div className="container" id="container-t">
-                    <div style={{ backgroundColor: "#fff" }} className="container" id="container-reg">
-                        <h1>Signup</h1>
-                        <p>Please fill out information below</p>
-                        <RegistrationUserDetails
-                            nextStep={this.nextStep}
-                            handleChange={this.handleChange}
-                            values={values}
-                        />
-                    </div>
+    return (
+        <>
+            <h2>Rowanspace</h2>
+            <div className="container" id="container-t">
+                <div style={{ backgroundColor: "#fff" }} className="container" id="container-reg">
+                    <h1>Signup</h1>
+                    <p>Please fill out information below</p>
+                    <RegistrationUserDetails
+                        nextStep={nextStep}
+                        handleChange={handleChange}
+                        values={formData}
+                    />
                 </div>
-                <Footer />
-            </>
-        );
-    }
+            </div>
+            <Footer />
+        </>
+    );
 }
-
-export { Registration }

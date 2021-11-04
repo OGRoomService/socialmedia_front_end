@@ -15,7 +15,7 @@ const axiosPostConfig = {
 }
 
 
-/* export default function UseApi(apiFunction, params, callback) {
+export const useApi = (apiFunction, params, callback) => {
     const [data, setData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -36,7 +36,14 @@ const axiosPostConfig = {
     }, [apiFunction, params, callback]);
   
     return [isLoading, data, error];
-  }; */
+};
+  
+export const postNewUser = params => {
+    if (!params) throw new Error("Must provide params!");
+    const url = "http://localhost:8080/api/users/create";
+
+    return axios.post(url, params, axiosPostConfig);
+}
 
 /* export function UseApi(fn) {
     const [response, setResponse] = useState({
@@ -79,9 +86,9 @@ const axiosPostConfig = {
     return [response, (...args) => setRequest(fn(...args))];
 }; */
 
-const useApi = (url, body) => {
+/*export const useApi = ({url}) => {
     const [data, setData] = useState(null);
-    /* const [isLoading, setIsLoading] = useState(true);
+     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
   
     useEffect(() => {
@@ -96,8 +103,8 @@ const useApi = (url, body) => {
         });
     });
   
-    return [isLoading, data, error]; */
-  };
+    return [isLoading, data, error]; 
+};*/
 
 /* export function PostNewUserEndpoint() {
     return UseApi(data => ({
@@ -113,5 +120,3 @@ const useApi = (url, body) => {
 
     return axios.post(url, params, axiosPostConfig);
 } */
-
-export default UseApi
