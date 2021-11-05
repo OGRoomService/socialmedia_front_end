@@ -1,23 +1,62 @@
 import React from "react";
 import { useState } from "react";
 
-const RegistrationUserDetails = ({ nextStep, handleChange, values }) => {
-    const [data, setData] = useState(null);
+export const RegistrationUserDetails = ({ nextStep, handleChange, formData }) => {
+    const [formErrors, setFormErrors] = useState({
+        username: '',
+        vpassword: '',
+        password: '',
+        email: ''
+    });
+
+    const validate = (formData) => {
+        const passwordRegex = new RegExp('(?=.*[!@#$%&*()_+=|<>?{}\\[\\]~-])+(?=.*[0-9])+(?=.{8,})');
+        const emailRegex = new RegExp('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$');
+        const usernameRegex = new RegExp('[!@#$%&*()_+=|<>?{}\\[\\]~-]');
+        let formErrors = {};
+        let passes = true;
+
+        if (!formData.username) {
+            formErrors.username = 'Username is Required!';
+            passes = false;
+        } else if (formData.username < 6 || usernameRegex.test(formData.username)) {
+            formErrors.username = 'Username is Invalid!';
+            passes = false;
+        }
+
+        if (!formData.email) {
+            formErrors.email = 'Email is Required!';
+        } else if (!emailRegex.test(formData.email)) {
+            formErrors.email = 'Email is Invalid!';
+            passes = false;
+        }
+
+        if (formData.password !== formData.vpassword) {
+            formErrors.vpassword = 'Passwords do not match!';
+            passes = false;
+        }
+
+        if (!formData.password || !passwordRegex.test(formData.password)) {
+            formErrors.password = 'Minimum password length is 8 characters and must contain at least 1 number and 1 symbol';
+            passes = false;
+        }
+        setFormErrors(formErrors);
+        return passes;
+    }
 
     const Continue = e => {
         e.preventDefault();
-        /* setData({
-            email:'test'
-        }); */
-        /* console.log(data); */
+        
+        if (!validate(formData)) {
+            console.log("Form validation failed!");
+            return;
+        }
         nextStep();
     }
 
     return (
         <>
-            <form
-                onSubmit={Continue}
-            >
+            <form>
                 <p>
                     <label htmlFor="uname">Username</label>
                     <input
@@ -25,9 +64,12 @@ const RegistrationUserDetails = ({ nextStep, handleChange, values }) => {
                         name="username"
                         type="text"
                         placeholder="username"
-                        defaultValue={values.username}
+                        defaultValue={formData.username}
                         onChange={handleChange} />
                 </p>
+
+                {formErrors.username && <span className="error-message">{formErrors.username}</span>}
+
                 <p>
                     <label htmlFor="uemail">Email</label>
                     <input
@@ -35,9 +77,12 @@ const RegistrationUserDetails = ({ nextStep, handleChange, values }) => {
                         name="email"
                         type="email"
                         placeholder="email"
-                        defaultValue={values.email}
+                        defaultValue={formData.email}
                         onChange={handleChange} />
                 </p>
+
+                {formErrors.email && <span className="error-message">{formErrors.email}</span>}
+
                 <p>
                     <label htmlFor="pass">Password</label>
                     <input
@@ -45,9 +90,12 @@ const RegistrationUserDetails = ({ nextStep, handleChange, values }) => {
                         name="password"
                         type="password"
                         placeholder="Password"
-                        defaultValue={values.password}
+                        defaultValue={formData.password}
                         onChange={handleChange} />
                 </p>
+                
+                {formErrors.password && <span className="error-message">{formErrors.password}</span>}
+
                 <p>
                     <label htmlFor="vpass">Confirm password</label>
                     <input
@@ -55,13 +103,18 @@ const RegistrationUserDetails = ({ nextStep, handleChange, values }) => {
                         name="vpassword"
                         type="password"
                         placeholder="Confirm Password"
-                        defaultValue={values.vpassword}
+                        defaultValue={formData.vpassword}
                         onChange={handleChange} />
                 </p>
-                <input type="submit" value="Sign Up" />
+
+                {formErrors.vpassword && <span className="error-message">{formErrors.vpassword}</span>}
+
+                <input
+                    className='button'
+                    onClick={Continue}
+                    type='button'
+                    value="Next >" />
             </form>
         </>
     );
 }
-
-export default RegistrationUserDetails
