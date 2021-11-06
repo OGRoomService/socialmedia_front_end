@@ -6,10 +6,10 @@ export default class Footer extends Component {
     render() {
         return (
             <>
-            <div class="containerFoot">
+            <div className="containerFoot">
                 <div className="foot">
                     <a href="#foot">
-                        <img alt="website logo" src={logo} />
+                        <img className="logo" alt="website logo" src={logo} />
                     </a>
                 </div>
             </div>

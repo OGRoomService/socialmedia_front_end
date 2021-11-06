@@ -3,7 +3,7 @@ import UserPage from './components/UserPage';
 import LoginPage from './components/LoginPage';
 import MainPage from './components/MainPage';
 import NotFound from './components/NotFound';
-import Registration from './components/Registration';
+import { Registration } from './components/Registration/Registration';
 import './App.css';
 
 export default function App() {
