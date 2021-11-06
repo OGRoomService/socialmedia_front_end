@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
+import Post from "./Post";
 import "../styles/main.css";
 
 export default function MainPage() {
@@ -22,6 +23,7 @@ export default function MainPage() {
                         <input type="text" placeholder="Search.." />
                         <div className="head"></div>
                         <h1>Post Feed</h1>
+                        <Post/>
                     </div>
                     <div className="container" id="container-r">
                         
