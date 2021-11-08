@@ -28,7 +28,7 @@ function LoginFormFunction() {
         <>
         <LogHeader/>
             <div>
-            <h2>Rowanspace11111</h2>
+            <h2>Rowanspace</h2>
                 <div className="containerL">
                     <div className="containerL" id="containerL-m">
                         <form
@@ -52,7 +52,7 @@ function LoginFormFunction() {
                                 id="login-password"
                                 name="pass"
                                 type="text"
-                                placeholder="Password1111"
+                                placeholder="Password"
                                 onChange={handleUpdate}
                                 required />
                             <input type="submit" value="Login"/>
