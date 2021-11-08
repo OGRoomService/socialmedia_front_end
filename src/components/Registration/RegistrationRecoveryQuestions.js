@@ -13,14 +13,37 @@ export const RegistrationRecoveryQuestions = ({ nextStep, handleChange, formData
             <form
                 onSubmit={Continue}
             >
-                <p>
-                    <label htmlFor="uname">Username</label>
-                    <input
-                        id="username"
-                        name="username"
-                        type="text"
-                        placeholder="username" />
-                </p>
+                <p><b>Security Questions</b></p>
+                        
+                        <p>
+                            <label htmlFor="a1">Recovery Question 1</label>
+                            <input
+                                id="a1"
+                                name="a1"
+                                type="text"
+                                placeholder="answer 1"
+                        /* required */ />
+                        </p>
+                        <p>
+                            <label htmlFor="a2">Recovery Question 2</label>
+                            <input
+                                id="a2"
+                                name="a2"
+                                type="text"
+                                placeholder="answer 2"
+                                
+                        /* required */ />
+                        </p>
+                        <p>
+                            <label htmlFor="a3">Recovery Question 3</label>
+                            <input
+                                id="a2"
+                                name="a2"
+                                type="text"
+                                placeholder="answer 3"
+                                
+                        /* required */ />
+                        </p>
                 <input type="submit" value="Sign Up" />
             </form>
         </>

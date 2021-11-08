@@ -4,6 +4,7 @@ import { RegistrationRecoveryQuestions } from "./RegistrationRecoveryQuestions";
 import { useHistory } from 'react-router-dom';
 import { PostNewUserEndpoint } from "../../api/api";
 import Footer from "../Footer";
+import RegHeader from "../RegHeader";
 import '../../styles/register.css'
 
 export const Registration = () => {
@@ -82,11 +83,10 @@ export const Registration = () => {
 
     return (
         <>
+        <RegHeader/>
             <h2>Rowanspace</h2>
             <div className="container" id="container-t">
                 <div style={{ backgroundColor: "#fff" }} className="container" id="container-reg">
-                    <h1>Signup</h1>
-                    <p>Please fill out information below</p>
                     { display() }
                     { apiData.complete && handleResponse() }
                 </div>

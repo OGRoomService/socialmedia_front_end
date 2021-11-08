@@ -57,6 +57,7 @@ export const RegistrationUserDetails = ({ nextStep, handleChange, formData }) =>
     return (
         <>
             <form>
+            <p><b>Please fill out information below</b></p>
                 <p>
                     <label htmlFor="uname">Username</label>
                     <input

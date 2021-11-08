@@ -1,6 +1,7 @@
 import React, { Component, useState } from "react";
 import Footer from "./Footer";
 import '../styles/login.css';
+import LogHeader from "./LogHeader";
 
 function LoginFormFunction() {
     const [formData, setFormData] = useState({
@@ -25,11 +26,11 @@ function LoginFormFunction() {
 
     return (
         <>
+        <LogHeader/>
             <div>
             <h2>Rowanspace</h2>
                 <div className="containerL">
                     <div className="containerL" id="containerL-m">
-                        <h1>Login</h1>
                         <form
                             onSubmit={handleSubmit}
                         >
@@ -55,8 +56,8 @@ function LoginFormFunction() {
                                 onChange={handleUpdate}
                                 required />
                             <input type="submit" value="Login"/>
+                            <p>Don't have an account? <a href="/register">Sign up here!</a></p>
                         </form>
-                        <p>Don't have an account? <a href="/register">Sign up here!</a></p>
                     </div>
                 </div>
             </div>
