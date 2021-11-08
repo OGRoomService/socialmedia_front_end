@@ -4,6 +4,10 @@ import Footer from "./Footer";
 import Post from "./Post";
 import "../styles/main.css";
 
+
+
+
+
 export default function MainPage() {
     return (
         <>
