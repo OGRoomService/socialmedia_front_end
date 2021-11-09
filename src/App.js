@@ -15,7 +15,7 @@ export default function App() {
   const history = useHistory();
 
   // If the token doesn't exist, only allow access to login and registration page
-  if (!token) {
+  /* if (!token) {
     return (
       <Switch>
         <Route exact path="/register">
@@ -26,10 +26,10 @@ export default function App() {
         </Route>
         {/* <Route>
           {history.push('/')}
-        </Route> */}
+        </Route>}
       </Switch>
     )
-  }
+  } */
 
   return (
     <Switch>
