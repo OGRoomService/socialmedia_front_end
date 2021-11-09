@@ -18,15 +18,15 @@ export default function App() {
   if (!token) {
     return (
       <Switch>
-        <Route path="/register">
+        <Route exact path="/register">
           <Registration />
         </Route>
         <Route exact path="/">
           <LoginPage />
         </Route>
-        <Route>
+        {/* <Route>
           {history.push('/')}
-        </Route>
+        </Route> */}
       </Switch>
     )
   }
