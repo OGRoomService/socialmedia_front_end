@@ -3,13 +3,12 @@ import Footer from "./Footer";
 import '../styles/login.css';
 import LogHeader from "./LogHeader";
 
-function LoginFormFunction() {
+export const LoginPage = ({ setToken }) => {
     const [formData, setFormData] = useState({
-        uname: "",
-        pass: ""
+        username: '',
+        password: ''
     });
-
-    const [formErrors, setFormErrors] = useState({});
+    const [formErrors, setFormErrors] = useState();
 
     const handleUpdate = (e) => {
         const {name, value} = e.currentTarget;
@@ -20,8 +19,8 @@ function LoginFormFunction() {
         });
     }
 
-    const handleSubmit = (e) => {
-        console.log("Login attempted");
+    const handleSubmit = () => {
+
     }
 
     return (
@@ -65,16 +64,3 @@ function LoginFormFunction() {
         </>
     )
 }
-
-export default class LoginPage extends Component {
-    render() {
-        return (
-            <>
-            <LoginFormFunction />
-            </>
-        );
-    }
-
-}
-
-export { LoginPage }

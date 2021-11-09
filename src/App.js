@@ -1,42 +1,57 @@
 import { useState } from 'react';
-import { Route, Switch, useHistory } from 'react-router';
+import { Redirect, Route, Switch } from 'react-router';
 
 import UserPage from './components/UserPage';
-import LoginPage from './components/LoginPage';
 import MainPage from './components/MainPage';
 import ProfilePage from './components/ProfilePage';
-import NotFound from './components/NotFound';
+import { LoginPage } from './components/LoginPage';
 import { Registration } from './components/Registration/Registration';
+import NotFound from './components/NotFound';
 
 import './App.css';
 
 export default function App() {
   const [token, setToken] = useState();
-  const history = useHistory();
 
   // If the token doesn't exist, only allow access to login and registration page
-  /* if (!token) {
+  if (!token) {
     return (
       <Switch>
+
+        <Route exact path="/">
+          <LoginPage setToken={ setToken } />
+        </Route>
+
         <Route exact path="/register">
           <Registration />
         </Route>
-        <Route exact path="/">
-          <LoginPage />
+
+        <Route>
+          <Redirect to='/' />
         </Route>
-        {/* <Route>
-          {history.push('/')}
-        </Route>}
+
       </Switch>
     )
-  } */
-
+  }
   return (
     <Switch>
-      <Route exact path="/" component={MainPage} />
-      <Route path="/u/:id" component={UserPage} />
-      <Route exact path="/profile" component={ProfilePage} />
-      <Route component={NotFound} />
+
+      <Route exact path="/">
+        <MainPage />
+      </Route>
+
+      <Route path="/u/:id">
+        <UserPage />
+      </Route>
+
+      <Route exact path="/profile">
+        <ProfilePage />
+      </Route>
+
+      <Route>
+        <NotFound />
+      </Route>
+
     </Switch>
   )
 }
