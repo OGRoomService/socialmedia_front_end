@@ -5,7 +5,7 @@ import UserPage from './components/UserPage';
 import MainPage from './components/MainPage';
 import ProfilePage from './components/ProfilePage';
 import { LoginPage } from './components/LoginPage';
-import { Registration } from './components/Registration/Registration';
+import { Registration } from './components/Registration';
 import NotFound from './components/NotFound';
 
 import './App.css';
