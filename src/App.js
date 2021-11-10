@@ -1,47 +1,61 @@
-import { useState } from 'react';
-import { Route, Switch, useHistory } from 'react-router';
+import { Redirect, Route, Switch } from 'react-router';
 
 import UserPage from './components/UserPage';
-import LoginPage from './components/LoginPage';
 import MainPage from './components/MainPage';
 import ProfilePage from './components/ProfilePage';
+import { LoginPage } from './components/LoginPage';
+import { Registration } from './components/Registration';
 import NotFound from './components/NotFound';
-import { Registration } from './components/Registration/Registration';
-import { ChakraProvider } from "@chakra-ui/react"
-import React, { Component }  from 'react';
 
 import './App.css';
+import { useToken } from './api/token';
 
 export default function App() {
-  const [token, setToken] = useState();
-  const history = useHistory();
+  const { token, setToken } = useToken();
 
   // If the token doesn't exist, only allow access to login and registration page
-  /* if (!token) {
+  if (!token) {
     return (
       <Switch>
+
+        <Route exact path="/">
+          <LoginPage setToken={setToken} />
+        </Route>
+
         <Route exact path="/register">
           <Registration />
         </Route>
-        <Route exact path="/">
-          <LoginPage />
+
+        <Route>
+          <Redirect to='/' />
         </Route>
-        {/* <Route>
-          {history.push('/')}
-        </Route>}
+
       </Switch>
     )
-  } */
-
+  }
   return (
-    <ChakraProvider>
-      <Switch>
-        <Route exact path="/" component={MainPage} />
-        <Route exact path="/login" component={LoginPage} />
-        <Route path="/u/:id" component={UserPage} />
-        <Route exact path="/profile" component={ProfilePage} />
-        <Route component={NotFound} />
-      </Switch>
-    </ChakraProvider>
+    <Switch>
+
+      <Route exact path="/">
+        <MainPage />
+      </Route>
+
+      <Route exact path="/register">
+        <Redirect to='/' />
+      </Route>
+
+      <Route path="/u/:id">
+        <UserPage />
+      </Route>
+
+      <Route exact path="/profile">
+        <ProfilePage />
+      </Route>
+
+      <Route>
+        <NotFound />
+      </Route>
+
+    </Switch>
   )
 }

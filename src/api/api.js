@@ -61,3 +61,12 @@ export const PostNewUserEndpoint = () => {
         data
     }));
 }
+
+export const PostUserLogin = () => {
+    return UseApi(data => ({
+        config: axiosPostConfig,
+        url: 'http://localhost:8080/api/users/login',
+        method: 'POST',
+        data
+    }));
+}
