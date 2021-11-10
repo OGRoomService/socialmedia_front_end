@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import '../styles/Header.css';
+import { ChakraProvider } from "@chakra-ui/react"
 
 export default class Header extends Component {
     render() {
         return (
-            <>
+            <ChakraProvider>
                 <div className="Header">
                     <nav>
                         <ul>
@@ -15,7 +16,7 @@ export default class Header extends Component {
                         </ul>
                     </nav>
                 </div>
-            </>
+            </ChakraProvider>
         )
     }
 }

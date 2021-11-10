@@ -2,10 +2,12 @@ import React from "react";
 import Footer from "./Footer";
 import Header from "./Header";
 import "../styles/main.css";
+import { ChakraProvider } from "@chakra-ui/react"
+
 
 export default function ProfilePage() {
     return (
-        <>
+        <ChakraProvider>
         <Header />
         <div className="container" id="container-t">
             <div className="container">
@@ -30,7 +32,7 @@ export default function ProfilePage() {
             </div>
         </div>
         <Footer />
-    </>
+    </ChakraProvider>
 
     )
 }

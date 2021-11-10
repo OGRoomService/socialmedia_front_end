@@ -3,6 +3,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Post from "./Post";
 import "../styles/main.css";
+import { ChakraProvider } from "@chakra-ui/react"
 
 
 
@@ -10,7 +11,7 @@ import "../styles/main.css";
 
 export default function MainPage() {
     return (
-        <>
+        <ChakraProvider>
             <Header />
             <div className="container" id="container-t">
                 <div className="container">
@@ -36,6 +37,6 @@ export default function MainPage() {
                 </div>
             </div>
             <Footer />
-        </>
+        </ChakraProvider>
     )
 };

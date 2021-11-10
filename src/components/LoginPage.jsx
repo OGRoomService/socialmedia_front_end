@@ -2,6 +2,7 @@ import React, { Component, useState } from "react";
 import Footer from "./Footer";
 import '../styles/login.css';
 import LogHeader from "./LogHeader";
+import { ChakraProvider } from "@chakra-ui/react"
 
 function LoginFormFunction() {
     const [formData, setFormData] = useState({
@@ -25,7 +26,7 @@ function LoginFormFunction() {
     }
 
     return (
-        <>
+        <ChakraProvider>
         <LogHeader/>
             <div>
             <h2>Rowanspace</h2>
@@ -62,16 +63,17 @@ function LoginFormFunction() {
                 </div>
             </div>
             <Footer />
-        </>
+            
+        </ChakraProvider>
     )
 }
 
 export default class LoginPage extends Component {
     render() {
         return (
-            <>
+            <ChakraProvider>
             <LoginFormFunction />
-            </>
+            </ChakraProvider>
         );
     }
 

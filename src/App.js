@@ -7,6 +7,8 @@ import MainPage from './components/MainPage';
 import ProfilePage from './components/ProfilePage';
 import NotFound from './components/NotFound';
 import { Registration } from './components/Registration/Registration';
+import { ChakraProvider } from "@chakra-ui/react"
+import React, { Component }  from 'react';
 
 import './App.css';
 
@@ -32,11 +34,14 @@ export default function App() {
   } */
 
   return (
-    <Switch>
-      <Route exact path="/" component={MainPage} />
-      <Route path="/u/:id" component={UserPage} />
-      <Route exact path="/profile" component={ProfilePage} />
-      <Route component={NotFound} />
-    </Switch>
+    <ChakraProvider>
+      <Switch>
+        <Route exact path="/" component={MainPage} />
+        <Route exact path="/login" component={LoginPage} />
+        <Route path="/u/:id" component={UserPage} />
+        <Route exact path="/profile" component={ProfilePage} />
+        <Route component={NotFound} />
+      </Switch>
+    </ChakraProvider>
   )
 }
