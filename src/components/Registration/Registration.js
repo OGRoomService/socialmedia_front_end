@@ -18,12 +18,12 @@ export const Registration = () => {
     const [apiData, setApiData] = PostNewUserEndpoint();
     const history = useHistory();
 
-    const prevStep = () => {
+    /* const prevStep = () => {
         setFormData({
             ...formData,
             ['step']: formData.step - 1
         });
-    }
+    } */
 
     const nextStep = () => {
         setFormData({
@@ -52,8 +52,6 @@ export const Registration = () => {
     }
 
     const submitForm = () => {
-        console.log("testing form submission");
-
         setApiData({
             username: formData.username,
             email: formData.email,
