@@ -9,9 +9,10 @@ import { Registration } from './components/Registration/Registration';
 import NotFound from './components/NotFound';
 
 import './App.css';
+import { useToken } from './api/token';
 
 export default function App() {
-  const [token, setToken] = useState();
+  const { token, setToken } = useToken();
 
   // If the token doesn't exist, only allow access to login and registration page
   if (!token) {
@@ -19,7 +20,7 @@ export default function App() {
       <Switch>
 
         <Route exact path="/">
-          <LoginPage setToken={ setToken } />
+          <LoginPage setToken={setToken} />
         </Route>
 
         <Route exact path="/register">
@@ -38,6 +39,10 @@ export default function App() {
 
       <Route exact path="/">
         <MainPage />
+      </Route>
+
+      <Route exact path="/register">
+        <Redirect to='/' />
       </Route>
 
       <Route path="/u/:id">

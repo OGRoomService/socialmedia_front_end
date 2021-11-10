@@ -115,6 +115,7 @@ export const RegistrationUserDetails = ({ nextStep, handleChange, formData }) =>
                     onClick={Continue}
                     type='button'
                     value="Next >" />
+                <p>Already have an account? <a href="/">Login here!</a></p>
             </form>
         </>
     );

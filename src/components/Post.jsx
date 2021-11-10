@@ -6,17 +6,17 @@ export default class Header extends Component {
         return (
             <>
             <div>
-                <div class="containerP">
+                <div className="containerP">
                     
-                        <div class="containerU">
-                                <div class="containerPFP">
+                        <div className="containerU">
+                                <div className="containerPFP">
                                     <p>_PFP_</p>
                                 </div>
                             </div> 
-                            <div class="containerP" id="containerP-p">
+                            <div className="containerP" id="containerP-p">
                             <h4>Post Content</h4>
                             </div>
-                            <div class="containerP" id="containerP-c">
+                            <div className="containerP" id="containerP-c">
                                 <p>Like</p>
                             <input type="text" placeholder="comment"/>
                             </div>
