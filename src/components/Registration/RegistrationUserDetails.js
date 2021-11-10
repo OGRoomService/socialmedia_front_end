@@ -1,5 +1,7 @@
 import React from "react";
 import { useState } from "react";
+import { ChakraProvider } from "@chakra-ui/react"
+
 
 export const RegistrationUserDetails = ({ nextStep, handleChange, formData }) => {
     const [formErrors, setFormErrors] = useState({
@@ -55,7 +57,7 @@ export const RegistrationUserDetails = ({ nextStep, handleChange, formData }) =>
     }
 
     return (
-        <>
+        <ChakraProvider>
             <form>
             <p><b>Please fill out information below</b></p>
                 <p>
@@ -116,6 +118,6 @@ export const RegistrationUserDetails = ({ nextStep, handleChange, formData }) =>
                     type='button'
                     value="Next >" />
             </form>
-        </>
+        </ChakraProvider>
     );
 }

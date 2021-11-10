@@ -1,6 +1,9 @@
+import { useEffect } from "react";
+import { getCLS, getFID, getLCP, getTTFB, getFCP } from "web-vitals";
+
 const reportWebVitals = onPerfEntry => {
   if (onPerfEntry && onPerfEntry instanceof Function) {
-    import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+    useEffect(() => {
       getCLS(onPerfEntry);
       getFID(onPerfEntry);
       getFCP(onPerfEntry);

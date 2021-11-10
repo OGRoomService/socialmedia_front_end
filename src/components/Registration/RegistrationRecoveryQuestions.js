@@ -1,3 +1,6 @@
+import { ChakraProvider } from "@chakra-ui/react"
+import React, { Component }  from 'react';
+
 export const RegistrationRecoveryQuestions = ({ nextStep, handleChange, formData }) => {
     // usestate of recovery questions so when someone picks one, disable it so it can't be picked twice
     // query list of questions from database
@@ -9,7 +12,7 @@ export const RegistrationRecoveryQuestions = ({ nextStep, handleChange, formData
     }
 
     return (
-        <>
+        <ChakraProvider>
             <form
                 onSubmit={Continue}
             >
@@ -46,6 +49,6 @@ export const RegistrationRecoveryQuestions = ({ nextStep, handleChange, formData
                         </p>
                 <input type="submit" value="Sign Up" />
             </form>
-        </>
+        </ChakraProvider>
     );
 }
