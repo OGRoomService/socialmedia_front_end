@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { ChakraProvider, Text, Input, Link, Heading, ThemeProvider, theme, CSSReset } from "@chakra-ui/react"
 
 import { PostUserLogin } from "../api/api";
 import { LoginHeader } from "./LoginHeader";
@@ -73,7 +74,8 @@ export const LoginPage = ({ setToken }) => {
     }
 
     return (
-        <>
+        <ThemeProvider theme={theme}>
+            <CSSReset />
             <LoginHeader />
             <div>
                 <h2>Rowanspace</h2>
@@ -121,6 +123,6 @@ export const LoginPage = ({ setToken }) => {
                 </div>
             </div>
             <Footer />
-        </>
+        </ThemeProvider>
     )
 }
