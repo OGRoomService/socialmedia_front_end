@@ -5,10 +5,6 @@ import Post from "./Post";
 import "../styles/main.css";
 import { Input, ThemeProvider, theme, CSSReset } from "@chakra-ui/react"
 
-
-
-
-
 export default function MainPage() {
     return (
         <ThemeProvider theme={theme}>

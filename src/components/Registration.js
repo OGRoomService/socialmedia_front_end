@@ -4,6 +4,7 @@ import { PostNewUserEndpoint } from "../api/api";
 import Footer from "./Footer";
 import RegHeader from "./RegHeader";
 import '../styles/register.css'
+import { ChakraProvider } from "@chakra-ui/react";
 
 export const Registration = () => {
     const [formData, setFormData] = useState({
@@ -91,7 +92,7 @@ export const Registration = () => {
     }
 
     return (
-        <>
+        <ChakraProvider>
             <RegHeader />
             <h2>Rowanspace</h2>
             <div className="container" id="container-t">
@@ -161,6 +162,6 @@ export const Registration = () => {
                 </div>
             </div>
             <Footer />
-        </>
+        </ChakraProvider>
     );
 }
