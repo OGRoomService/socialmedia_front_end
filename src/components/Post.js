@@ -1,6 +1,7 @@
 import React, { Component, useState } from "react";
 import '../styles/post.css';
 import { ChakraProvider } from "@chakra-ui/react"
+import { Input } from "@chakra-ui/react"
 
 
 export default class Header extends Component {
@@ -8,19 +9,19 @@ export default class Header extends Component {
         return (
             <ChakraProvider>
             <div>
-                <div className="containerP">
+                <div class="containerP">
                     
-                        <div className="containerU">
-                                <div className="containerPFP">
+                        <div class="containerU">
+                                <div class="containerPFP">
                                     <p>_PFP_</p>
                                 </div>
                             </div> 
-                            <div className="containerP" id="containerP-p">
+                            <div class="containerP" id="containerP-p">
                             <h4>Post Content</h4>
                             </div>
-                            <div className="containerP" id="containerP-c">
+                            <div class="containerP" id="containerP-c">
                                 <p>Like</p>
-                            <input type="text" placeholder="comment"/>
+                            <Input placeholder="comment" size="md" />
                             </div>
                     
                 </div>
