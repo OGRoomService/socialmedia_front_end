@@ -1,25 +1,62 @@
-import { Route, Switch } from 'react-router';
+import React from 'react';
+import { Redirect, Route, Switch } from 'react-router';
+
 import UserPage from './components/UserPage';
-import LoginPage from './components/LoginPage';
 import MainPage from './components/MainPage';
 import ProfilePage from './components/ProfilePage';
+import { LoginPage } from './components/LoginPage';
+import { Registration } from './components/Registration';
 import NotFound from './components/NotFound';
-import { Registration } from './components/Registration/Registration';
+
 import './App.css';
+import { useToken } from './api/token';
 
 export default function App() {
+  const { token, setToken } = useToken();
+
+  // If the token doesn't exist, only allow access to login and registration page
+  if (!token) {
+    return (
+      <Switch>
+
+        <Route exact path="/">
+          <LoginPage setToken={setToken} />
+        </Route>
+
+        <Route exact path="/register">
+          <Registration />
+        </Route>
+
+        <Route>
+          <Redirect to='/' />
+        </Route>
+
+      </Switch>
+    )
+  }
   return (
-    /*
-     * Do check to see if user logged in
-     * if they are show home page, if not show login page
-    */
     <Switch>
-      <Route exact path="/" component={LoginPage} />
-      <Route exact path="/home" component={MainPage} />
-      <Route exact path="/register" component={Registration} />
-      <Route path="/u/:id" component={UserPage} />
-      <Route exact path="/profile" component={ProfilePage} />
-      <Route component={NotFound} />
+
+      <Route exact path="/">
+        <MainPage />
+      </Route>
+
+      <Route exact path="/register">
+        <Redirect to='/' />
+      </Route>
+
+      <Route path="/u/:id">
+        <UserPage />
+      </Route>
+
+      <Route exact path="/profile">
+        <ProfilePage />
+      </Route>
+
+      <Route>
+        <NotFound />
+      </Route>
+
     </Switch>
   )
 }
