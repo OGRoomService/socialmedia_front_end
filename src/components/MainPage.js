@@ -3,14 +3,12 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Post from "./Post";
 import "../styles/main.css";
-
-
-
-
+import { Input, ThemeProvider, theme, CSSReset } from "@chakra-ui/react"
 
 export default function MainPage() {
     return (
-        <>
+        <ThemeProvider theme={theme}>
+        <CSSReset />
             <Header />
             <div className="container" id="container-t">
                 <div className="container">
@@ -36,6 +34,6 @@ export default function MainPage() {
                 </div>
             </div>
             <Footer />
-        </>
+        </ThemeProvider>
     )
 };
