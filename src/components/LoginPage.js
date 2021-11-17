@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ChakraProvider, Text, Input, Link, Heading, ThemeProvider, theme, CSSReset } from "@chakra-ui/react"
+import { ChakraProvider, Text, Input, Link, Heading, ThemeProvider, theme, CSSReset, Checkbox } from "@chakra-ui/react"
 
 import { PostUserLogin } from "../api/api";
 import { LoginHeader } from "./LoginHeader";
@@ -11,7 +11,8 @@ export const LoginPage = ({ setToken }) => {
     const [apiData, setApiData] = PostUserLogin();
     const [formData, setFormData] = useState({
         username: '',
-        password: ''
+        password: '',
+        remember: false
     });
     const [formErrors, setFormErrors] = useState({
         username: '',
@@ -50,7 +51,8 @@ export const LoginPage = ({ setToken }) => {
 
         setToken({
             access_token: apiData.data.data.access_token,
-            refresh_token: apiData.data.data.refresh_token
+            refresh_token: apiData.data.data.refresh_token,
+            remember: formData.remember
         })
     }
 
@@ -107,6 +109,18 @@ export const LoginPage = ({ setToken }) => {
                                 type="text"
                                 placeholder="Password"
                                 onChange={handleUpdate} />
+
+                            <Checkbox
+                                name="remember"
+                                onChange={ (e) =>
+                                    setFormData({
+                                        ...formData,
+                                        [e.currentTarget.name]: e.currentTarget.checked
+                                    })
+                                }
+                            >
+                                Remember me
+                            </Checkbox>
 
                             <Input
                                 className='button'
