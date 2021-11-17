@@ -8,9 +8,10 @@ export const LoginHeader = () => {
         <ChakraProvider>
         <div className="containerTop">
             <div className="top">
-                <h1 style={{color: "aliceblue"}}>Log In</h1>
+                <h1 style={{color: "orange"}}>Log In</h1>
             </div>
         </div>
         </ChakraProvider>
     );
 }
+
