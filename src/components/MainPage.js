@@ -2,16 +2,25 @@ import React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import Post from "./Post";
-import "../styles/main.css";
-import { Input, ThemeProvider, theme, CSSReset } from "@chakra-ui/react"
+//import "../styles/main.css";
+import { ChakraProvider } from "@chakra-ui/react"
+import { Input, ThemeProvider, CSSReset, theme } from "@chakra-ui/react"
+import { extendTheme, withDefaultColorScheme } from "@chakra-ui/react"
+
+const customTheme = extendTheme(withDefaultColorScheme({ colorScheme: "red" }))
+
+
 
 export default function MainPage() {
     return (
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={customTheme}>
         <CSSReset />
             <Header />
             <div className="container" id="container-t">
+            <ThemeProvider theme={customTheme}>
+             <CSSReset />
                 <div className="container">
+                    <ChakraProvider>
                     <div className="container" id="container-l">
                         <h1>Spacing</h1>
                         <div
@@ -19,10 +28,11 @@ export default function MainPage() {
                         >
                         </div>
                     </div>
+                    </ChakraProvider>
 
                     <div className="container" id="container-m">
                         <div className="head"></div>
-                        <input type="text" placeholder="Search.." />
+                        <Input placeholder="Search..." size="md" />
                         <div className="head"></div>
                         <h1>Post Feed</h1>
                         <Post/>
@@ -32,6 +42,7 @@ export default function MainPage() {
                         <h1>Friends List</h1>
                     </div>
                 </div>
+                </ThemeProvider>
             </div>
             <Footer />
         </ThemeProvider>

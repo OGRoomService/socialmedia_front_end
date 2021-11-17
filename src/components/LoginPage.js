@@ -86,7 +86,7 @@ export const LoginPage = ({ setToken }) => {
                                 className="form-header"
                                 htmlFor="login-username">
                                 Username</label>
-                            <input
+                            <Input
                                 id="login-username"
                                 name="username"
                                 type="text"
@@ -101,14 +101,14 @@ export const LoginPage = ({ setToken }) => {
 
                             {formErrors.password && <span className="error-message">{formErrors.password}</span>}
 
-                            <input
+                            <Input
                                 id="login-password"
                                 name="password"
                                 type="text"
                                 placeholder="Password"
                                 onChange={handleUpdate} />
 
-                            <input
+                            <Input
                                 className='button'
                                 onClick={submitForm}
                                 type='button'
@@ -117,12 +117,15 @@ export const LoginPage = ({ setToken }) => {
                             {apiData.error && <span>Invalid Username or Password!</span>}
                             {apiData.complete && handleResponse()}
 
-                            <p>Don't have an account? <a href="/register">Sign up here!</a></p>
+                            <p>Don't have an account? <Link color="teal.500" href="/register">Sign up here!</Link></p>
                         </form>
                     </div>
                 </div>
+                <Heading as="h2" size="4x5" mb="6"><Text fontSize="6xl" mt="20"> Rowanspace </Text></Heading>
             </div>
-            <Footer />
+           {/* <Footer />  */}
+            {/* <Footer /> 
+           <Footer />  */}
         </ThemeProvider>
     )
 }

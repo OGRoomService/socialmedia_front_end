@@ -1,11 +1,12 @@
 import React from "react";
 import logo from "../Rowan.png";
 import '../styles/footer.css';
-import { ChakraProvider } from "@chakra-ui/react"
+import { ChakraProvider, ThemeProvider, CSSReset, theme } from "@chakra-ui/react"
 
 export default function Footer() {
     return (
-        <ChakraProvider>
+        <ThemeProvider theme={theme}>
+        <CSSReset />
         <div className="containerFoot">
             <div className="foot">
                 <a href="#foot">
@@ -13,6 +14,6 @@ export default function Footer() {
                 </a>
             </div>
         </div>
-        </ChakraProvider>
+        </ThemeProvider>
     )
 }

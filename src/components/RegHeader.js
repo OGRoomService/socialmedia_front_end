@@ -9,7 +9,7 @@ export default function RegHeader() {
         <ChakraProvider>
         <div class="containerTop">
             <div className="top">
-                <h1 style={{color: "aliceblue"}}>Sign Up</h1>
+                <h1 style={{color: "orange"}}>Sign Up</h1>
             </div>
         </div>
         </ChakraProvider>
