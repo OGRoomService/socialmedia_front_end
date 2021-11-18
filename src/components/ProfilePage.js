@@ -1,6 +1,6 @@
 import React from "react";
 import Footer from "./Footer";
-import Header from "./Header";
+import ProfileHeader from "./ProfileHeader";
 import "../styles/main.css";
 import { Box, Flex, Heading, Circle } from "@chakra-ui/react"
 import { ChakraProvider } from "@chakra-ui/react"
@@ -9,15 +9,16 @@ import { ChakraProvider } from "@chakra-ui/react"
 export default function ProfilePage() {
     return (
         <ChakraProvider>
-        <Header />
+        <ProfileHeader />
         <br/>
         <Heading as="h2" size="3xl" isTruncated>
             Profile page
         </Heading>
+        
         <Flex w="100%" h="500px" c-flex flexDirection={"row"} align="center" /*bgGradient="linear(to-t, green.200, pink.500)"*/ border="2px, black">
             <Box w="50%" h="50%" c-flex bgGradient="linear(to-t, green.200, pink.500)">
             <Circle size="200px" bg="black" color="white">
-                PFP
+                Profile Picture
             </Circle>
                {/* Hello Good Morning */}
             </Box> 

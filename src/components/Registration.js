@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import { PostNewUserEndpoint } from "../api/api";
-import Footer from "./Footer";
 import RegHeader from "./RegHeader";
 import '../styles/register.css'
-import { ChakraProvider } from "@chakra-ui/react";
+import { Heading, Text, Input, Link, ThemeProvider, CSSReset, theme } from "@chakra-ui/react";
 
 export const Registration = () => {
     const [formData, setFormData] = useState({
@@ -19,7 +18,8 @@ export const Registration = () => {
         username: '',
         vpassword: '',
         password: '',
-        email: ''
+        email: '',
+        api: ''
     });
     const history = useHistory();
 
@@ -70,9 +70,16 @@ export const Registration = () => {
     const handleResponse = () => {
         console.log(apiData.data);
 
+        if (!apiData.data) {
+            formErrors.api = 'Something went wrong, try again!';
+            return;
+        }
         switch (apiData.data.status) {
             case 201:
                 history.push("/");
+                break;
+            default:
+                break;
         }
     }
 
@@ -92,29 +99,32 @@ export const Registration = () => {
     }
 
     return (
-        <ChakraProvider>
+        <ThemeProvider theme={theme}>
+        <CSSReset />
             <RegHeader />
             <h2>Rowanspace</h2>
             <div className="container" id="container-t">
-                <div style={{ backgroundColor: "#fff" }} className="container" id="container-reg">
+                <div style={{ backgroundColor: "Blue 900" }} className="container" id="container-reg">
                     <form>
                         <p><b>Please fill out information below</b></p>
                         <p>
-                            <label htmlFor="uname">Username</label>
-                            <input
+                            <label className="form-header"
+                            htmlFor="uname">Username</label>
+                            <Input
                                 id="username"
                                 name="username"
                                 type="text"
                                 placeholder="username"
                                 defaultValue={formData.username}
-                                onChange={handleChange} />
+                                onChange={handleChange} 
+                                required />
                         </p>
 
                         {formErrors.username && <span className="error-message">{formErrors.username}</span>}
 
                         <p>
                             <label htmlFor="uemail">Email</label>
-                            <input
+                            <Input
                                 id="email"
                                 name="email"
                                 type="email"
@@ -127,7 +137,7 @@ export const Registration = () => {
 
                         <p>
                             <label htmlFor="pass">Password</label>
-                            <input
+                            <Input
                                 id="password"
                                 name="password"
                                 type="password"
@@ -140,7 +150,7 @@ export const Registration = () => {
 
                         <p>
                             <label htmlFor="vpass">Confirm password</label>
-                            <input
+                            <Input
                                 id="vpassword"
                                 name="vpassword"
                                 type="password"
@@ -151,17 +161,20 @@ export const Registration = () => {
 
                         {formErrors.vpassword && <span className="error-message">{formErrors.vpassword}</span>}
 
-                        <input
+                        <Input
                             className='button'
                             onClick={submitForm}
                             type='button'
                             value="Register" />
-                        <p>Already have an account? <a href="/">Login here!</a></p>
+
+                        {formErrors.api && <span className="error-message">{formErrors.api}</span>}
+                        <p>Already have an account? <Link color="teal.500" href="/login">Login here!</Link></p>
                     </form>
                     {apiData.complete && handleResponse()}
                 </div>
             </div>
-            <Footer />
-        </ChakraProvider>
+            <Heading as="h2" size="4x5" mb="6"><Text fontSize="6xl" mt="20"> Rowanspace </Text></Heading>
+            {/* <Footer /> */}
+        </ThemeProvider>
     );
 }

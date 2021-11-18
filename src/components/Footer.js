@@ -1,18 +1,20 @@
 import React from "react";
 import logo from "../Rowan.png";
 import '../styles/footer.css';
-import { ChakraProvider } from "@chakra-ui/react"
+import { ChakraProvider, ThemeProvider, CSSReset, theme, Flex, Image } from "@chakra-ui/react"
 
 export default function Footer() {
     return (
-        <ChakraProvider>
-        <div className="containerFoot">
-            <div className="foot">
-                <a href="#foot">
-                    <img className="logo" alt="website logo" src={logo} />
-                </a>
-            </div>
-        </div>
-        </ChakraProvider>
+        <ThemeProvider theme={theme}>
+        <CSSReset />
+            <Flex w="100%" h="70px" flexDirection={"column"} pos="fixed" bottom="0%" mb="0em">
+
+                <Flex w="100%" h="100%" flexDirection={"column"} alignItems="center" bgColor="#333333" theme>
+                    
+                        <Image src={logo} w="100px" h="65px"/>
+                </Flex>
+
+            </Flex>
+        </ThemeProvider>
     )
 }
