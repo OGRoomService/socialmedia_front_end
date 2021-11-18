@@ -4,7 +4,7 @@ import Footer from "./Footer";
 import Post from "./Post";
 //import "../styles/main.css";
 import { ChakraProvider } from "@chakra-ui/react"
-import { Input, ThemeProvider, CSSReset, theme } from "@chakra-ui/react"
+import { Input, ThemeProvider, CSSReset } from "@chakra-ui/react"
 import { extendTheme, withDefaultColorScheme } from "@chakra-ui/react"
 
 const customTheme = extendTheme(withDefaultColorScheme({ colorScheme: "red" }))

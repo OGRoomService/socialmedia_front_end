@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { ChakraProvider, Text, Input, Link, Heading, ThemeProvider, theme, CSSReset, Checkbox } from "@chakra-ui/react"
+import { Text, Input, Link, Heading, ThemeProvider, theme, CSSReset, Checkbox } from "@chakra-ui/react"
 
 import { PostUserLogin } from "../api/api";
 import { LoginHeader } from "./LoginHeader";
-import Footer from "./Footer";
 
 import '../styles/login.css';
 

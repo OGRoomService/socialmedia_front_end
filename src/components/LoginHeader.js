@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "../Rowan.png";
 import "../styles/BlankHeader.css";
 import { ChakraProvider } from "@chakra-ui/react"
 
