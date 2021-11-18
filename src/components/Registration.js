@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import { PostNewUserEndpoint } from "../api/api";
 import RegHeader from "./RegHeader";
+import Footer from "./Footer";
 import '../styles/register.css'
-import { Heading, Text, Input, Link, ThemeProvider, CSSReset, theme } from "@chakra-ui/react";
+import { Heading, Text, Input, Link, ThemeProvider, CSSReset, theme, Flex, Stack} from "@chakra-ui/react";
 
 export const Registration = () => {
     const [formData, setFormData] = useState({
@@ -102,10 +103,11 @@ export const Registration = () => {
         <ThemeProvider theme={theme}>
         <CSSReset />
             <RegHeader />
-            <h2>Rowanspace</h2>
-            <div className="container" id="container-t">
-                <div style={{ backgroundColor: "Blue 900" }} className="container" id="container-reg">
-                    <form>
+            <Flex h="100%" w="100%" flexDirection={"row"} alignItems="center">
+                <Heading as="h2" size="4x5" mb="6"><Text fontSize="6xl" mt="20"> Rowanspace </Text></Heading>
+                    <Flex w="20em" h="50%" flexDirection={"column"} pos="fixed" alignItems="center" top="10%" left="38%" margin="center" theme>
+            
+                    <Stack>
                         <p><b>Please fill out information below</b></p>
                         <p>
                             <label className="form-header"
@@ -169,12 +171,12 @@ export const Registration = () => {
 
                         {formErrors.api && <span className="error-message">{formErrors.api}</span>}
                         <p>Already have an account? <Link color="teal.500" href="/login">Login here!</Link></p>
-                    </form>
+                    </Stack>
                     {apiData.complete && handleResponse()}
-                </div>
-            </div>
-            <Heading as="h2" size="4x5" mb="6"><Text fontSize="6xl" mt="20"> Rowanspace </Text></Heading>
-            {/* <Footer /> */}
+        </Flex>
+        </Flex>
+
+             <Footer />
         </ThemeProvider>
     );
 }
