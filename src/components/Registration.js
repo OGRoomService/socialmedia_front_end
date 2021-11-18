@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import { PostNewUserEndpoint } from "../api/api";
-import Footer from "./Footer";
 import RegHeader from "./RegHeader";
 import '../styles/register.css'
-import { ChakraProvider, Heading, Text, Input, Link, ThemeProvider, CSSReset, theme } from "@chakra-ui/react";
+import { Heading, Text, Input, Link, ThemeProvider, CSSReset, theme } from "@chakra-ui/react";
 
 export const Registration = () => {
     const [formData, setFormData] = useState({
@@ -19,7 +18,8 @@ export const Registration = () => {
         username: '',
         vpassword: '',
         password: '',
-        email: ''
+        email: '',
+        api: ''
     });
     const history = useHistory();
 
@@ -70,9 +70,16 @@ export const Registration = () => {
     const handleResponse = () => {
         console.log(apiData.data);
 
+        if (!apiData.data) {
+            formErrors.api = 'Something went wrong, try again!';
+            return;
+        }
         switch (apiData.data.status) {
             case 201:
                 history.push("/");
+                break;
+            default:
+                break;
         }
     }
 
@@ -159,6 +166,8 @@ export const Registration = () => {
                             onClick={submitForm}
                             type='button'
                             value="Register" />
+
+                        {formErrors.api && <span className="error-message">{formErrors.api}</span>}
                         <p>Already have an account? <Link color="teal.500" href="/login">Login here!</Link></p>
                     </form>
                     {apiData.complete && handleResponse()}

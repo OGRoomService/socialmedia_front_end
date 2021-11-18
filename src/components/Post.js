@@ -1,7 +1,7 @@
 import React, { Component} from "react";
 //import '../styles/post.css';
 import { Button, ChakraProvider } from "@chakra-ui/react"
-import { Box, Flex, Heading, Circle, Input, extendTheme} from "@chakra-ui/react"
+import { Flex, Heading, Circle, Input, extendTheme} from "@chakra-ui/react"
 
 
 // const theme = extendTheme({
