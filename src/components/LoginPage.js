@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { ChakraProvider, Text, Input, Link, Heading, ThemeProvider, theme, CSSReset } from "@chakra-ui/react"
-
+import { Text, Input, Link, Heading, ThemeProvider, theme, CSSReset, Checkbox, Stack, Flex } from "@chakra-ui/react"
+import Footer from "./Footer";
 import { PostUserLogin } from "../api/api";
 import { LoginHeader } from "./LoginHeader";
-import Footer from "./Footer";
+
 
 import '../styles/login.css';
 
@@ -11,7 +11,8 @@ export const LoginPage = ({ setToken }) => {
     const [apiData, setApiData] = PostUserLogin();
     const [formData, setFormData] = useState({
         username: '',
-        password: ''
+        password: '',
+        remember: false
     });
     const [formErrors, setFormErrors] = useState({
         username: '',
@@ -50,7 +51,8 @@ export const LoginPage = ({ setToken }) => {
 
         setToken({
             access_token: apiData.data.data.access_token,
-            refresh_token: apiData.data.data.refresh_token
+            refresh_token: apiData.data.data.refresh_token,
+            remember: formData.remember
         })
     }
 
@@ -77,16 +79,16 @@ export const LoginPage = ({ setToken }) => {
         <ThemeProvider theme={theme}>
             <CSSReset />
             <LoginHeader />
-            <div>
-                <h2>Rowanspace</h2>
-                <div className="containerL">
-                    <div className="containerL" id="containerL-m">
-                        <form>
+            <Flex h="100%" w="100%" flexDirection={"row"} alignItems="center">
+                <Heading as="h2" size="4x5" mb="6"><Text fontSize="6xl" mt="20"> Rowanspace </Text></Heading>
+                    <Flex w="20em" h="100%" flexDirection={"column"} pos="fixed" alignItems="center" top="10%" left="38%" theme>
+
+                        <Stack>
                             <label
                                 className="form-header"
                                 htmlFor="login-username">
                                 Username</label>
-                            <input
+                            <Input
                                 id="login-username"
                                 name="username"
                                 type="text"
@@ -101,14 +103,26 @@ export const LoginPage = ({ setToken }) => {
 
                             {formErrors.password && <span className="error-message">{formErrors.password}</span>}
 
-                            <input
+                            <Input
                                 id="login-password"
                                 name="password"
                                 type="text"
                                 placeholder="Password"
                                 onChange={handleUpdate} />
 
-                            <input
+                            <Checkbox
+                                name="remember"
+                                onChange={ (e) =>
+                                    setFormData({
+                                        ...formData,
+                                        [e.currentTarget.name]: e.currentTarget.checked
+                                    })
+                                }
+                            >
+                                Remember me
+                            </Checkbox>
+
+                            <Input
                                 className='button'
                                 onClick={submitForm}
                                 type='button'
@@ -117,11 +131,11 @@ export const LoginPage = ({ setToken }) => {
                             {apiData.error && <span>Invalid Username or Password!</span>}
                             {apiData.complete && handleResponse()}
 
-                            <p>Don't have an account? <a href="/register">Sign up here!</a></p>
-                        </form>
-                    </div>
-                </div>
-            </div>
+                            <p>Don't have an account? <Link color="teal.500" href="/register">Sign up here!</Link></p>
+                        </Stack>
+                   
+           </Flex>
+            </Flex>
             <Footer />
         </ThemeProvider>
     )

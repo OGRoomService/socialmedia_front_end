@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+const url = 'http://73.178.162.24:8080/api'
+
 const axiosPostConfig = {
     headers: {
         'Content-Type': 'application/json',
@@ -56,7 +58,7 @@ export const UseApi = (fn) => {
 export const PostNewUserEndpoint = () => {
     return UseApi(data => ({
         config: axiosPostConfig,
-        url: 'http://localhost:8080/api/users/create',
+        url: url + '/users/create',
         method: 'POST',
         data
     }));
@@ -65,7 +67,7 @@ export const PostNewUserEndpoint = () => {
 export const PostUserLogin = () => {
     return UseApi(data => ({
         config: axiosPostConfig,
-        url: 'http://localhost:8080/api/users/login',
+        url: url + '/users/login',
         method: 'POST',
         data
     }));
