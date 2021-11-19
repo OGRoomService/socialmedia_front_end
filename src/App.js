@@ -10,6 +10,8 @@ import NotFound from './components/NotFound';
 
 import './App.css';
 import { useToken } from './api/token';
+import { RecoverPassword } from './components/PasswordRecovery/RecoverPassword';
+import { ResetPassword } from './components/PasswordRecovery/ResetPassword';
 
 export default function App() {
   const { token, setToken } = useToken();
@@ -23,9 +25,14 @@ export default function App() {
           <LoginPage setToken={setToken} />
         </Route>
 
-        <Route exact path="/register">
-          <Registration />
-        </Route>
+        <Route  exact path="/register"
+                component={Registration} />
+
+        <Route  exact path="/recover_password"
+                component={RecoverPassword} />
+
+        <Route  exact path="/reset_password"
+                component={ResetPassword} />
 
         <Route>
           <Redirect to='/' />
