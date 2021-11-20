@@ -106,7 +106,7 @@ export const LoginPage = ({ setToken }) => {
                         <Input
                             id="login-password"
                             name="password"
-                            type="text"
+                            type="password"
                             placeholder="Password"
                             onChange={handleUpdate} />
 
