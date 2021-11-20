@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const url = 'http://73.178.162.24:8080/api'
+const url = 'http://rowanspace.xyz:8080/api'
 
 const axiosPostConfig = {
     headers: {
