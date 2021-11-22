@@ -11,6 +11,11 @@ export function useToken() {
     }
     const [token, setToken] = useState(getToken());
 
+    const deleteToken = () => {
+        localStorage.removeItem('token');
+        sessionStorage.removeItem('token');
+    }
+
     const saveToken = userToken => {
         const tokenToSave = {
             access_token: userToken.access_token,
@@ -26,6 +31,7 @@ export function useToken() {
 
     return {
         setToken: saveToken,
+        deleteToken: deleteToken,
         token
     }
 }

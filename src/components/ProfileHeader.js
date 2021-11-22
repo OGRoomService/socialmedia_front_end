@@ -1,22 +1,37 @@
 import React, { Component } from "react";
 import '../styles/Header.css';
-import { ChakraProvider, Input } from "@chakra-ui/react"
+import { ChakraProvider, Input, Button } from "@chakra-ui/react"
+import { useToken } from "../api/token";
+import { useHistory } from "react-router";
 
-export default class ProfileHeader extends Component {
-    render() {
-        return (
-            <ChakraProvider>
-                <div className="Header">
-                    <nav>
-                        <ul>
-                            <li><a href="/">Post Feed</a></li>
-                            <li><Input id="search-bar" type="text" placeholder="Search..." /></li>
-                            {/* <li className="right-align"><a href="/profile">Profile</a></li> */}
-                            <li className="right-align"><a href="/">Settings</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </ChakraProvider>
-        )
+export const ProfileHeader = () => {
+    const token = useToken();
+    const history = useHistory();
+
+    const logout = () => {
+        token.deleteToken();
+        history.go(0);
     }
+
+    return (
+        <ChakraProvider>
+            <div className="Header">
+                <nav>
+                    <ul>
+                        <li><a href="/">Post Feed</a></li>
+                        <li><Input id="search-bar" type="text" placeholder="Search..." /></li>
+                        {/* <li className="right-align"><a href="/profile">Profile</a></li> */}
+                        <li className="right-align"><a href="/">Settings</a></li>
+                        <li className="right-align">
+                            <Button
+                                onClick={logout}
+                            >
+                                Logout
+                            </Button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </ChakraProvider>
+    )
 }
