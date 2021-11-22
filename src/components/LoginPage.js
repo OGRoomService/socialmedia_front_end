@@ -24,11 +24,17 @@ export const LoginPage = ({ setToken }) => {
         let valid = true;
 
         if (!formData.username || formData.username.trim() === '') {
-            formErrors.username = 'Username required!'
+            setFormErrors({
+                ...formErrors,
+                username: 'Username required!'
+            });
             valid = false;
         }
         if (!formData.password || formData.password.trim() === '') {
-            formErrors.password = 'Password required!'
+            setFormErrors({
+                ...formErrors,
+                password: 'Password required!'
+            });
             valid = false;
         }
         return valid;
