@@ -32,46 +32,28 @@ export const Registration = () => {
         let passes = true;
 
         if (!formData.username) {
-            setFormErrors({
-                ...formErrors,
-                username: 'Username is Required!'
-            });
+            formErrors.username = 'Username is Required!';
             passes = false;
         } else if (formData.username < 6 || usernameRegex.test(formData.username)) {
-            setFormErrors({
-                ...formErrors,
-                username: 'Username is Invalid!'
-            });
+            formErrors.username = 'Username is Invalid!';
             passes = false;
         }
 
         if (!formData.email) {
-            setFormErrors({
-                ...formErrors,
-                email: 'Email is Required!'
-            });
+            formErrors.email = 'Email is Required!';
             passes = false;
         } else if (!emailRegex.test(formData.email)) {
-            setFormErrors({
-                ...formErrors,
-                email: 'Email is Invalid!'
-            });
+            formErrors.email = 'Email is Invalid!';
             passes = false;
         }
 
         if (formData.password !== formData.vpassword) {
-            setFormErrors({
-                ...formErrors,
-                vpassword: 'Passwords do not match!'
-            });
+            formErrors.vpassword = 'Passwords do not match!';
             passes = false;
         }
 
         if (!formData.password || !passwordRegex.test(formData.password)) {
-            setFormErrors({
-                ...formErrors,
-                password: 'Minimum password length is 8 characters and must contain at least 1 number and 1 symbol'
-            });
+            formErrors.password = 'Minimum password length is 8 characters and must contain at least 1 number and 1 symbol';
             passes = false;
         }
         setFormErrors(formErrors);

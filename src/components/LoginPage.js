@@ -21,22 +21,18 @@ export const LoginPage = ({ setToken }) => {
     let handlingResponse = false;
 
     const validate = () => {
+        let formErrors = {};
         let valid = true;
 
         if (!formData.username || formData.username.trim() === '') {
-            setFormErrors({
-                ...formErrors,
-                username: 'Username required!'
-            });
+            formErrors.username = 'Username required!'
             valid = false;
         }
         if (!formData.password || formData.password.trim() === '') {
-            setFormErrors({
-                ...formErrors,
-                password: 'Password required!'
-            });
+            formErrors.password = 'Password required!'
             valid = false;
         }
+        setFormErrors(formErrors);
         return valid;
     }
 
