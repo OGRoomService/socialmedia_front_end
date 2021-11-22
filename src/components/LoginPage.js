@@ -81,60 +81,59 @@ export const LoginPage = ({ setToken }) => {
             <LoginHeader />
             <Flex h="100%" w="100%" flexDirection={"row"} alignItems="center">
                 <Heading as="h2" size="4x5" mb="6"><Text fontSize="6xl" mt="20"> Rowanspace </Text></Heading>
-                    <Flex w="20em" h="100%" flexDirection={"column"} pos="fixed" alignItems="center" top="10%" left="38%" theme>
+                <Flex w="20em" h="100%" flexDirection={"column"} pos="fixed" alignItems="center" top="10%" left="38%" theme>
 
-                        <Stack>
-                            <label
-                                className="form-header"
-                                htmlFor="login-username">
-                                Username</label>
-                            <Input
-                                id="login-username"
-                                name="username"
-                                type="text"
-                                placeholder="username"
-                                onChange={handleUpdate} />
+                    <Stack>
+                        <label
+                            className="form-header"
+                            htmlFor="login-username">
+                            Username</label>
+                        <Input
+                            id="login-username"
+                            name="username"
+                            type="text"
+                            placeholder="username"
+                            onChange={handleUpdate} />
 
-                            {formErrors.username && <span className="error-message">{formErrors.username}</span>}
+                        {formErrors.username && <span className="error-message">{formErrors.username}</span>}
 
-                            <label className="form-header"
-                                htmlFor="login-password">
-                                Password</label>
+                        <label className="form-header"
+                            htmlFor="login-password">
+                            Password</label>
 
-                            {formErrors.password && <span className="error-message">{formErrors.password}</span>}
+                        {formErrors.password && <span className="error-message">{formErrors.password}</span>}
 
-                            <Input
-                                id="login-password"
-                                name="password"
-                                type="text"
-                                placeholder="Password"
-                                onChange={handleUpdate} />
+                        <Input
+                            id="login-password"
+                            name="password"
+                            type="password"
+                            placeholder="Password"
+                            onChange={handleUpdate} />
 
-                            <Checkbox
-                                name="remember"
-                                onChange={ (e) =>
-                                    setFormData({
-                                        ...formData,
-                                        [e.currentTarget.name]: e.currentTarget.checked
-                                    })
-                                }
-                            >
-                                Remember me
-                            </Checkbox>
+                        <Checkbox
+                            name="remember"
+                            onChange={(e) =>
+                                setFormData({
+                                    ...formData,
+                                    [e.currentTarget.name]: e.currentTarget.checked
+                                })
+                            }
+                        >
+                            Remember me
+                        </Checkbox>
 
-                            <Input
-                                className='button'
-                                onClick={submitForm}
-                                type='button'
-                                value='Login' />
+                        <Input
+                            className='button'
+                            onClick={submitForm}
+                            type='button'
+                            value='Login' />
 
-                            {apiData.error && <span>Invalid Username or Password!</span>}
-                            {apiData.complete && handleResponse()}
+                        {apiData.error && <span>Invalid Username or Password!</span>}
+                        {apiData.complete && handleResponse()}
 
-                            <p>Don't have an account? <Link color="teal.500" href="/register">Sign up here!</Link></p>
-                        </Stack>
-                   
-           </Flex>
+                        <p>Don't have an account? <Link color="teal.500" href="/register">Sign up here!</Link></p>
+                    </Stack>
+                </Flex>
             </Flex>
             <Footer />
         </ThemeProvider>
