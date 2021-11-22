@@ -41,6 +41,7 @@ export const Registration = () => {
 
         if (!formData.email) {
             formErrors.email = 'Email is Required!';
+            passes = false;
         } else if (!emailRegex.test(formData.email)) {
             formErrors.email = 'Email is Invalid!';
             passes = false;

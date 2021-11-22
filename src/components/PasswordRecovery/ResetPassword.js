@@ -1,38 +1,125 @@
-import React from "react"
+import React, { useState } from "react"
 import { Text, Input, Link, Heading, ThemeProvider, theme, CSSReset, Checkbox, Stack, Flex } from "@chakra-ui/react"
 
-export const ResetPassword = ({match, location}) => {
-    const params = new URLSearchParams(location.search);
+import { PostForgotPasswordEndpoint, PostResetPasswordEndpoint } from "../../api/api";
+import { LoginHeader } from "../LoginHeader";
+import Footer from "../Footer";
+
+
+export const ResetPassword = ({ match, location }) => {
+    const [formData, setFormData] = useState({
+        password: '',
+        vpassword: ''
+    });
+    const [formErrors, setFormErrors] = useState({
+        password: '',
+        vpassword: ''
+    });
+    const [apiData, setApiData] = PostResetPasswordEndpoint();
+    const [submitted, setSubmitted] = useState(false);
+    const token = (new URLSearchParams(location.search)).get('token');
+
+    const validate = () => {
+        const passwordRegex = new RegExp('(?=.*[!@#$%&*()_+=|<>?{}\\[\\]~-])+(?=.*[0-9])+(?=.{8,})');
+        let passes = true;
+
+        if (formData.password !== formData.vpassword) {
+            setFormErrors({
+                ...formErrors,
+                vpassword: 'Passwords do not match!'
+            });
+            passes = false;
+        }
+
+        if (!formData.password || !passwordRegex.test(formData.password)) {
+            setFormErrors({
+                ...formErrors,
+                password: 'Minimum password length is 8 characters and must contain at least 1 number and 1 symbol'
+            });
+            passes = false;
+        }
+        return passes;
+    }
+
+    const handleChange = (e) => {
+        const { name, value } = e.currentTarget;
+
+        setFormData({
+            ...formData,
+            [name]: value
+        });
+    }
+
+    const submitForm = (e) => {
+        e.preventDefault();
+
+        if (!validate()) {
+            return;
+        }
+        setApiData({
+            "password_reset_token": token,
+            "new_password": formData.password
+        });
+        setSubmitted(true);
+    }
+
+    const preSubmitForm = () => {
+        return (
+            <Flex w="20em" h="100%" flexDirection={"column"} pos="fixed" alignItems="center" top="10%" left="38%" theme>
+                <Stack>
+                    <Heading size="lg">Reset Your Password</Heading>
+                    <Text fontWeight='bold'>Enter new password</Text>
+                    <Input
+                        id="password"
+                        name="password"
+                        type="password"
+                        placeholder="Password"
+                        onChange={handleChange} />
+
+                    {formErrors.password && <span className="error-message">{formErrors.password}</span>}
+
+                    <Text fontWeight='bold'>Confirm password</Text>
+                    <Input
+                        id="vpassword"
+                        name="vpassword"
+                        type="password"
+                        placeholder="Password"
+                        onChange={handleChange} />
+
+                    {formErrors.vpassword && <span className="error-message">{formErrors.vpassword}</span>}
+
+                    <Input
+                        className='button'
+                        onClick={submitForm}
+                        type='button'
+                        value='Reset' />
+                </Stack>
+            </Flex>
+        );
+    }
+
+    const submittedForm = () => {
+        return (
+            <Flex w="20em" h="100%" flexDirection={"column"} pos="fixed" alignItems="center" top="10%" left="38%" theme>
+                <Heading>Password Reset!</Heading>
+                <Text>You can now login with your new password!</Text>
+                <Link color="teal.500" href="/">Back to Login</Link>
+            </Flex>
+        );
+    }
 
     return (
         <ThemeProvider theme={theme}>
             <CSSReset />
+            <LoginHeader />
             <Flex h="100%" w="100%" flexDirection={"row"} alignItems="center">
                 <Heading as="h2" size="4x5" mb="6"><Text fontSize="6xl" mt="20"> Rowanspace </Text></Heading>
-                <Flex w="20em" h="100%" flexDirection={"column"} pos="fixed" alignItems="center" top="10%" left="38%" theme>
-                    <Stack>
-                        <label
-                            className="form-header"
-                            htmlFor="login-username">
-                            Reset Your Password
-                        </label>
-                        <Text>Enter new password</Text>
-                        <Text>{params.get('token')}</Text>
-                        <Input
-                            id="login-username"
-                            name="username"
-                            type="text"
-                            placeholder="username"
-                        /* onChange={} */ />
-
-                        <Input
-                            className='button'
-                            /* onClick={submitForm} */
-                            type='button'
-                            value='Reset' />
-                    </Stack>
-                </Flex>
+                {submitted ?
+                    submittedForm() :
+                    preSubmitForm()
+                }
             </Flex>
+            <Footer />
         </ThemeProvider>
     )
 }
