@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router';
 
 import UserPage from './components/UserPage';
-import MainPage from './components/MainPage';
+import { MainPage } from './components/MainPage';
 import ProfilePage from './components/ProfilePage';
 import { LoginPage } from './components/LoginPage';
 import { Registration } from './components/Registration';
@@ -45,7 +45,7 @@ export default function App() {
     <Switch>
 
       <Route exact path="/">
-        <MainPage />
+        <MainPage token={token}/>
       </Route>
 
       <Route exact path="/register">

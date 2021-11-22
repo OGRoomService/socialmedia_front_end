@@ -1,17 +1,17 @@
 import React from "react";
 import { Header } from "./Header";
 import Footer from "./Footer";
-import Post from "./Post";
 //import "../styles/main.css";
 import { ChakraProvider } from "@chakra-ui/react"
 import { Input, ThemeProvider, CSSReset } from "@chakra-ui/react"
 import { extendTheme, withDefaultColorScheme } from "@chakra-ui/react"
+import { PostFeed } from "./PostFeed/PostFeed";
 
 const customTheme = extendTheme(withDefaultColorScheme({ colorScheme: "red" }))
 
 
 
-export default function MainPage() {
+export const MainPage = (token) => {
     return (
         <ThemeProvider theme={customTheme}>
             <CSSReset />
@@ -35,7 +35,7 @@ export default function MainPage() {
                             <Input placeholder="Search..." size="md" />
                             <div className="head"></div>
                             <h1>Post Feed</h1>
-                            <Post />
+                            <PostFeed />
                         </div>
                         <div className="container" id="container-r">
 

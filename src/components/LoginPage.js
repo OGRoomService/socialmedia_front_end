@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, Input, Link, Heading, ThemeProvider, theme, CSSReset, Checkbox, Stack, Flex } from "@chakra-ui/react"
 import Footer from "./Footer";
 import { PostUserLogin } from "../api/api";
@@ -130,6 +130,8 @@ export const LoginPage = ({ setToken }) => {
 
                         {apiData.error && <span>Invalid Username or Password!</span>}
                         {apiData.complete && handleResponse()}
+
+                        <Link color="teal.500" href="/recover_password">Forgotten Password?</Link>
 
                         <p>Don't have an account? <Link color="teal.500" href="/register">Sign up here!</Link></p>
                     </Stack>
