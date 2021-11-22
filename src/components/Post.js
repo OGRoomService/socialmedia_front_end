@@ -23,7 +23,23 @@ const theme = extendTheme({
     },
   })
 
+
+//   const likeColor = e => {
+//     e.preventDefault();
+
+//     console.log("I have been pressed");
+//     Heading.textColor = 'black';
+
+  
+// }
+
+//   document.getElementById('like').onclick = () => {
+//     console.log("I have been pressed");
+//     like.style.color = 'black';
+// }
+
 export default class Header extends Component {
+
 
     render() {
         return (
@@ -49,19 +65,19 @@ export default class Header extends Component {
             </div> */}
 
 
-            <Flex w="750px" h="300px" c-flex flexDirection={"column"} align="center" /*bgGradient="linear(to-t, green.200, pink.500)"*/ border="2px" borderColor="black" bg="brand.100">
+            <Flex w="750px" h="225px" c-flex flexDirection={"column"} align="center" /*bgGradient="linear(to-t, green.200, pink.500)" border="2px" borderColor="black" */ bg="brand.100">
                 <Flex w="100%" h="65px" c-flex flexDirection={"row"} justifyContent={"Left"} borderColor="black">
                 <Circle size="60px" bg="black" color="white">
                     PFP
                 </Circle>
                 </Flex>
-                <Flex w="100%" h="50%" c-flexDirection={"column"} borderColor="black" border="2px" borderColor="black">
+                <Flex w="100%" h="100px" c-flexDirection={"column"} borderColor="black" border="2px" borderColor="black">
                     Post Content
                 </Flex>
 
-                <Flex w="65%" h="20%" c-flexDirection={"row"} borderColor="black">
-                    <Button w="100px">
-                        <Heading as="h6" size="2xl" isTruncated>
+                <Flex w="65%" h="18%" c-flexDirection={"row"} borderColor="black">
+                     <Button w="100px" marginTop={"10px"} id='like' /*onClick={likeColor}> */>
+                        <Heading as="h6" size="2xl" isTruncated textColor={"#800000"}>
                             ♡
                         </Heading>
                     </Button>
