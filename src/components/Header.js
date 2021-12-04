@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import '../styles/Header.css';
-import { ChakraProvider, Input, Button } from "@chakra-ui/react"
+import { useColorMode, Input, Button, Box, Flex } from "@chakra-ui/react"
 import { useToken } from "../api/token";
 import { useHistory } from "react-router";
 
 export const Header = () => {
     const token = useToken();
     const history = useHistory();
+    const { colorMode, toggleColorMode } = useColorMode();
 
     const logout = () => {
         token.deleteToken();
@@ -14,7 +15,14 @@ export const Header = () => {
     }
 
     return (
-        <ChakraProvider>
+        <Box>
+            <Flex
+                minH='50px'
+            >
+
+            </Flex>
+        </Box>
+        /* <ChakraProvider>
             <div className="Header">
                 <nav>
                     <ul>
@@ -32,6 +40,6 @@ export const Header = () => {
                     </ul>
                 </nav>
             </div>
-        </ChakraProvider>
+        </ChakraProvider> */
     )
 }

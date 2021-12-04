@@ -12,6 +12,7 @@ import './App.css';
 import { useToken } from './api/token';
 import { RecoverPassword } from './components/PasswordRecovery/RecoverPassword';
 import { ResetPassword } from './components/PasswordRecovery/ResetPassword';
+import { ChakraProvider } from '@chakra-ui/react';
 
 export default function App() {
   const { token, setToken } = useToken();
@@ -19,51 +20,55 @@ export default function App() {
   // If the token doesn't exist, only allow access to login and registration page
   if (!token) {
     return (
-      <Switch>
+      <ChakraProvider>
+        <Switch>
 
-        <Route exact path="/">
-          <LoginPage setToken={setToken} />
-        </Route>
+          <Route exact path="/">
+            <LoginPage setToken={setToken} />
+          </Route>
 
-        <Route  exact path="/register"
-                component={Registration} />
+          <Route exact path="/register"
+            component={Registration} />
 
-        <Route  exact path="/recover_password"
-                component={RecoverPassword} />
+          <Route exact path="/recover_password"
+            component={RecoverPassword} />
 
-        <Route  exact path="/reset_password"
-                component={ResetPassword} />
+          <Route exact path="/reset_password"
+            component={ResetPassword} />
 
-        <Route>
-          <Redirect to='/' />
-        </Route>
+          <Route>
+            <Redirect to='/' />
+          </Route>
 
-      </Switch>
+        </Switch>
+      </ChakraProvider>
     )
   }
   return (
-    <Switch>
+    <ChakraProvider>
+      <Switch>
 
-      <Route exact path="/">
-        <MainPage token={token}/>
-      </Route>
+        <Route exact path="/">
+          <MainPage token={token} />
+        </Route>
 
-      <Route exact path="/register">
-        <Redirect to='/' />
-      </Route>
+        <Route exact path="/register">
+          <Redirect to='/' />
+        </Route>
 
-      <Route path="/u/:id">
-        <UserPage />
-      </Route>
+        <Route path="/u/:id">
+          <UserPage />
+        </Route>
 
-      <Route exact path="/profile">
-        <ProfilePage />
-      </Route>
+        <Route exact path="/profile">
+          <ProfilePage />
+        </Route>
 
-      <Route>
-        <NotFound />
-      </Route>
+        <Route>
+          <NotFound />
+        </Route>
 
-    </Switch>
+      </Switch>
+    </ChakraProvider>
   )
 }

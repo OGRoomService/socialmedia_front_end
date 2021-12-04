@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Text, Input, Heading, ThemeProvider, theme, CSSReset, Stack, Flex } from "@chakra-ui/react"
+import { Text, Input, Heading, Box, Stack, Flex } from "@chakra-ui/react"
 
 import { PostForgotPasswordEndpoint } from "../../api/api";
 import { LoginHeader } from "../LoginHeader";
@@ -91,8 +91,7 @@ export const RecoverPassword = () => {
     }
 
     return (
-        <ThemeProvider theme={theme}>
-            <CSSReset />
+        <Box>
             <LoginHeader />
             <Flex h="100%" w="100%" flexDirection={"row"} alignItems="center">
                 <Heading as="h2" size="4x5" mb="6"><Text fontSize="6xl" mt="20"> Rowanspace </Text></Heading>
@@ -102,6 +101,6 @@ export const RecoverPassword = () => {
                 }
             </Flex>
             <Footer />
-        </ThemeProvider>
+        </Box>
     )
 }

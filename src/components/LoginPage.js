@@ -84,23 +84,23 @@ export const LoginPage = ({ setToken }) => {
         breakpoints:
         {
             colors: {},
-            fonts:{},
-            fontSzes:{},
+            fonts: {},
+            fontSzes: {},
             sm: "360px", //Galaxy s5
             md: "376px", //I phone X
             lg: "960px",
             xl: "1200px",
         }
 
-    }) 
+    })
 
     return (
         <ThemeProvider theme={customTheme}>
             <CSSReset />
             <LoginHeader />
-             <Flex  h="100%" w="100%" flexDirection={"row"} alignItems="center" mb="0px">
-                <Heading as="h2" size="4x5" mb="6"><Text fontSize={{ base: "20px", sm: "20px", md: "20px", lg:"45px", xl:"80px" }} mt="32px"> Rowanspace </Text></Heading> 
-    
+            <Flex h="100%" w="100%" flexDirection={"row"} alignItems="center" mb="0px">
+                <Heading as="h2" size="4x5" mb="6"><Text fontSize={{ base: "20px", sm: "20px", md: "20px", lg: "45px", xl: "80px" }} mt="32px"> Rowanspace </Text></Heading>
+
                 {/* <Flex w={{ base: "20em", sm: "7em", md: "7em" }} h="100%" flexDirection={"column"} pos="fixed" alignItems="center" top="10%" left="38%" theme bgColor={["red", "blue", "yellow", "purple", "pink"]}>
 
                     <Stack>
@@ -156,9 +156,9 @@ export const LoginPage = ({ setToken }) => {
                         <p>Don't have an account? <Link color="teal.500" href="/register">Sign up here!</Link></p>
                     </Stack>
                         </Flex> */}
-            
-            <Flex  ml={{base: "100px", sm: "50px", lg: "300px"}} h="100px" w={{ base: "300px", sm: "100pxpx", md: "100px", lg:"450px" }} pos="fixed" flexDirection={"column"} h="100%" mt="4%" top="7%">
-            <Stack>
+
+                <Flex ml={{ base: "100px", sm: "50px", lg: "300px" }} h="100px" w={{ base: "300px", sm: "100pxpx", md: "100px", lg: "450px" }} pos="fixed" flexDirection={"column"} h="100%" mt="4%" top="7%">
+                    <Stack>
                         <label fontSize="10px"
                             className="form-header"
                             htmlFor="login-username">
@@ -210,9 +210,9 @@ export const LoginPage = ({ setToken }) => {
 
                         <p>Don't have an account? <Link color="teal.500" href="/register">Sign up here!</Link></p>
                     </Stack>
+                </Flex>
             </Flex>
-            </Flex>
-            
+
             <Footer />
         </ThemeProvider>
     )

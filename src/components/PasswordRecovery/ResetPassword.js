@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Text, Input, Link, Heading, ThemeProvider, theme, CSSReset, Checkbox, Stack, Flex } from "@chakra-ui/react"
+import { Text, Input, Link, Heading, Box, Checkbox, Stack, Flex } from "@chakra-ui/react"
 
 import { PostForgotPasswordEndpoint, PostResetPasswordEndpoint } from "../../api/api";
 import { LoginHeader } from "../LoginHeader";
@@ -109,8 +109,7 @@ export const ResetPassword = ({ match, location }) => {
     }
 
     return (
-        <ThemeProvider theme={theme}>
-            <CSSReset />
+        <Box>
             <LoginHeader />
             <Flex h="100%" w="100%" flexDirection={"row"} alignItems="center">
                 <Heading as="h2" size="4x5" mb="6"><Text fontSize="6xl" mt="20"> Rowanspace </Text></Heading>
@@ -120,6 +119,6 @@ export const ResetPassword = ({ match, location }) => {
                 }
             </Flex>
             <Footer />
-        </ThemeProvider>
+        </Box>
     )
 }

@@ -4,7 +4,7 @@ import { PostNewUserEndpoint } from "../api/api";
 import RegHeader from "./RegHeader";
 import Footer from "./Footer";
 import '../styles/register.css'
-import { Heading, Text, Input, Link, ThemeProvider, CSSReset, theme, Flex, Stack} from "@chakra-ui/react";
+import { Heading, Text, Input, Link, Flex, Stack, Box } from "@chakra-ui/react";
 
 export const Registration = () => {
     const [formData, setFormData] = useState({
@@ -87,7 +87,7 @@ export const Registration = () => {
 
     const submitForm = e => {
         e.preventDefault();
-        
+
         if (!validate(formData)) {
             console.log("Form validation failed!");
             return;
@@ -101,25 +101,24 @@ export const Registration = () => {
     }
 
     return (
-        <ThemeProvider theme={theme}>
-        <CSSReset />
+        <Box>
             <RegHeader />
             <Flex h="100%" w="100%" flexDirection={"row"} alignItems="center">
                 <Heading as="h2" size="4x5" mb="6"><Text fontSize="6xl" mt="20"> Rowanspace </Text></Heading>
-                    <Flex w="20em" h="50%" flexDirection={"column"} pos="fixed" alignItems="center" top="10%" left="38%" margin="center" theme>
-            
+                <Flex w="20em" h="50%" flexDirection={"column"} pos="fixed" alignItems="center" top="10%" left="38%" margin="center" theme>
+
                     <Stack>
                         <p><b>Please fill out information below</b></p>
                         <p>
                             <label className="form-header"
-                            htmlFor="uname">Username</label>
+                                htmlFor="uname">Username</label>
                             <Input
                                 id="username"
                                 name="username"
                                 type="text"
                                 placeholder="username"
                                 defaultValue={formData.username}
-                                onChange={handleChange} 
+                                onChange={handleChange}
                                 required />
                         </p>
 
@@ -174,10 +173,9 @@ export const Registration = () => {
                         <p>Already have an account? <Link color="teal.500" href="/login">Login here!</Link></p>
                     </Stack>
                     {apiData.complete && handleResponse()}
-        </Flex>
-        </Flex>
-
-             <Footer />
-        </ThemeProvider>
+                </Flex>
+            </Flex>
+            <Footer />
+        </Box>
     );
 }
