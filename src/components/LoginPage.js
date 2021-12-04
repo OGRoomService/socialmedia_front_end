@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, Input, Link, Heading, ThemeProvider, theme, CSSReset, Checkbox, Stack, Flex } from "@chakra-ui/react"
+import { Text, Input, Link, Heading, ThemeProvider, theme, CSSReset, Checkbox, Stack, Flex, extendTheme } from "@chakra-ui/react"
 import Footer from "./Footer";
 import { PostUserLogin } from "../api/api";
 import { LoginHeader } from "./LoginHeader";
