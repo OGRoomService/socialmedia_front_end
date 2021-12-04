@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import '../styles/Header.css';
 import { useColorMode, Input, Button, Box, Flex } from "@chakra-ui/react"
+import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { useToken } from "../api/token";
 import { useHistory } from "react-router";
 
@@ -19,7 +20,11 @@ export const Header = () => {
             <Flex
                 minH='50px'
             >
-
+                <Button
+                    onClick={toggleColorMode}
+                >
+                    {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+                </Button>
             </Flex>
         </Box>
         /* <ChakraProvider>

@@ -65,7 +65,7 @@ export const ResetPassword = ({ match, location }) => {
 
     const preSubmitForm = () => {
         return (
-            <Flex w="20em" h="100%" flexDirection={"column"} pos="fixed" alignItems="center" top="10%" left="38%" theme>
+            <Flex w="20em" h="100%" flexDirection={"column"} pos="fixed" alignItems="center" top="10%" left="38%">
                 <Stack>
                     <Heading size="lg">Reset Your Password</Heading>
                     <Text fontWeight='bold'>Enter new password</Text>
@@ -100,7 +100,7 @@ export const ResetPassword = ({ match, location }) => {
 
     const submittedForm = () => {
         return (
-            <Flex w="20em" h="100%" flexDirection={"column"} pos="fixed" alignItems="center" top="10%" left="38%" theme>
+            <Flex w="20em" h="100%" flexDirection={"column"} pos="fixed" alignItems="center" top="10%" left="38%">
                 <Heading>Password Reset!</Heading>
                 <Text>You can now login with your new password!</Text>
                 <Link color="teal.500" href="/">Back to Login</Link>

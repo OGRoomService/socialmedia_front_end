@@ -48,7 +48,7 @@ export const RecoverPassword = () => {
 
     const preSubmitForm = () => {
         return (
-            <Flex w="20em" h="100%" flexDirection={"column"} pos="fixed" alignItems="center" top="10%" left="38%" theme>
+            <Flex w="20em" h="100%" flexDirection={"column"} pos="fixed" alignItems="center" top="10%" left="38%">
                 <Stack>
                     <label
                         className="form-header"
@@ -83,7 +83,7 @@ export const RecoverPassword = () => {
 
     const submittedForm = () => {
         return (
-            <Flex w="20em" h="100%" flexDirection={"column"} pos="fixed" alignItems="center" top="10%" left="38%" theme>
+            <Flex w="20em" h="100%" flexDirection={"column"} pos="fixed" alignItems="center" top="10%" left="38%">
                 <Heading>Request Sent!</Heading>
                 <Text>If an account with that email exists, you will receive an email shortly!</Text>
             </Flex>

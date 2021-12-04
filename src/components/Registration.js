@@ -105,7 +105,7 @@ export const Registration = () => {
             <RegHeader />
             <Flex h="100%" w="100%" flexDirection={"row"} alignItems="center">
                 <Heading as="h2" size="4x5" mb="6"><Text fontSize="6xl" mt="20"> Rowanspace </Text></Heading>
-                <Flex w="20em" h="50%" flexDirection={"column"} pos="fixed" alignItems="center" top="10%" left="38%" margin="center" theme>
+                <Flex w="20em" h="50%" flexDirection={"column"} pos="fixed" alignItems="center" top="10%" left="38%" margin="center">
 
                     <Stack>
                         <p><b>Please fill out information below</b></p>

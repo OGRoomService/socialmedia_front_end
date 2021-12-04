@@ -1,39 +1,78 @@
 import React, { Component, useEffect, useState } from "react";
+import {
+    Flex,
+    Box,
+    Spacer,
+    Input,
+    Avatar,
+    HStack,
+    Text,
+    Divider,
+    Center,
+    IconButton,
+    PseudoBox,
+    Icon
+} from "@chakra-ui/react"
+import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { Button } from "@chakra-ui/react"
-import { Flex, Box, Circle, Input, extendTheme } from "@chakra-ui/react"
-import { GetAllPosts } from "../../api/api";
-
-const theme = extendTheme({
-  colors: {
-    brand: {
-      100: "#f7fafc",
-      // ...
-      900: "#1a202c",
-    },
-  },
-})
 
 export const NewPost = ({ postData }) => {
-  return (
-    <Box p="1" mt={2} w='100%' borderWidth="1px" borderRadius="lg">
-      <Box p="2">
-        <Box
-          mt="1"
-          fontWeight="semibold"
-          as="h4"
-          lineHeight="tight"
-          alignItems
-        >
-          <Flex>
-            PFP
-            testName
-          </Flex>
-          <br />
-          post text
-          <br />
-          <br />
+    const [isLiked, setIsLiked] = useState(false);
+
+    console.log(isLiked);
+
+    return (
+        <Box mb='5' borderWidth="1px" borderRadius="lg">
+            <Box
+                p="3"
+                fontWeight="semibold"
+            >
+                <HStack spacing='30px'>
+                    <Avatar
+                        size='sm'
+                    />
+                    <Text>
+                        testName
+                    </Text>
+                </HStack>
+                <Center h='20px'>
+                    <Divider />
+                </Center>
+                <Flex>
+                    <Text fontSize='sm'>
+                        Post Text
+                    </Text>
+                </Flex>
+                <Center h='20px'>
+                    <Divider />
+                </Center>
+                <HStack>
+                    <IconButton
+                        variant='ghost'
+                        icon={
+                            isLiked ? <BsHeartFill color='red' /> : <BsHeart color='currentColor' />
+                        }
+                        onClick={() =>
+                            isLiked ? setIsLiked(false) : setIsLiked(true)
+                        }
+                        _hover={{ color: 'gray', stroke: 'gray' }}
+                        _active={{}}
+                        _focus={{}}
+                    />
+                    <Text fontSize='sm'>
+                        x likes
+                    </Text>
+                </HStack>
+                <HStack>
+                    <Input
+                        placeholder='Add a comment...'
+                    >
+                    </Input>
+                    <Button>
+                        Post
+                    </Button>
+                </HStack>
+            </Box>
         </Box>
-      </Box>
-    </Box>
-  )
+    )
 }
