@@ -1,9 +1,18 @@
 import React, { useState } from "react"
-import { Text, Input, Link, Heading, Box, Checkbox, Stack, Flex } from "@chakra-ui/react"
-
 import { PostForgotPasswordEndpoint, PostResetPasswordEndpoint } from "../../api/api";
 import { Header } from "../Header";
 import Footer from "../Footer";
+import {
+    Text,
+    Input,
+    Link,
+    Heading,
+    Box,
+    Checkbox,
+    Stack,
+    Flex,
+    Center
+} from "@chakra-ui/react"
 
 
 export const ResetPassword = ({ match, location }) => {
@@ -65,60 +74,59 @@ export const ResetPassword = ({ match, location }) => {
 
     const preSubmitForm = () => {
         return (
-            <Flex w="20em" h="100%" flexDirection={"column"} pos="fixed" alignItems="center" top="10%" left="38%">
-                <Stack>
-                    <Heading size="lg">Reset Your Password</Heading>
-                    <Text fontWeight='bold'>Enter new password</Text>
-                    <Input
-                        id="password"
-                        name="password"
-                        type="password"
-                        placeholder="Password"
-                        onChange={handleChange} />
+            <Stack>
+                <Heading size="lg">Reset Your Password</Heading>
+                <Text fontWeight='bold'>Enter new password</Text>
+                <Input
+                    name="password"
+                    type="password"
+                    placeholder="Password"
+                    onChange={handleChange} />
 
-                    {formErrors.password && <span className="error-message">{formErrors.password}</span>}
+                {formErrors.password && <Text>{formErrors.password}</Text>}
 
-                    <Text fontWeight='bold'>Confirm password</Text>
-                    <Input
-                        id="vpassword"
-                        name="vpassword"
-                        type="password"
-                        placeholder="Password"
-                        onChange={handleChange} />
+                <Text fontWeight='bold'>Confirm password</Text>
+                <Input
+                    name="vpassword"
+                    type="password"
+                    placeholder="Password"
+                    onChange={handleChange} />
 
-                    {formErrors.vpassword && <span className="error-message">{formErrors.vpassword}</span>}
+                {formErrors.vpassword && <Text>{formErrors.vpassword}</Text>}
 
-                    <Input
-                        className='button'
-                        onClick={submitForm}
-                        type='button'
-                        value='Reset' />
-                </Stack>
-            </Flex>
+                <Input
+                    className='button'
+                    onClick={submitForm}
+                    type='button'
+                    value='Reset' />
+            </Stack>
         );
     }
 
     const submittedForm = () => {
         return (
-            <Flex w="20em" h="100%" flexDirection={"column"} pos="fixed" alignItems="center" top="10%" left="38%">
+            <Box>
                 <Heading>Password Reset!</Heading>
                 <Text>You can now login with your new password!</Text>
                 <Link color="teal.500" href="/">Back to Login</Link>
-            </Flex>
+            </Box>
         );
     }
 
     return (
-        <Box>
+        <Flex
+            flexDir={'column'}
+            minH={'100vh'}
+        >
             <Header />
-            <Flex h="100%" w="100%" flexDirection={"row"} alignItems="center">
-                <Heading as="h2" size="4x5" mb="6"><Text fontSize="6xl" mt="20"> Rowanspace </Text></Heading>
+            <Heading as="h2" size="4x5" mb="6"><Text fontSize="6xl" mt="20"> Rowanspace </Text></Heading>
+            <Center w={'100%'}>
                 {submitted ?
                     submittedForm() :
                     preSubmitForm()
                 }
-            </Flex>
+            </Center>
             <Footer />
-        </Box>
+        </Flex>
     )
 }

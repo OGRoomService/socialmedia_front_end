@@ -1,9 +1,16 @@
 import React, { useState } from "react"
-import { Text, Input, Heading, Box, Stack, Flex } from "@chakra-ui/react"
-
 import { PostForgotPasswordEndpoint } from "../../api/api";
 import { Header } from "../Header";
 import Footer from "../Footer";
+import {
+    Text,
+    Input,
+    Heading,
+    Box,
+    Stack,
+    Flex,
+    Center
+} from "@chakra-ui/react"
 
 export const RecoverPassword = () => {
     const [formData, setFormData] = useState({
@@ -48,36 +55,32 @@ export const RecoverPassword = () => {
 
     const preSubmitForm = () => {
         return (
-            <Flex w="20em" h="100%" flexDirection={"column"} pos="fixed" alignItems="center" top="10%" left="38%">
-                <Stack>
-                    <label
-                        className="form-header"
-                        htmlFor="login-username">
-                        Reset Your Password
-                    </label>
-                    <Text>Enter your email</Text>
-                    <Input
-                        id="login-username"
-                        name="email"
-                        type="text"
-                        placeholder="Email"
-                        onChange={(e) =>
-                            setFormData({
-                                email: e.currentTarget.value
-                            })
-                        } />
+            <Stack>
+                <Text>
+                    Reset Your Password
+                </Text>
+                <Text>Enter your email</Text>
+                <Input
+                    id="login-username"
+                    name="email"
+                    type="text"
+                    placeholder="Email"
+                    onChange={(e) =>
+                        setFormData({
+                            email: e.currentTarget.value
+                        })
+                    } />
 
-                    {formErrors.email &&
-                        <Text className="error-message">{formErrors.email}</Text>
-                    }
+                {formErrors.email &&
+                    <Text className="error-message">{formErrors.email}</Text>
+                }
 
-                    <Input
-                        className='button'
-                        onClick={submitForm}
-                        type='button'
-                        value='Request' />
-                </Stack>
-            </Flex>
+                <Input
+                    className='button'
+                    onClick={submitForm}
+                    type='button'
+                    value='Request' />
+            </Stack>
         );
     }
 
@@ -91,16 +94,21 @@ export const RecoverPassword = () => {
     }
 
     return (
-        <Box>
+        <Flex
+            flexDir={'column'}
+            minH={'100vh'}
+        >
             <Header />
-            <Flex h="100%" w="100%" flexDirection={"row"} alignItems="center">
-                <Heading as="h2" size="4x5" mb="6"><Text fontSize="6xl" mt="20"> Rowanspace </Text></Heading>
+            <Heading as="h2" size="4x5" mb="6">
+                <Text fontSize="6xl" mt="20"> Rowanspace </Text>
+            </Heading>
+            <Center w={'100%'}>
                 {submitted ?
                     submittedForm() :
                     preSubmitForm()
                 }
-            </Flex>
+            </Center>
             <Footer />
-        </Box>
+        </Flex>
     )
 }
