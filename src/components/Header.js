@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import '../styles/Header.css';
 import { MoonIcon, Search2Icon, SunIcon } from '@chakra-ui/icons';
-import { useToken } from "../api/token";
 import { useHistory, useLocation } from "react-router";
 import { BsHouse } from 'react-icons/bs';
 import { BiCog } from 'react-icons/bi';
@@ -21,22 +20,13 @@ import {
     Center,
     Heading
 } from "@chakra-ui/react"
+import { currentUser } from "../api/user";
 
 
 export const Header = () => {
-    const token = useToken();
-    let accessToken = null;
+    const user = currentUser();
 
-    const logout = () => {
-        token.deleteToken();
-        history.go(0);
-    }
-
-    if (token.token) {
-        accessToken = JSON.parse(token.token)['access_token'];
-    }
-
-    if (accessToken) {
+    if (user) {
         return (
             <LoggedInHeader />
         )
@@ -49,22 +39,25 @@ export const Header = () => {
 
 const LoggedOutHeader = () => {
     const location = useLocation();
-    
+
     return (
-        <Box
-            bg={useColorModeValue('gray.100', 'gray.700')}
-            px={2}
-            w='100%'
-            position={'fixed'}
-            zIndex={9999}
-            boxShadow={'base'}
-            h={16}
-        >
-            <Center w={'100%'} h={'100%'}>
-                <Heading>
-                    Log In
-                </Heading>
-            </Center>
+        <Box>
+            <Box
+                bg={useColorModeValue('gray.100', 'gray.700')}
+                px={2}
+                w='100%'
+                position={'fixed'}
+                zIndex={9999}
+                boxShadow={'base'}
+                h={16}
+            >
+                <Center w={'100%'} h={'100%'}>
+                    <Heading>
+                        Log In
+                    </Heading>
+                </Center>
+            </Box>
+            <Spacer pb={16} />
         </Box>
     )
 }

@@ -11,15 +11,17 @@ import NotFound from './components/NotFound';
 
 import './App.css';
 import { useToken } from './api/token';
+import { currentUser } from './api/user';
 import { RecoverPassword } from './components/PasswordRecovery/RecoverPassword';
 import { ResetPassword } from './components/PasswordRecovery/ResetPassword';
 import { ChakraProvider } from '@chakra-ui/react';
 
 export default function App() {
     const { token, setToken } = useToken();
+    const { userData, getUser } = currentUser();
 
     // If the token doesn't exist, only allow access to login and registration page
-    if (!token) {
+    if (!token || !userData) {
         return (
             <ChakraProvider>
                 <Switch>

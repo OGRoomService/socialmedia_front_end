@@ -14,7 +14,10 @@ export const MainPage = (token) => {
             <Header />
             <Spacer p={4} />
             <Center w={'100%'}>
-                <Center w={'45%'}>
+                <Center w={{
+                    base: '97%',
+                    lg: '45%'
+                }}>
                     <PostFeed />
                 </Center>
             </Center>
