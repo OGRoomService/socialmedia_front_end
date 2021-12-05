@@ -6,64 +6,74 @@ import { MainPage } from './components/MainPage';
 import ProfilePage from './components/ProfilePage';
 import { LoginPage } from './components/LoginPage';
 import { Registration } from './components/Registration';
+import { Settings } from './components/Settings';
 import NotFound from './components/NotFound';
 
 import './App.css';
 import { useToken } from './api/token';
 import { RecoverPassword } from './components/PasswordRecovery/RecoverPassword';
 import { ResetPassword } from './components/PasswordRecovery/ResetPassword';
+import { ChakraProvider } from '@chakra-ui/react';
 
 export default function App() {
-  const { token, setToken } = useToken();
+    const { token, setToken } = useToken();
 
-  // If the token doesn't exist, only allow access to login and registration page
-  if (!token) {
+    // If the token doesn't exist, only allow access to login and registration page
+    if (!token) {
+        return (
+            <ChakraProvider>
+                <Switch>
+
+                    <Route exact path="/">
+                        <LoginPage setToken={setToken} />
+                    </Route>
+
+                    <Route exact path="/register"
+                        component={Registration} />
+
+                    <Route exact path="/recover_password"
+                        component={RecoverPassword} />
+
+                    <Route exact path="/reset_password"
+                        component={ResetPassword} />
+
+                    <Route>
+                        <Redirect to='/' />
+                    </Route>
+
+                </Switch>
+            </ChakraProvider>
+        )
+    }
     return (
-      <Switch>
+        <ChakraProvider>
+            <Switch>
 
-        <Route exact path="/">
-          <LoginPage setToken={setToken} />
-        </Route>
+                <Route exact path="/">
+                    <MainPage token={token} />
+                </Route>
 
-        <Route  exact path="/register"
-                component={Registration} />
+                <Route exact path="/register">
+                    <Redirect to='/' />
+                </Route>
 
-        <Route  exact path="/recover_password"
-                component={RecoverPassword} />
+                <Route path="/u/:id">
+                    <UserPage />
+                </Route>
 
-        <Route  exact path="/reset_password"
-                component={ResetPassword} />
+                <Route exact path="/profile">
+                    <ProfilePage />
+                </Route>
 
-        <Route>
-          <Redirect to='/' />
-        </Route>
+                <Route exact path="/settings">
+                    <Settings />
+                </Route>
 
-      </Switch>
+                <Route>
+                    <NotFound />
+                </Route>
+
+            </Switch>
+        </ChakraProvider>
     )
-  }
-  return (
-    <Switch>
-
-      <Route exact path="/">
-        <MainPage token={token}/>
-      </Route>
-
-      <Route exact path="/register">
-        <Redirect to='/' />
-      </Route>
-
-      <Route path="/u/:id">
-        <UserPage />
-      </Route>
-
-      <Route exact path="/profile">
-        <ProfilePage />
-      </Route>
-
-      <Route>
-        <NotFound />
-      </Route>
-
-    </Switch>
-  )
 }

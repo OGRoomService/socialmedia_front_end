@@ -1,5 +1,5 @@
 import React, { Component, useEffect, useState } from "react";
-import { Button, ChakraProvider, Flex, Heading, Circle, Input, Spacer, List } from "@chakra-ui/react"
+import { Button, Flex, Heading, Circle, Input, Spacer, List, Box } from "@chakra-ui/react"
 import { GetAllPosts } from "../../api/api";
 import { useToken } from "../../api/token";
 import { NewPost } from "./NewPost";
@@ -110,10 +110,10 @@ export const PostFeed = () => {
     }
 
     return (
-        <ChakraProvider>
+        <Box w='100%' p='1'>
             <List>
                 {postObjects}
             </List>
-        </ChakraProvider>
+        </Box>
     );
 }
