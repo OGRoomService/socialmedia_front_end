@@ -40,14 +40,14 @@ export default function ProfilePage() {
                 </Center>
             </Flex>
             <Flex w='100%'>
-                <Box w='33%' />
-                <Spacer p='10' />
-                <Box w='100%'>
-                    <Spacer p={3} />
-                    <PostFeed />
-                </Box>
-                <Spacer p='10' />
-                <Box w='33%' />
+                <Center w={'100%'}>
+                    <Center w={'45%'}>
+                        <Stack w={'100%'}>
+                            <Spacer pt={5} />
+                            <PostFeed />
+                        </Stack>
+                    </Center>
+                </Center>
             </Flex>
             <Footer />
         </Box>
