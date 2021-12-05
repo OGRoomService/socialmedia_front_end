@@ -1,50 +1,137 @@
 import React, { Component } from "react";
 import '../styles/Header.css';
-import { useColorMode, Input, Button, Box, Flex } from "@chakra-ui/react"
-import { MoonIcon, SunIcon } from '@chakra-ui/icons';
+import { MoonIcon, Search2Icon, SunIcon } from '@chakra-ui/icons';
 import { useToken } from "../api/token";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
+import { BsHouse } from 'react-icons/bs';
+import { BiCog } from 'react-icons/bi';
+import {
+    useColorMode,
+    useColorModeValue,
+    Input,
+    Button,
+    Box,
+    Flex,
+    IconButton,
+    Avatar,
+    Stack,
+    InputGroup,
+    InputLeftElement,
+    Spacer,
+    Center,
+    Heading
+} from "@chakra-ui/react"
+
 
 export const Header = () => {
     const token = useToken();
-    const history = useHistory();
-    const { colorMode, toggleColorMode } = useColorMode();
+    let accessToken = null;
 
     const logout = () => {
         token.deleteToken();
         history.go(0);
     }
 
+    if (token.token) {
+        accessToken = JSON.parse(token.token)['access_token'];
+    }
+
+    if (accessToken) {
+        return (
+            <LoggedInHeader />
+        )
+    } else {
+        return (
+            <LoggedOutHeader />
+        )
+    }
+}
+
+const LoggedOutHeader = () => {
+    const location = useLocation();
+    
+    return (
+        <Box
+            bg={useColorModeValue('gray.100', 'gray.700')}
+            px={2}
+            w='100%'
+            position={'fixed'}
+            zIndex={9999}
+            boxShadow={'base'}
+            h={16}
+        >
+            <Center w={'100%'} h={'100%'}>
+                <Heading>
+                    Log In
+                </Heading>
+            </Center>
+        </Box>
+    )
+}
+
+const LoggedInHeader = () => {
+    const { colorMode, toggleColorMode } = useColorMode();
+    const history = useHistory();
+
     return (
         <Box>
-            <Flex
-                minH='50px'
+            <Box
+                bg={useColorModeValue('gray.100', 'gray.700')}
+                px={2}
+                w='100%'
+                position={'fixed'}
+                zIndex={9999}
+                boxShadow={'base'}
             >
-                <Button
-                    onClick={toggleColorMode}
-                >
-                    {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
-                </Button>
-            </Flex>
-        </Box>
-        /* <ChakraProvider>
-            <div className="Header">
-                <nav>
-                    <ul>
-                        <li><a href="/">Post Feed</a></li>
-                        <li><Input id="search-bar" type="text" placeholder="Search..." /></li>
-                        <li className="right-align"><a href="/profile">Profile</a></li>
-                        <li className="right-align"><a href="/">Settings</a></li>
-                        <li className="right-align">
+                <Flex h={16} alignItems={'center'}>
+                    <Stack w={'100%'} direction={'row'}>
+                        <IconButton
+                            icon={<BsHouse />}
+                            rounded={'full'}
+                            onClick={() =>
+                                history.push('/')
+                            }
+                        />
+                        <InputGroup>
+                            <InputLeftElement
+                                pointerEvents={'none'}
+                                children={<Search2Icon color={useColorModeValue('gray.700', 'gray.100')} />}
+                            />
+                            <Input
+                                placeholder={'Search content...'}
+                                rounded={'full'}
+                            />
+                        </InputGroup>
+                        <Stack direction={'row'} spacing={1}>
                             <Button
-                                onClick={logout}
+                                leftIcon={<Avatar size={'sm'} />}
+                                p={1}
+                                pr={2}
+                                rounded={'full'}
+                                onClick={() =>
+                                    history.push('/profile')
+                                }
                             >
-                                Logout
+                                Name
                             </Button>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </ChakraProvider> */
+                            <Button
+                                onClick={toggleColorMode}
+                                rounded={'full'}
+                            >
+                                {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+                            </Button>
+                            <IconButton
+                                icon={<BiCog />}
+                                rounded={'full'}
+                                onClick={() =>
+                                    history.push('/settings')
+                                }
+                            />
+                        </Stack>
+                    </Stack>
+                </Flex>
+            </Box>
+            <Spacer pb={16} />
+        </Box>
     )
 }

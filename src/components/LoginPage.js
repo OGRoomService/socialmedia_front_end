@@ -1,8 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { Text, Input, Link, Heading, ThemeProvider, theme, CSSReset, Checkbox, Stack, Flex, extendTheme } from "@chakra-ui/react"
 import Footer from "./Footer";
 import { PostUserLogin } from "../api/api";
-import { LoginHeader } from "./LoginHeader";
+import { Header } from "./Header";
+import { Text,
+    Input,
+    Link,
+    Heading,
+    ThemeProvider,
+    theme,
+    CSSReset,
+    Checkbox,
+    Stack,
+    Flex,
+    extendTheme,
+    Center
+} from "@chakra-ui/react"
 
 
 import '../styles/login.css';
@@ -95,40 +107,43 @@ export const LoginPage = ({ setToken }) => {
     })
 
     return (
-        <ThemeProvider theme={customTheme}>
-            <CSSReset />
-            <LoginHeader />
-            <Flex h="100%" w="100%" flexDirection={"row"} alignItems="center" mb="0px">
-                <Heading as="h2" size="4x5" mb="6"><Text fontSize={{ base: "20px", sm: "20px", md: "20px", lg: "45px", xl: "80px" }} mt="32px"> Rowanspace </Text></Heading>
-
-                {/* <Flex w={{ base: "20em", sm: "7em", md: "7em" }} h="100%" flexDirection={"column"} pos="fixed" alignItems="center" top="10%" left="38%" theme bgColor={["red", "blue", "yellow", "purple", "pink"]}>
-
-                    <Stack>
-                        <label
-                            className="form-header"
-                            htmlFor="login-username">
-                            Username</label>
+        <Flex
+            flexDir={'column'}
+            minH={'100vh'}
+        >
+            <ThemeProvider theme={customTheme}>
+                <CSSReset />
+                <Header />
+                <Heading as="h2" size="4x5" mb="6">
+                    <Text fontSize={{ base: "20px", sm: "20px", md: "20px", lg: "45px", xl: "80px" }} mt="32px"> Rowanspace </Text>
+                </Heading>
+                <Center
+                    w={'100%'}
+                >
+                    <Stack
+                        maxW={'600px'}
+                        w={'45%'}
+                    >
+                        <Text>
+                            Username
+                        </Text>
                         <Input
-                            id="login-username"
                             name="username"
                             type="text"
                             placeholder="username"
                             onChange={handleUpdate} />
 
-                        {formErrors.username && <span className="error-message">{formErrors.username}</span>}
+                        {formErrors.username && <Text>{formErrors.username}</Text>}
 
-                        <label className="form-header"
-                            htmlFor="login-password">
-                            Password</label>
-
-                        {formErrors.password && <span className="error-message">{formErrors.password}</span>}
-
+                        <Text>
+                            Password
+                        </Text>
                         <Input
-                            id="login-password"
                             name="password"
                             type="password"
                             placeholder="Password"
                             onChange={handleUpdate} />
+                        {formErrors.password && <Text>{formErrors.password}</Text>}
 
                         <Checkbox
                             name="remember"
@@ -148,72 +163,18 @@ export const LoginPage = ({ setToken }) => {
                             type='button'
                             value='Login' />
 
-                        {apiData.error && <span>Invalid Username or Password!</span>}
+                        {apiData.error && <Text>Invalid Username or Password!</Text>}
                         {apiData.complete && handleResponse()}
 
                         <Link color="teal.500" href="/recover_password">Forgotten Password?</Link>
 
-                        <p>Don't have an account? <Link color="teal.500" href="/register">Sign up here!</Link></p>
+                        <Text>
+                            Don't have an account? <Link color="teal.500" href="/register">Sign up here!</Link>
+                        </Text>
                     </Stack>
-                        </Flex> */}
-
-                <Flex ml={{ base: "100px", sm: "50px", lg: "300px" }} h="100px" w={{ base: "300px", sm: "100pxpx", md: "100px", lg: "450px" }} pos="fixed" flexDirection={"column"} h="100%" mt="4%" top="7%">
-                    <Stack>
-                        <label fontSize="10px"
-                            className="form-header"
-                            htmlFor="login-username">
-                            Username</label>
-                        <Input
-                            id="login-username"
-                            name="username"
-                            type="text"
-                            placeholder="username"
-                            onChange={handleUpdate} />
-
-                        {formErrors.username && <span className="error-message">{formErrors.username}</span>}
-
-                        <label className="form-header"
-                            htmlFor="login-password">
-                            Password</label>
-
-                        {formErrors.password && <span className="error-message">{formErrors.password}</span>}
-
-                        <Input
-                            id="login-password"
-                            name="password"
-                            type="password"
-                            placeholder="Password"
-                            onChange={handleUpdate} />
-
-                        <Checkbox
-                            name="remember"
-                            onChange={(e) =>
-                                setFormData({
-                                    ...formData,
-                                    [e.currentTarget.name]: e.currentTarget.checked
-                                })
-                            }
-                        >
-                            Remember me
-                        </Checkbox>
-
-                        <Input
-                            className='button'
-                            onClick={submitForm}
-                            type='button'
-                            value='Login' />
-
-                        {apiData.error && <span>Invalid Username or Password!</span>}
-                        {apiData.complete && handleResponse()}
-
-                        <Link color="teal.500" href="/recover_password">Forgotten Password?</Link>
-
-                        <p>Don't have an account? <Link color="teal.500" href="/register">Sign up here!</Link></p>
-                    </Stack>
-                </Flex>
-            </Flex>
-
-            <Footer />
-        </ThemeProvider>
+                </Center>
+                <Footer />
+            </ThemeProvider>
+        </Flex>
     )
 }

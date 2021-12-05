@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { Text, Input, Link, Heading, Box, Checkbox, Stack, Flex } from "@chakra-ui/react"
 
 import { PostForgotPasswordEndpoint, PostResetPasswordEndpoint } from "../../api/api";
-import { LoginHeader } from "../LoginHeader";
+import { Header } from "../Header";
 import Footer from "../Footer";
 
 
@@ -110,7 +110,7 @@ export const ResetPassword = ({ match, location }) => {
 
     return (
         <Box>
-            <LoginHeader />
+            <Header />
             <Flex h="100%" w="100%" flexDirection={"row"} alignItems="center">
                 <Heading as="h2" size="4x5" mb="6"><Text fontSize="6xl" mt="20"> Rowanspace </Text></Heading>
                 {submitted ?

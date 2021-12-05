@@ -6,7 +6,7 @@ import { MainPage } from './components/MainPage';
 import ProfilePage from './components/ProfilePage';
 import { LoginPage } from './components/LoginPage';
 import { Registration } from './components/Registration';
-import { Footer } from './components/Footer'
+import { Settings } from './components/Settings';
 import NotFound from './components/NotFound';
 
 import './App.css';
@@ -63,6 +63,10 @@ export default function App() {
 
                 <Route exact path="/profile">
                     <ProfilePage />
+                </Route>
+
+                <Route exact path="/settings">
+                    <Settings />
                 </Route>
 
                 <Route>

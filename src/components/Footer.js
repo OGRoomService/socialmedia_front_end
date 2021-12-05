@@ -1,14 +1,25 @@
 import React from "react";
 import logo from "../Rowan.png";
 import '../styles/footer.css';
-import { Box, Flex, Image } from "@chakra-ui/react"
+import {
+    Flex,
+    Image,
+    useColorModeValue,
+    Center
+} from "@chakra-ui/react"
 
 export default function Footer() {
     return (
-        <Flex w="100%" h="70px" flexDirection={"column"} >
-            <Flex w="100%" flexDirection={"column"} alignItems="center" bgColor="#333333">
+        <Flex
+            w="100%"
+            h="70px"
+            w="100%"
+            mt={'auto'}
+            bg={useColorModeValue('gray.100', 'gray.700')}
+        >
+            <Center w={'100%'}>
                 <Image src={logo} w="100px" h="65px" />
-            </Flex>
+            </Center>
         </Flex>
     )
 }

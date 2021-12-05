@@ -1,45 +1,54 @@
 import React from "react";
 import Footer from "./Footer";
-import { ProfileHeader } from "./ProfileHeader";
+import { Header } from "./Header";
 import "../styles/main.css";
-import { Box, Flex, Heading, Circle, Button, Input } from "@chakra-ui/react"
+import {
+    Box,
+    Flex,
+    Avatar,
+    Spacer,
+    Stack,
+    Text,
+    Divider,
+    Center,
+    useColorModeValue
+} from "@chakra-ui/react"
+import { PostFeed } from "./PostFeed/PostFeed";
 
 
 export default function ProfilePage() {
     return (
         <Box>
-            <ProfileHeader />
-            <br />
-            <Heading as="h2" size="3xl" isTruncated>
-                Profile page
-                <br />
-            </Heading>
-
-            <Flex h="100%" w="100%" flexDirection={"column"} alignItems="center">
-
-                <Flex w="100%" h="500px" c-flex flexDirection={"row"} align="center" /*bgGradient="linear(to-t, green.200, pink.500)" border="2px, black" */ verticalAlign={"middle"}>
-                    <Flex w="50%" h="50%">
-                        <Circle size="200px" bg="black" color="white">
-                            Profile Picture
-                        </Circle>
-
-                        <Heading as="h3" size="3xl" isTruncated marginTop="100px">
-                            USERNAME
-                        </Heading>
-                        {/* Hello Good Morning */}
-                    </Flex>
-                    {/* <Box w="30%" h="200px" c-flex align="center" bgGradient="linear(to-t, red.200, blue.500)"> 
-                Hello Good Morning
-            </Box> 
-            */}
-                </Flex>
-
-                <Heading as="h3" size="3xl" isTruncated>
-                    USER BIO
-                </Heading>
-
+            <Header />
+            <Flex
+                bg={useColorModeValue('gray.100', 'gray.700')} p={4}
+                boxShadow={'base'}
+            >
+                <Center w='67%'>
+                    <Stack
+                        direction={'row'}
+                        align={'center'}
+                    >
+                        <Avatar size={'2xl'} />
+                        <Text
+                            p={3}
+                            fontSize='3xl'
+                        >
+                            Name
+                        </Text>
+                    </Stack>
+                </Center>
             </Flex>
-            <br />
+            <Flex w='100%'>
+                <Box w='33%' />
+                <Spacer p='10' />
+                <Box w='100%'>
+                    <Spacer p={3} />
+                    <PostFeed />
+                </Box>
+                <Spacer p='10' />
+                <Box w='33%' />
+            </Flex>
             <Footer />
         </Box>
     )

@@ -19,8 +19,6 @@ import { Button } from "@chakra-ui/react"
 export const NewPost = ({ postData }) => {
     const [isLiked, setIsLiked] = useState(false);
 
-    console.log(isLiked);
-
     return (
         <Box mb='5' borderWidth="1px" borderRadius="lg">
             <Box
