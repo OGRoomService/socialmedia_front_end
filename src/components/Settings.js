@@ -1,29 +1,24 @@
 import React from "react";
 import Footer from "./Footer";
 import { Header } from "./Header";
+import { useToken } from "../api/token";
 import "../styles/main.css";
 import {
-    Menu,
-    MenuButton,
-    MenuList,
-    MenuItem,
-    MenuItemOption,
-    MenuGroup,
-    MenuOptionGroup,
-    MenuIcon,
-    MenuCommand,
-    MenuDivider,
-    Button,
-    ChevronDownIcon,
-    ChakraProvider,
     Heading,
-    Box,
     Select,
-    Flex
+    Flex,
+    Button
 } from '@chakra-ui/react'
 
 
 export const Settings = () => {
+    const token = useToken();
+
+    const logout = () => {
+        token.deleteToken();
+        history.go(0);
+    }
+
     return (
         <Flex
             flexDir={'column'}
@@ -47,6 +42,13 @@ export const Settings = () => {
                 <option value='option2'>No no</option>
                 <option value='option3'>Option 3</option>
             </Select>
+            <Button
+                onClick={() => {
+                    logout();
+                }}
+            >
+                Log Out
+            </Button>
             <Footer />
         </Flex>
     )
