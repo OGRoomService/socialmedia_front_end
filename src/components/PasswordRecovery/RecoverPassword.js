@@ -6,7 +6,6 @@ import {
     Text,
     Input,
     Heading,
-    Box,
     Stack,
     Flex,
     Center
@@ -19,7 +18,7 @@ export const RecoverPassword = () => {
     const [formErrors, setFormErrors] = useState({
         email: ''
     });
-    const [apiData, setApiData] = PostForgotPasswordEndpoint();
+    const [, setApiData] = PostForgotPasswordEndpoint();
     const [submitted, setSubmitted] = useState(false);
 
     const validate = () => {

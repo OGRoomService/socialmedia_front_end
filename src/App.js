@@ -17,17 +17,17 @@ import { ResetPassword } from './components/PasswordRecovery/ResetPassword';
 import { ChakraProvider } from '@chakra-ui/react';
 
 export default function App() {
-    const { token, setToken } = useToken();
-    const { userData, getUser } = currentUser();
+    const { token } = useToken();
+    const { hasData } = currentUser();
 
     // If the token doesn't exist, only allow access to login and registration page
-    if (!token || !userData) {
+    if (!token || !hasData()) {
         return (
             <ChakraProvider>
                 <Switch>
 
                     <Route exact path="/">
-                        <LoginPage setToken={setToken} />
+                        <LoginPage />
                     </Route>
 
                     <Route exact path="/register"
@@ -52,7 +52,7 @@ export default function App() {
             <Switch>
 
                 <Route exact path="/">
-                    <MainPage token={token} />
+                    <MainPage />
                 </Route>
 
                 <Route exact path="/register">

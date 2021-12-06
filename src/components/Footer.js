@@ -13,7 +13,6 @@ export default function Footer() {
         <Flex
             w="100%"
             h="70px"
-            w="100%"
             mt={'auto'}
             bg={useColorModeValue('gray.100', 'gray.700')}
         >

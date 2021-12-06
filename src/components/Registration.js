@@ -135,8 +135,8 @@ export const Registration = () => {
         >
             <ThemeProvider theme={customTheme}>
             <Header />
-            <Heading as="h2" size="4x5" mb="6">
-                    <Text fontSize={{ base: "20px", sm: "20px", md: "20px", lg: "35px", xl: "80px" }} mt={{base: "32px", sm: "75px", md: "150px", lg:"55px"}}> Rowanspace </Text>
+            <Heading as="h2" size="4x5">
+                    <Text fontSize={{ base: "20px", sm: "20px", md: "20px", lg: "35px", xl: "80px" }}> Rowanspace </Text>
             </Heading>
             <Center w={'100%'}>
                 <Stack

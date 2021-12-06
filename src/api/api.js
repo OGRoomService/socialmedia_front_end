@@ -3,17 +3,6 @@ import axios from "axios";
 
 const url = 'http://rowanspace.xyz:8080/api'
 
-const axiosGetConfig = {
-    headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': 'true',
-        'Access-Control-Allow-Headers': '*',
-    },
-    mode: 'cors'
-}
-
 const axiosPostConfig = {
     headers: {
         'Content-Type': 'application/json',
@@ -122,7 +111,7 @@ export const PostGetAllPosts = () => {
     }));
 }
 
-const parse = (fn) => {
+/* const parse = (fn) => {
     const data = fn['data'];
     let headers = axiosGetConfig['headers'];
 
@@ -133,4 +122,4 @@ const parse = (fn) => {
     fn['headers'] = headers;
     delete fn['data'];
     return fn;
-}
+} */

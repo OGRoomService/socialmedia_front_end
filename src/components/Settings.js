@@ -9,13 +9,16 @@ import {
     Flex,
     Button
 } from '@chakra-ui/react'
+import { currentUser } from "../api/user";
 
 
 export const Settings = () => {
     const token = useToken();
+    const user = currentUser();
 
     const logout = () => {
         token.deleteToken();
+        user.deleteUser();
         history.go(0);
     }
 

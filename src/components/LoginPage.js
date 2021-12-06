@@ -7,7 +7,6 @@ import { Text,
     Link,
     Heading,
     ThemeProvider,
-    theme,
     CSSReset,
     Checkbox,
     Stack,
@@ -15,11 +14,11 @@ import { Text,
     extendTheme,
     Center
 } from "@chakra-ui/react"
+import { useHistory } from "react-router";
+import { useToken } from "../api/token";
+import { currentUser } from "../api/user";
 
-
-import '../styles/login.css';
-
-export const LoginPage = ({ setToken }) => {
+export const LoginPage = () => {
     const [apiData, setApiData] = PostUserLogin();
     const [formData, setFormData] = useState({
         username: '',
@@ -30,6 +29,9 @@ export const LoginPage = ({ setToken }) => {
         username: '',
         password: ''
     });
+    const { setToken } = useToken();
+    const { setUser } = currentUser();
+    const history = useHistory();
     let handlingResponse = false;
 
     const validate = () => {
@@ -59,15 +61,20 @@ export const LoginPage = ({ setToken }) => {
 
     const handleResponse = () => {
         if (handlingResponse) return;
-        if (!apiData.data) return;
+        if (!apiData.data.data) return;
+
+        const tokenData = apiData.data.data.tokens;
+        const userData = apiData.data.data.user;
 
         handlingResponse = true;
 
         setToken({
-            access_token: apiData.data.data.access_token,
-            refresh_token: apiData.data.data.refresh_token,
+            access_token: tokenData.access_token,
+            refresh_token: tokenData.refresh_token,
             remember: formData.remember
-        })
+        });
+        setUser(userData);
+        history.go(0);
     }
 
     const submitForm = e => {
@@ -116,7 +123,7 @@ export const LoginPage = ({ setToken }) => {
                 <CSSReset />
                 <Header />
                 <Heading as="h2" size="4x5" mb="6">
-                    <Text fontSize={{ base: "20px", sm: "20px", md: "20px", lg: "35px", xl: "80px" }} mt={{base: "32px", sm: "100px", md: "150px", lg:"55px"}}> Rowanspace </Text>
+                    <Text fontSize={{ base: "20px", sm: "20px", md: "20px", lg: "35px", xl: "80px" }}> Rowanspace </Text>
                 </Heading>
                 <Center 
                     w={'100%'}

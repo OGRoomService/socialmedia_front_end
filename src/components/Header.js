@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import '../styles/Header.css';
 import { MoonIcon, Search2Icon, SunIcon } from '@chakra-ui/icons';
-import { useHistory, useLocation } from "react-router";
+import { useHistory, /* useLocation */ } from "react-router";
 import { BsHouse } from 'react-icons/bs';
 import { BiCog } from 'react-icons/bi';
 import {
@@ -24,9 +24,9 @@ import { currentUser } from "../api/user";
 
 
 export const Header = () => {
-    const user = currentUser();
+    const { hasData } = currentUser();
 
-    if (user) {
+    if (hasData()) {
         return (
             <LoggedInHeader />
         )
@@ -38,7 +38,7 @@ export const Header = () => {
 }
 
 const LoggedOutHeader = () => {
-    const location = useLocation();
+    //const location = useLocation();
 
     return (
         <Box>
@@ -64,6 +64,7 @@ const LoggedOutHeader = () => {
 
 const LoggedInHeader = () => {
     const { colorMode, toggleColorMode } = useColorMode();
+    const { userData } = currentUser();
     const history = useHistory();
 
     return (
@@ -105,7 +106,7 @@ const LoggedInHeader = () => {
                                     history.push('/profile')
                                 }
                             >
-                                Name
+                                {userData['username']}
                             </Button>
                             <Button
                                 onClick={toggleColorMode}

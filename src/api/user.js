@@ -3,33 +3,49 @@ import { useToken } from "./token";
 
 export function currentUser() {
     const token = useToken();
+    const userTokenName = 'current_user';
 
     const getUserData = () => {
-        let currentUser = sessionStorage.getItem('current-user');
+        let currentUser = sessionStorage.getItem(userTokenName);
 
         if (currentUser) {
             const parsedUser = JSON.parse(currentUser);
 
 
             if (parsedUser['id']){
-                console.log("Grabbing from storage");
                 return parsedUser;
             }
         }
-        return null;
+        return {};
     }
 
     const [userData, setUserData] = useState(getUserData());
 
     useEffect(() => {
-        if (!userData)
+        if (!hasData())
             fetchUser();
     }, []);
 
+    const setUser = (user) => {
+        sessionStorage.setItem(userTokenName, JSON.stringify(user));
+        setUserData(user);
+    }
+
+    const deleteUser = () => {
+        sessionStorage.removeItem(userTokenName);
+    }
+
+    const hasData = () => {
+        if (userData['id'])
+            return true;
+        return false;
+    }
+
     async function fetchUser() {
+        
+        if (!token.token) return;
         const uToken = JSON.parse(token.token)['access_token'];
 
-        console.log("pulled from api");
         const response = await fetch('http://rowanspace.xyz:8080/api/users/get_self', {
             method: 'get',
             headers: {
@@ -39,14 +55,14 @@ export function currentUser() {
             .then(data => {
                 return data.json();
             });
-
-        console.log(response);
-
-        sessionStorage.setItem('current-user', JSON.stringify(response));
-        setUserData(response);
+        setUser(response);
     }
 
     return {
+        getUserData,
+        deleteUser,
+        setUser,
+        hasData,
         userData
     }
 }

@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { PostForgotPasswordEndpoint, PostResetPasswordEndpoint } from "../../api/api";
+import { PostResetPasswordEndpoint } from "../../api/api";
 import { Header } from "../Header";
 import Footer from "../Footer";
 import {
@@ -8,7 +8,6 @@ import {
     Link,
     Heading,
     Box,
-    Checkbox,
     Stack,
     Flex,
     Center
@@ -24,7 +23,7 @@ export const ResetPassword = ({ match, location }) => {
         password: '',
         vpassword: ''
     });
-    const [apiData, setApiData] = PostResetPasswordEndpoint();
+    const [, setApiData] = PostResetPasswordEndpoint();
     const [submitted, setSubmitted] = useState(false);
     const token = (new URLSearchParams(location.search)).get('token');
 

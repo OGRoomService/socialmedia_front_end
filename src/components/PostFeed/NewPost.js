@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Flex,
     Box,
@@ -9,40 +9,71 @@ import {
     Divider,
     Center,
     IconButton,
-    useColorModeValue
+    useColorModeValue,
+    Spacer
 } from "@chakra-ui/react"
 import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { Button } from "@chakra-ui/react"
 import { GetUserProfilePicture } from '../../api/api'
 import { useToken } from "../../api/token";
+import { currentUser } from "../../api/user";
 
 export const NewPost = ({ postData }) => {
     const baseUrl = 'http://rowanspace.xyz:8080/api';
     const token = useToken();
+    const { userData } = currentUser();
     const [posterData, setPosterData] = useState({
         test: ''
     });
     const [numLikes, setNumLikes] = useState(0);
     const [hasLiked, setHasLiked] = useState(false);
+    const [date, setDate] = useState('');
 
     useEffect(() => {
         //getPosterData();
-        console.log(postData);
+        setNumLikes(postData['likes']);
+
+        if (postData['usersThatLiked'].includes(userData['id'])) {
+            setHasLiked(true);
+        }
+        const postTime = Date.parse(postData['post_date']);
+        const now = Date.now();
+        const dateDiffInSec = Math.abs((now - postTime) / 1000);
+        const secondsInDay = (60 * 60 * 24)
+        const secondsInMonth = (secondsInDay * 30);
+        let date = '';
+
+        if (dateDiffInSec < (60 * 60 * 24)) {
+            if (dateDiffInSec < 60) {
+                date = `${dateDiffInSec.toFixed(0)} seconds ago`;
+            } else if (dateDiffInSec < 60 * 60) {
+                date = `${(dateDiffInSec / 60).toFixed(0)} minutes ago`;
+            } else {
+                date = `${(dateDiffInSec / (60 * 60)).toFixed(0)} hours ago`;
+            }
+        } else if (dateDiffInSec < secondsInMonth) {
+            date = `${(dateDiffInSec / secondsInDay).toFixed(0)} days ago`;
+        } else {
+            const newDate = new Date(postTime).toLocaleDateString();
+
+            date = `${newDate}`;
+        }
+        setDate(date);
     }, []);
 
     async function getPosterData() {
         if (!token.token) return;
         const uToken = JSON.parse(token.token)['access_token'];
 
-        const response = await fetch (baseUrl + '/users/get_self', {
+        const response = await fetch(baseUrl + '/users/get_self', {
             method: 'get',
             headers: {
                 'Authorization': 'Bearer ' + uToken
             }
         })
-        .then(data => {
-            return data.json();
-        });
+            .then(data => {
+                return data.json();
+            });
         console.log(response);
         setPosterData({
             username: response['username'],
@@ -54,7 +85,7 @@ export const NewPost = ({ postData }) => {
         if (!token.token) return;
         const uToken = JSON.parse(token.token)['access_token'];
 
-        const response = await fetch (baseUrl + '/posts/like_post', {
+        const response = await fetch(baseUrl + '/posts/like_post', {
             method: 'post',
             headers: {
                 'Authorization': 'Bearer ' + uToken,
@@ -64,11 +95,15 @@ export const NewPost = ({ postData }) => {
                 'post_id': postData['post_id']
             })
         })
-        .then(data => {
-            return data.json();
-        });
-        console.log(response);
-        setNumLikes(response.length);
+            .then(data => {
+                return data.json();
+            });
+        setNumLikes(response['likes']);
+        if (response['liked'] === 'true') {
+            setHasLiked(true);
+        } else {
+            setHasLiked(false);
+        }
     }
 
 
@@ -117,6 +152,13 @@ export const NewPost = ({ postData }) => {
                     />
                     <Text fontSize='sm'>
                         {numLikes} likes
+                    </Text>
+                    <Spacer />
+                    <Text
+                        fontSize={'sm'}
+                        fontWeight={'normal'}
+                    >
+                        {date}
                     </Text>
                 </HStack>
                 <HStack>

@@ -5,23 +5,29 @@ import { PostFeed } from "./PostFeed/PostFeed";
 import {
     Spacer,
     Box,
-    Center
+    Center,
+    Flex
 } from "@chakra-ui/react"
 
-export const MainPage = (token) => {
+export const MainPage = () => {
     return (
-        <Box>
-            <Header />
-            <Spacer p={4} />
-            <Center w={'100%'}>
-                <Center w={{
-                    base: '97%',
-                    lg: '45%'
-                }}>
-                    <PostFeed />
+        <Flex
+            flexDir={'column'}
+            minH={'100vh'}
+        >
+            <Box>
+                <Header />
+                <Spacer p={2} />
+                <Center w={'100%'}>
+                    <Center w={{
+                        base: '97%',
+                        lg: '45%'
+                    }}>
+                        <PostFeed />
+                    </Center>
                 </Center>
-            </Center>
+            </Box>
             <Footer />
-        </Box>
+        </Flex>
     )
 };

@@ -1,51 +1,109 @@
-import React, { Component, useEffect, useState } from "react";
-import { GetAllPosts, PostGetAllPosts } from "../../api/api";
+import React, { useEffect, useState } from "react";
 import { useToken } from "../../api/token";
 import { NewPost } from "./NewPost";
+import { NoPosts } from './NoPosts';
+import { CreateNewPost } from './CreateNewPost';
+import { useLocation } from "react-router";
+import { currentUser } from "../../api/user";
 import {
     List,
-    Flex,
     Box
 } from "@chakra-ui/react"
-import axios from "axios";
 
 export const PostFeed = () => {
-    const [postObjects, setPostObjects] = useState(null);
+    const [postObjects, setPostObjects] = useState({
+        hasPosts: false,
+        posts: []
+    });
+    const { userData } = currentUser();
     const token = useToken();
+    const location = useLocation();
 
     useEffect(() => {
-        getPostData()
+        getPostData(location.pathname);
     }, []);
 
-    async function getPostData() {
+    useEffect(() => {
+        console.log(postObjects);
+    }, [postObjects]);
+
+    async function getPostData(pathname) {
         if (!token.token) return;
         const uToken = JSON.parse(token.token)['access_token'];
+        let fetchUrl = '';
+        let fetchConfig = '';
 
-        const response = await fetch ('http://rowanspace.xyz:8080/api/posts/get_posts', {
-            method: 'get',
-            headers: {
-                'Authorization': 'Bearer ' + uToken
-            }
-        })
-        .then(data => {
-            return data.json();
-        });
+        switch (pathname) {
+            case '/profile':
+                fetchUrl = 'http://rowanspace.xyz:8080/api/posts/get_posts_from_id';
+                fetchConfig = {
+                    method: 'post',
+                    headers: {
+                        'Authorization': 'Bearer ' + uToken,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        'user_id': userData['id']
+                    })
+                };
+                break;
+            default:
+                fetchUrl = 'http://rowanspace.xyz:8080/api/posts/get_posts';
+                fetchConfig = {
+                    method: 'get',
+                    headers: {
+                        'Authorization': 'Bearer ' + uToken
+                    }
+                };
+        }
+
+        const response = await fetch(fetchUrl, fetchConfig)
+            .then(data => {
+                return data.json();
+            });
         buildPosts(response);
     }
 
-    const buildPosts = (data) => {
-        console.log(data);
-        const posts = data.map((postData) => {
-            return <NewPost key={data['post_id']} postData={postData} />
+    const buildNewPost = (data) => {
+        const newPosts =
+            [<NewPost
+                key={data['post_id']}
+                postData={data}
+            />].concat(postObjects.posts);
+        setPostObjects({
+            hasPosts: true,
+            posts: newPosts
         });
-        setPostObjects(posts);
+    }
+
+    const buildPosts = (data) => {
+        const posts = data.map((postData) => {
+            return <NewPost
+                key={postData['post_id']}
+                postData={postData}
+            />
+        });
+        let hasPosts = false;
+
+        if (posts.length > 0) {
+            hasPosts = true;
+        }
+        setPostObjects({
+            hasPosts: hasPosts,
+            posts: posts
+        });
     }
 
     return (
         <Box w='100%' p='1'>
-            <List>
-                {postObjects}
-            </List>
+            <CreateNewPost buildNewPost={buildNewPost} />
+            {
+                postObjects.hasPosts ?
+                    <List>
+                        {postObjects.posts}
+                    </List> :
+                    <NoPosts />
+            }
         </Box>
     );
 }
