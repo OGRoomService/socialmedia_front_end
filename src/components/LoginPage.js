@@ -61,7 +61,7 @@ export const LoginPage = () => {
 
     const handleResponse = () => {
         if (handlingResponse) return;
-        if (!apiData.data.data) return;
+        if (!apiData || !apiData.data || !apiData.data.data) return;
 
         const tokenData = apiData.data.data.tokens;
         const userData = apiData.data.data.user;
