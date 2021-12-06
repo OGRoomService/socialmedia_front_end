@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useToken } from "./token";
 
 export function currentUser() {
+    const baseUrl = 'http://rowanspace.xyz:8080/api'
     const token = useToken();
     const userTokenName = 'current_user';
 
@@ -42,11 +43,10 @@ export function currentUser() {
     }
 
     async function fetchUser() {
-        
         if (!token.token) return;
         const uToken = JSON.parse(token.token)['access_token'];
 
-        const response = await fetch('http://rowanspace.xyz:8080/api/users/get_self', {
+        const response = await fetch(baseUrl + '/users/get_self', {
             method: 'get',
             headers: {
                 'Authorization': 'Bearer ' + uToken

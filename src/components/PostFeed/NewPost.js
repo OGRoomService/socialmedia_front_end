@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { BsHeart, BsHeartFill } from 'react-icons/bs';
+import ResizeTextarea from "react-textarea-autosize";
+import { Button } from "@chakra-ui/react"
+import { useAsyncAPI } from '../../api/api'
+import { useToken } from "../../api/token";
+import { currentUser } from "../../api/user";
+import { Comment } from "./Comment";
 import {
     Flex,
     Box,
-    Input,
+    Textarea,
     Avatar,
     HStack,
     Text,
@@ -10,32 +17,46 @@ import {
     Center,
     IconButton,
     useColorModeValue,
-    Spacer
+    Spacer,
+    List
 } from "@chakra-ui/react"
-import { BsHeart, BsHeartFill } from 'react-icons/bs';
-import { Button } from "@chakra-ui/react"
-import { GetUserProfilePicture } from '../../api/api'
-import { useToken } from "../../api/token";
-import { currentUser } from "../../api/user";
 
 export const NewPost = ({ postData }) => {
-    const baseUrl = 'http://rowanspace.xyz:8080/api';
-    const token = useToken();
-    const { userData } = currentUser();
-    const [posterData, setPosterData] = useState({
-        test: ''
-    });
     const [numLikes, setNumLikes] = useState(0);
     const [hasLiked, setHasLiked] = useState(false);
+    const [username, setUsername] = useState('');
+    const [commentText, setCommentText] = useState('');
+    const [comments, setComments] = useState(null);
+    const [profilePicture, setProfilePicture] = useState(null);
     const [date, setDate] = useState('');
+    const { likePost, getUsername, fetchProfilePictureFromId } = useAsyncAPI();
+    const { createComment } = useAsyncAPI();
+    const { userData } = currentUser();
 
     useEffect(() => {
-        //getPosterData();
         setNumLikes(postData['likes']);
 
         if (postData['usersThatLiked'].includes(userData['id'])) {
             setHasLiked(true);
         }
+        fetchProfilePictureFromId(postData['poster_id'], setProfilePicture);
+        parsePostDate();
+        getUsername(setUsername, postData['poster_id']);
+        buildComments();
+    }, []);
+
+    const updateField = (e) => {
+        const target = e.target;
+        const fieldValue = target.value;
+
+        if (fieldValue.length <= 255) {
+            setCommentText(fieldValue);
+        } else {
+            target.value = commentText;
+        }
+    }
+
+    const parsePostDate = () => {
         const postTime = Date.parse(postData['post_date']);
         const now = Date.now();
         const dateDiffInSec = Math.abs((now - postTime) / 1000);
@@ -59,53 +80,32 @@ export const NewPost = ({ postData }) => {
             date = `${newDate}`;
         }
         setDate(date);
-    }, []);
-
-    async function getPosterData() {
-        if (!token.token) return;
-        const uToken = JSON.parse(token.token)['access_token'];
-
-        const response = await fetch(baseUrl + '/users/get_self', {
-            method: 'get',
-            headers: {
-                'Authorization': 'Bearer ' + uToken
-            }
-        })
-            .then(data => {
-                return data.json();
-            });
-        console.log(response);
-        setPosterData({
-            username: response['username'],
-            email: response['email']
-        })
     }
 
-    async function likePost() {
-        if (!token.token) return;
-        const uToken = JSON.parse(token.token)['access_token'];
-
-        const response = await fetch(baseUrl + '/posts/like_post', {
-            method: 'post',
-            headers: {
-                'Authorization': 'Bearer ' + uToken,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                'post_id': postData['post_id']
-            })
-        })
-            .then(data => {
-                return data.json();
-            });
-        setNumLikes(response['likes']);
-        if (response['liked'] === 'true') {
-            setHasLiked(true);
-        } else {
-            setHasLiked(false);
-        }
+    const buildNewComment = (data) => {
+        const newComment =
+            <Comment
+                key={data['comment_id']}
+                commentData={data}
+            />
+        const newArray = [...comments, newComment];
+        
+        setComments(newArray);
     }
 
+    const buildComments = () => {
+        const arrComments = postData['post_comments'];
+
+
+        const comments = arrComments.map((commentData) => {
+            console.log(commentData);
+            return <Comment
+                key={commentData['comment_id']}
+                commentData={commentData}
+            />
+        });
+        setComments(comments);
+    }
 
     return (
         <Box
@@ -118,55 +118,88 @@ export const NewPost = ({ postData }) => {
                 p="3"
                 fontWeight="semibold"
             >
-                <HStack spacing='30px'>
+                <HStack
+                    spacing='15px'
+                    mb={3}
+                >
                     <Avatar
                         size='sm'
+                        src={profilePicture}
                     />
                     <Text>
-                        testName
+                        {username}
                     </Text>
                 </HStack>
-                <Center h='20px'>
-                    <Divider />
-                </Center>
                 <Flex>
                     <Text fontSize='sm'>
                         {postData['post_text']}
                     </Text>
                 </Flex>
-                <Center h='20px'>
-                    <Divider />
-                </Center>
+                <Divider
+                    mt={3}
+                />
                 <HStack>
                     <IconButton
-                        variant='ghost'
+                        variant={'ghost'}
                         icon={
-                            hasLiked ? <BsHeartFill color='red' /> : <BsHeart color='currentColor' />
+                            hasLiked ?
+                                <BsHeartFill
+                                    transform={'scale(1.5)'}
+                                    color='red'
+                                /> :
+                                <BsHeart
+                                    transform={'scale(1.5)'}
+                                    color='currentColor'
+                                />
                         }
                         onClick={() =>
-                            likePost()
+                            likePost(setNumLikes, setHasLiked, postData['post_id'])
                         }
                         _hover={{ color: 'gray', stroke: 'gray' }}
                         _active={{}}
                         _focus={{}}
                     />
-                    <Text fontSize='sm'>
-                        {numLikes} likes
-                    </Text>
-                    <Spacer />
-                    <Text
-                        fontSize={'sm'}
-                        fontWeight={'normal'}
+                    <Center
+                        h={'100%'}
+                        w={'100%'}
                     >
-                        {date}
-                    </Text>
+                        <Text fontSize='sm'>
+                            {numLikes} likes
+                        </Text>
+                        <Spacer />
+                        <Text
+                            fontSize={'sm'}
+                            fontWeight={'normal'}
+                        >
+                            {date}
+                        </Text>
+                    </Center>
                 </HStack>
+                <Divider />
+                <List
+                    mt={3}
+                    mb={3}
+                >
+                    {comments}
+                </List>
                 <HStack>
-                    <Input
-                        placeholder='Add a comment...'
+                    <Textarea
+                        minH="unset"
+                        overflow="hidden"
+                        w="100%"
+                        resize="none"
+                        minRows={1}
+                        as={ResizeTextarea}
+                        placeholder={'Write a comment...'}
+                        onChange={(e) =>
+                            updateField(e)
+                        }
+                    />
+                    <Button
+                        onClick={() => {
+                            createComment(commentText, postData['post_id'], buildNewComment)
+                        }}
                     >
-                    </Input>
-                    <Button>
                         Post
                     </Button>
                 </HStack>

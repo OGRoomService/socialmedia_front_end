@@ -23,10 +23,6 @@ export const PostFeed = () => {
         getPostData(location.pathname);
     }, []);
 
-    useEffect(() => {
-        console.log(postObjects);
-    }, [postObjects]);
-
     async function getPostData(pathname) {
         if (!token.token) return;
         const uToken = JSON.parse(token.token)['access_token'];

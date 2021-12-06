@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useToken } from "./token";
 
 const url = 'http://rowanspace.xyz:8080/api'
 
@@ -111,6 +112,153 @@ export const PostGetAllPosts = () => {
     }));
 }
 
+export function useAsyncAPI() {
+    const token = useToken();
+
+    async function fetchProfilePicture(setProfilePicture) {
+        if (!token.token) return;
+        const uToken = JSON.parse(token.token)['access_token'];
+
+        const response = await fetch(url + '/users/get_profile_picture', {
+            method: 'get',
+            headers: {
+                'Authorization': 'Bearer ' + uToken
+            }
+        })
+            .then(data => {
+                return data.blob();
+            });
+        const imgURL = URL.createObjectURL(response);
+
+        setProfilePicture(imgURL);
+    }
+
+    async function fetchProfilePictureFromId(userId, setProfilePicture) {
+        if (!token.token) return;
+        const uToken = JSON.parse(token.token)['access_token'];
+
+        const response = await fetch(url + '/users/get_profile_picture_from_id', {
+            method: 'post',
+            headers: {
+                'Authorization': 'Bearer ' + uToken,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "user_id": userId
+            })
+        })
+            .then(data => {
+                return data.blob();
+            });
+        const imgURL = URL.createObjectURL(response);
+
+        setProfilePicture(imgURL);
+    }
+
+    async function createPost(text, buildNewPost) {
+        const postText = text.trim();
+
+        if (postText.length <= 0) return;
+        if (!token.token) return;
+        const uToken = JSON.parse(token.token)['access_token'];
+
+        const response = await fetch(url + '/posts/create', {
+            method: 'post',
+            headers: {
+                'Authorization': 'Bearer ' + uToken,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'post_text': postText
+            })
+        })
+            .then(data => {
+                return data.json();
+            });
+        buildNewPost(response);
+    }
+
+    async function createComment(text, postId, buildNewPost) {
+        const postText = text.trim();
+
+        if (postText.length <= 0) return;
+        if (!token.token) return;
+        const uToken = JSON.parse(token.token)['access_token'];
+
+        const response = await fetch(url + '/posts/comment_on_post', {
+            method: 'post',
+            headers: {
+                'Authorization': 'Bearer ' + uToken,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'post_id': postId,
+                'comment_text': postText
+            })
+        })
+            .then(data => {
+                return data.json();
+            });
+        buildNewPost(response);
+    }
+
+    async function likePost(setNumLikes, setHasLiked, postId) {
+        if (!token.token) return;
+        const uToken = JSON.parse(token.token)['access_token'];
+
+        const response = await fetch(url + '/posts/like_post', {
+            method: 'post',
+            headers: {
+                'Authorization': 'Bearer ' + uToken,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'post_id': postId
+            })
+        })
+            .then(data => {
+                return data.json();
+            });
+        setNumLikes(response['likes']);
+        if (response['liked'] === 'true') {
+            setHasLiked(true);
+        } else {
+            setHasLiked(false);
+        }
+    }
+
+    async function getUsername(setUsername, userId) {
+        if (!token.token) return;
+        const uToken = JSON.parse(token.token)['access_token'];
+
+        console.log(userId);
+
+        const response = await fetch(url + '/users/get_username_from_id', {
+            method: 'post',
+            headers: {
+                'Authorization': 'Bearer ' + uToken,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'user_id': userId
+            })
+        })
+            .then(data => {
+                return data.text();
+            });
+        setUsername(response);
+    }
+
+    return {
+        fetchProfilePicture,
+        createPost,
+        likePost,
+        getUsername,
+        fetchProfilePictureFromId,
+        createComment
+    }
+}
+
 /* const parse = (fn) => {
     const data = fn['data'];
     let headers = axiosGetConfig['headers'];
@@ -118,7 +266,7 @@ export const PostGetAllPosts = () => {
     for(const[key, value] of Object.entries(data['headers'])) {
         headers[key] = value;
     }
-    
+
     fn['headers'] = headers;
     delete fn['data'];
     return fn;

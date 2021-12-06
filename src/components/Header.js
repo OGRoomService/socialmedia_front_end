@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import '../styles/Header.css';
 import { MoonIcon, Search2Icon, SunIcon } from '@chakra-ui/icons';
 import { useHistory, /* useLocation */ } from "react-router";
@@ -21,7 +21,7 @@ import {
     Heading
 } from "@chakra-ui/react"
 import { currentUser } from "../api/user";
-
+import { useToken } from "../api/token";
 
 export const Header = () => {
     const { hasData } = currentUser();
@@ -63,9 +63,34 @@ const LoggedOutHeader = () => {
 }
 
 const LoggedInHeader = () => {
+    const [profilePicture, setProfilePicture] = useState(null);
     const { colorMode, toggleColorMode } = useColorMode();
     const { userData } = currentUser();
     const history = useHistory();
+    const token = useToken();
+    const baseUrl = 'http://rowanspace.xyz:8080/api';
+
+    useEffect(() => {
+        fetchProfilePicture();
+    }, []);
+
+    async function fetchProfilePicture() {
+        if (!token.token) return;
+        const uToken = JSON.parse(token.token)['access_token'];
+
+        const response = await fetch(baseUrl + '/users/get_profile_picture', {
+            method: 'get',
+            headers: {
+                'Authorization': 'Bearer ' + uToken
+            }
+        })
+            .then(data => {
+                return data.blob();
+            });
+        const imgURL = URL.createObjectURL(response);
+
+        setProfilePicture(imgURL);
+    }
 
     return (
         <Box>
@@ -98,7 +123,10 @@ const LoggedInHeader = () => {
                         </InputGroup>
                         <Stack direction={'row'} spacing={1}>
                             <Button
-                                leftIcon={<Avatar size={'sm'} />}
+                                leftIcon={<Avatar
+                                    size={'sm'}
+                                    src={profilePicture}
+                                />}
                                 p={1}
                                 pr={2}
                                 rounded={'full'}

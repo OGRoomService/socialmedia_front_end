@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ResizeTextarea from "react-textarea-autosize";
 import {
     Box,
@@ -13,42 +13,26 @@ import {
     Button
 } from "@chakra-ui/react";
 import { useToken } from "../../api/token";
+import { useAsyncAPI } from "../../api/api"
 
-export const CreateNewPost = ({buildNewPost}) => {
+export const CreateNewPost = ({ buildNewPost }) => {
     const [text, setText] = useState('');
-    const token = useToken();
+    const [profilePicture, setProfilePicture] = useState(null);
+    const { fetchProfilePicture, createPost } = useAsyncAPI();
+
+    useEffect(() => {
+        fetchProfilePicture(setProfilePicture);
+    }, []);
 
     const updateField = (e) => {
         const target = e.target;
-        const fieldValue = target.value
+        const fieldValue = target.value;
 
         if (fieldValue.length <= 255) {
             setText(fieldValue);
         } else {
             target.value = text;
         }
-    }
-
-    async function createPost() {
-        if (text.length <= 0) return;
-        if (!token.token) return;
-        const uToken = JSON.parse(token.token)['access_token'];
-
-        const response = await fetch ('http://rowanspace.xyz:8080/api/posts/create', {
-            method: 'post',
-            headers: {
-                'Authorization': 'Bearer ' + uToken,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                'post_text': text
-            })
-        })
-        .then(data => {
-            return data.json();
-        });
-        console.log(response);
-        buildNewPost(response);
     }
 
     return (
@@ -79,6 +63,7 @@ export const CreateNewPost = ({buildNewPost}) => {
                     <Avatar
                         size={'sm'}
                         mt={1}
+                        src={profilePicture}
                     />
                     <Stack
                         w={'100%'}
@@ -99,7 +84,9 @@ export const CreateNewPost = ({buildNewPost}) => {
                             direction={'row'}
                         >
                             <Button
-                                onClick={createPost}
+                                onClick={() => {
+                                    createPost(text, buildNewPost)
+                                }}
                             >
                                 Post
                             </Button>

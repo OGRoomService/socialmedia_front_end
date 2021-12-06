@@ -16,10 +16,17 @@ import {
 import { PostFeed } from "./PostFeed/PostFeed";
 import { useToken } from "../api/token";
 import { currentUser } from "../api/user";
+import { useAsyncAPI } from "../api/api";
 
 
 export default function ProfilePage() {
+    const [profilePicture, setProfilePicture] = useState(null);
+    const { fetchProfilePicture } = useAsyncAPI();
     const userData = currentUser();
+
+    useEffect(() => {
+        fetchProfilePicture(setProfilePicture);
+    }, []);
 
     return (
         <Flex
@@ -38,7 +45,10 @@ export default function ProfilePage() {
                             direction={'row'}
                             align={'center'}
                         >
-                            <Avatar size={'2xl'} />
+                            <Avatar
+                                size={'2xl'}
+                                src={profilePicture}
+                            />
                             <Text
                                 p={3}
                                 fontSize='3xl'
