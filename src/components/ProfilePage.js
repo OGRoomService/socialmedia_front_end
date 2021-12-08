@@ -9,12 +9,11 @@ import {
     Spacer,
     Stack,
     Text,
-    Divider,
+    Button,
     Center,
     useColorModeValue
 } from "@chakra-ui/react"
 import { PostFeed } from "./PostFeed/PostFeed";
-import { useToken } from "../api/token";
 import { currentUser } from "../api/user";
 import { useAsyncAPI } from "../api/api";
 
@@ -45,10 +44,20 @@ export default function ProfilePage() {
                             direction={'row'}
                             align={'center'}
                         >
-                            <Avatar
+                            <Button
                                 size={'2xl'}
-                                src={profilePicture}
-                            />
+                                variant={"ghost"}
+                                _hover={{}}
+                                _active={{}}
+                                _focus={{}}
+                            >
+                                <Avatar
+                                    size={'2xl'}
+                                    src={profilePicture}
+                                    _hover={{ color: 'gray' }}
+                                    variant='alsdf;'
+                                />
+                            </Button>
                             <Text
                                 p={3}
                                 fontSize='3xl'

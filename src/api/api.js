@@ -227,11 +227,83 @@ export function useAsyncAPI() {
         }
     }
 
-    async function getUsername(setUsername, userId) {
+    async function likeComment(setNumLikes, setHasLiked, commentId) {
         if (!token.token) return;
         const uToken = JSON.parse(token.token)['access_token'];
 
-        console.log(userId);
+        const response = await fetch(url + '/comments/like_comment', {
+            method: 'post',
+            headers: {
+                'Authorization': 'Bearer ' + uToken,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'comment_id': commentId
+            })
+        })
+            .then(data => {
+                return data.json();
+            });
+        setNumLikes(response['likes']);
+        if (response['liked'] === 'true') {
+            setHasLiked(true);
+        } else {
+            setHasLiked(false);
+        }
+    }
+
+    async function deletePost(postId, callback) {
+        if (!token.token) return;
+        const uToken = JSON.parse(token.token)['access_token'];
+
+        const response = await fetch(url + '/posts/delete_post', {
+            method: 'post',
+            headers: {
+                'Authorization': 'Bearer ' + uToken,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'post_id': postId
+            })
+        })
+            .then(data => {
+                return data.json();
+            });
+        const failed = response['failed'];
+
+        if (failed === 'false') {
+            callback(postId);
+        }
+    }
+
+    async function deleteComment(postId, commentId, callback) {
+        if (!token.token) return;
+        const uToken = JSON.parse(token.token)['access_token'];
+
+        const response = await fetch(url + '/comments/delete_comment', {
+            method: 'post',
+            headers: {
+                'Authorization': 'Bearer ' + uToken,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'post_id': postId,
+                'comment_id': commentId
+            })
+        })
+            .then(data => {
+                return data.json();
+            });
+        const failed = response['failed'];
+
+        if (failed === 'false') {
+            callback(commentId);
+        }
+    }
+
+    async function getUsername(setUsername, userId) {
+        if (!token.token) return;
+        const uToken = JSON.parse(token.token)['access_token'];
 
         const response = await fetch(url + '/users/get_username_from_id', {
             method: 'post',
@@ -249,13 +321,54 @@ export function useAsyncAPI() {
         setUsername(response);
     }
 
+    async function getPostData(pathname, userId, callback) {
+        if (!token.token) return;
+        const uToken = JSON.parse(token.token)['access_token'];
+        let fetchUrl = '';
+        let fetchConfig = '';
+
+        switch (pathname) {
+            case '/profile':
+                fetchUrl = 'http://rowanspace.xyz:8080/api/posts/get_posts_from_id';
+                fetchConfig = {
+                    method: 'post',
+                    headers: {
+                        'Authorization': 'Bearer ' + uToken,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        'user_id': userId
+                    })
+                };
+                break;
+            default:
+                fetchUrl = 'http://rowanspace.xyz:8080/api/posts/get_posts';
+                fetchConfig = {
+                    method: 'get',
+                    headers: {
+                        'Authorization': 'Bearer ' + uToken
+                    }
+                };
+        }
+
+        const response = await fetch(fetchUrl, fetchConfig)
+            .then(data => {
+                return data.json();
+            });
+        callback(response);
+    }
+
     return {
         fetchProfilePicture,
         createPost,
         likePost,
         getUsername,
         fetchProfilePictureFromId,
-        createComment
+        createComment,
+        deletePost,
+        getPostData,
+        deleteComment,
+        likeComment
     }
 }
 

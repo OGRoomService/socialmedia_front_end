@@ -22,6 +22,12 @@ export function currentUser() {
 
     const [userData, setUserData] = useState(getUserData());
 
+    const hasData = () => {
+        if (userData['id'])
+            return true;
+        return false;
+    }
+
     useEffect(() => {
         if (!hasData())
             fetchUser();
@@ -34,12 +40,6 @@ export function currentUser() {
 
     const deleteUser = () => {
         sessionStorage.removeItem(userTokenName);
-    }
-
-    const hasData = () => {
-        if (userData['id'])
-            return true;
-        return false;
     }
 
     async function fetchUser() {

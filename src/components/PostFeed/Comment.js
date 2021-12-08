@@ -1,75 +1,107 @@
 import React, { useEffect, useState } from "react";
 import { BsHeart, BsHeartFill } from 'react-icons/bs';
+import { GoTrashcan } from 'react-icons/go';
 import {
     Box,
-    Heading,
-    useColorModeValue,
     Text,
     IconButton,
     Stack,
-    Center,
     Spacer
 } from "@chakra-ui/react";
 import { useAsyncAPI } from "../../api/api";
+import { currentUser } from "../../api/user";
 
-export const Comment = ({ commentData }) => {
+export const Comment = ({ commentData, postId, unrenderComment }) => {
     const [numLikes, setNumLikes] = useState(0);
     const [hasLiked, setHasLiked] = useState(false);
     const [username, setUsername] = useState('');
-    const { getUsername } = useAsyncAPI();
-
-
-    console.log(commentData.commentData);
-    console.log(commentData['comment_text']);
+    const { getUsername, deleteComment } = useAsyncAPI();
+    const { userData } = currentUser();
+    const { likeComment } = useAsyncAPI();
 
     useEffect(() => {
         getUsername(setUsername, commentData['commenter_id']);
+        setNumLikes(commentData['likes']);
+
+        if (commentData['usersThatLiked'].includes(userData['id'])) {
+            setHasLiked(true);
+        }
     }, []);
+
+    const ShowDeleteButton = () => {
+        if (commentData['commenter_id'] === userData['id']) {
+            return (
+                <IconButton
+                    h={6}
+                    w={4}
+                    minW={4}
+                    ml={4}
+                    variant={'ghost'}
+                    icon={<GoTrashcan />}
+                    onClick={() =>
+                        deleteComment(postId, commentData['comment_id'], unrenderComment)
+                    }
+                    _hover={{ color: 'gray', stroke: 'gray' }}
+                    _active={{}}
+                    _focus={{}}
+                />
+            )
+        }
+        return;
+    }
 
     return (
         <Box>
             <Stack
                 direction={'row'}
+                h={'100%'}
+                w={'100%'}
             >
-                <Center
-                    h={'100%'}
-                    w={'100%'}
+                <Text
+                    fontSize={'sm'}
+                    fontWeight={'bold'}
+                    top={0}
                 >
-                    <Text
-                        fontSize={'sm'}
-                        fontWeight={'bold'}
-                    >
-                        {`${username}: `}
-                    </Text>
-                    <Text
-                        fontSize={'sm'}
-                        fontWeight={'normal'}
-                    >
-                        {commentData['comment_text']}
-                    </Text>
-                    <Spacer />
-                    <IconButton
-                        h={4}
-                        variant={'ghost'}
-                        icon={
-                            hasLiked ?
-                                <BsHeartFill
-                                    color='red'
-                                /> :
-                                <BsHeart
-                                    color='currentColor'
-                                />
-                        }
+                    {`${username}: `}
+                </Text>
+                <Text
+                    fontSize={'sm'}
+                    fontWeight={'normal'}
+                    wordBreak={'break-all'}
+                >
+                    {commentData['comment_text']}
+                </Text>
+                <Spacer />
+                <Text
+                    fontSize={'sm'}
+                >
+                    {numLikes}
+                </Text>
+                <IconButton
+                    h={6}
+                    w={4}
+                    minW={4}
+                    variant={'ghost'}
+                    icon={
+                        hasLiked ?
+                            <BsHeartFill
+                                color='red'
+                            /> :
+                            <BsHeart
+                                color='currentColor'
+                            />
+                    }
 
-                        onClick={() =>
-                            console.log('yup')
-                        }
-                        _hover={{ color: 'gray', stroke: 'gray' }}
-                        _active={{}}
-                        _focus={{}}
-                    />
-                </Center>
+                    onClick={() =>
+                        likeComment(setNumLikes, setHasLiked, commentData['comment_id'])
+                    }
+                    _hover={{ color: 'gray', stroke: 'gray' }}
+                    _active={{}}
+                    _focus={{}}
+                />
+                {ShowDeleteButton()}
+                <Stack />
             </Stack>
-        </Box>
+        </Box >
     )
 }

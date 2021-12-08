@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BsHeart, BsHeartFill } from 'react-icons/bs';
+import { GoTrashcan } from 'react-icons/go';
 import ResizeTextarea from "react-textarea-autosize";
 import { Button } from "@chakra-ui/react"
 import { useAsyncAPI } from '../../api/api'
-import { useToken } from "../../api/token";
 import { currentUser } from "../../api/user";
 import { Comment } from "./Comment";
 import {
@@ -21,7 +21,7 @@ import {
     List
 } from "@chakra-ui/react"
 
-export const NewPost = ({ postData }) => {
+export const NewPost = ({ postData, unrenderPost }) => {
     const [numLikes, setNumLikes] = useState(0);
     const [hasLiked, setHasLiked] = useState(false);
     const [username, setUsername] = useState('');
@@ -30,8 +30,11 @@ export const NewPost = ({ postData }) => {
     const [profilePicture, setProfilePicture] = useState(null);
     const [date, setDate] = useState('');
     const { likePost, getUsername, fetchProfilePictureFromId } = useAsyncAPI();
-    const { createComment } = useAsyncAPI();
+    const { createComment, deletePost } = useAsyncAPI();
     const { userData } = currentUser();
+    const stateRef = useRef();
+
+    stateRef.current = comments;
 
     useEffect(() => {
         setNumLikes(postData['likes']);
@@ -87,24 +90,50 @@ export const NewPost = ({ postData }) => {
             <Comment
                 key={data['comment_id']}
                 commentData={data}
+                postId={postData['post_id']}
+                unrenderComment={unrenderComment}
             />
         const newArray = [...comments, newComment];
-        
+
         setComments(newArray);
     }
 
     const buildComments = () => {
         const arrComments = postData['post_comments'];
 
-
         const comments = arrComments.map((commentData) => {
-            console.log(commentData);
             return <Comment
                 key={commentData['comment_id']}
                 commentData={commentData}
+                postId={postData['post_id']}
+                unrenderComment={unrenderComment}
             />
         });
         setComments(comments);
+    }
+
+    const unrenderComment = (commentId) => {
+        const objects = stateRef.current.filter(obj => obj.key != commentId);
+
+        setComments(objects);
+    }
+
+    const ShowDelete = () => {
+        if (userData['id'] === postData['poster_id']) {
+            return (
+                <IconButton
+                    variant={'ghost'}
+                    icon={<GoTrashcan />}
+                    onClick={() =>
+                        deletePost(postData['post_id'], unrenderPost)
+                    }
+                    _hover={{ color: 'gray', stroke: 'gray' }}
+                    _active={{}}
+                    _focus={{}}
+                />
+            )
+        }
+        return;
     }
 
     return (
@@ -129,9 +158,15 @@ export const NewPost = ({ postData }) => {
                     <Text>
                         {username}
                     </Text>
+                    <Spacer />
+                    {ShowDelete()}
                 </HStack>
                 <Flex>
-                    <Text fontSize='sm'>
+                    <Text
+                        fontSize='sm'
+                        fontWeight='normal'
+                        wordBreak={'break-all'}
+                    >
                         {postData['post_text']}
                     </Text>
                 </Flex>
