@@ -33,6 +33,7 @@ export const NewPost = ({ postData, unrenderPost }) => {
     const { createComment, deletePost } = useAsyncAPI();
     const { userData } = currentUser();
     const stateRef = useRef();
+    const posterId = 'posterId';
 
     stateRef.current = comments;
 
@@ -42,9 +43,9 @@ export const NewPost = ({ postData, unrenderPost }) => {
         if (postData['usersThatLiked'].includes(userData['id'])) {
             setHasLiked(true);
         }
-        fetchProfilePictureFromId(postData['poster_id'], setProfilePicture);
+        fetchProfilePictureFromId(postData[posterId], setProfilePicture);
         parsePostDate();
-        getUsername(setUsername, postData['poster_id']);
+        getUsername(setUsername, postData[posterId]);
         buildComments();
     }, []);
 
@@ -119,7 +120,7 @@ export const NewPost = ({ postData, unrenderPost }) => {
     }
 
     const ShowDelete = () => {
-        if (userData['id'] === postData['poster_id']) {
+        if (userData['id'] === postData[posterId]) {
             return (
                 <IconButton
                     variant={'ghost'}

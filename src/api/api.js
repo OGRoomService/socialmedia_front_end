@@ -324,34 +324,25 @@ export function useAsyncAPI() {
     async function pagePosts(pathname, userId, page, callback) {
         if (!token.token) return;
         const uToken = JSON.parse(token.token)['access_token'];
-        let fetchUrl = '';
-        let fetchConfig = '';
+        const fetchConfig = {
+            method: 'get',
+            headers: {
+                'Authorization': 'Bearer ' + uToken
+            }
+        };
+        let fetchEndpoint = '';
 
         switch (pathname) {
             case '/profile':
-                fetchUrl = 'http://rowanspace.xyz:8080/api/posts/get_posts_from_id';
-                fetchConfig = {
-                    method: 'post',
-                    headers: {
-                        'Authorization': 'Bearer ' + uToken,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        'user_id': userId
-                    })
-                };
+                fetchEndpoint = `/posts/page_posts_by_id?page=${page}&userId=${userId}`;
                 break;
             default:
-                fetchUrl = `http://rowanspace.xyz:8080/api/posts/page_posts?page=${page}`;
-                fetchConfig = {
-                    method: 'get',
-                    headers: {
-                        'Authorization': 'Bearer ' + uToken
-                    }
-                };
+                fetchEndpoint = `/posts/page_posts?page=${page}`;
         }
 
-        const response = await fetch(fetchUrl, fetchConfig)
+        console.log(url + fetchEndpoint);
+
+        const response = await fetch(url + fetchEndpoint, fetchConfig)
             .then(data => {
                 return data.json();
             });
