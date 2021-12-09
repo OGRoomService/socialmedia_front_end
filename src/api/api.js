@@ -356,8 +356,7 @@ export function useAsyncAPI() {
                 return data.json();
             });
 
-            console.log(response.content);
-        callback(response.content);
+        callback(response);
     }
 
     return {
