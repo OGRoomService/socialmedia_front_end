@@ -339,9 +339,6 @@ export function useAsyncAPI() {
             default:
                 fetchEndpoint = `/posts/page_posts?page=${page}`;
         }
-
-        console.log(url + fetchEndpoint);
-
         const response = await fetch(url + fetchEndpoint, fetchConfig)
             .then(data => {
                 return data.json();

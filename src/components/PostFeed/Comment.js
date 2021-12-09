@@ -29,7 +29,15 @@ export const Comment = ({ commentData, postId, unrenderComment }) => {
     }, []);
 
     const ShowDeleteButton = () => {
-        if (commentData['commenter_id'] === userData['id']) {
+        let hasAdmin = false;
+
+        userData['roles'].forEach(x => {
+            if (x.name === "ROLE_ADMIN") {
+                hasAdmin = true;
+            }
+        });
+        if (commentData['commenter_id'] === userData['id'] ||
+                hasAdmin) {
             return (
                 <IconButton
                     h={6}
@@ -67,7 +75,7 @@ export const Comment = ({ commentData, postId, unrenderComment }) => {
                 <Text
                     fontSize={'sm'}
                     fontWeight={'normal'}
-                    wordBreak={'break-all'}
+                    wordBreak={'break-word'}
                 >
                     {commentData['comment_text']}
                 </Text>

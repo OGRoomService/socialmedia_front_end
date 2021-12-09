@@ -38,11 +38,8 @@ export const PostFeed = () => {
     const callPagePosts = () => {
         const page = (postObjects.length / 5);
 
-        console.log(lastFetchedPage);
-
         if (page === lastFetchedPage) return;
         setLastFetchedPage(page);
-        console.log(lastFetchedPage);
 
         pagePosts(location.pathname, userData['id'], page, buildPosts);
     }

@@ -120,7 +120,15 @@ export const NewPost = ({ postData, unrenderPost }) => {
     }
 
     const ShowDelete = () => {
-        if (userData['id'] === postData[posterId]) {
+        let hasAdmin = false;
+
+        userData['roles'].forEach(x => {
+            if (x.name === "ROLE_ADMIN") {
+                hasAdmin = true;
+            }
+        });
+        if (userData['id'] === postData[posterId] ||
+                hasAdmin) {
             return (
                 <IconButton
                     variant={'ghost'}
@@ -166,7 +174,7 @@ export const NewPost = ({ postData, unrenderPost }) => {
                     <Text
                         fontSize='sm'
                         fontWeight='normal'
-                        wordBreak={'break-all'}
+                        wordBreak={'break-word'}
                     >
                         {postData['post_text']}
                     </Text>
