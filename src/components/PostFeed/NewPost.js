@@ -60,7 +60,7 @@ export const NewPost = ({ postData, unrenderPost }) => {
     }
 
     const parsePostDate = () => {
-        const postTime = Date.parse(postData['post_date']);
+        const postTime = Date.parse(postData['postDate']);
         const now = Date.now();
         const dateDiffInSec = Math.abs((now - postTime) / 1000);
         const secondsInDay = (60 * 60 * 24)

@@ -14,8 +14,9 @@ import { useAsyncAPI } from "../../api/api";
 export const PostFeed = () => {
     const [postObjects, setPostObjects] = useState([]);
     const [isFetching, setIsFetching] = useState(false);
+    const [lastFetchedPage, setLastFetchedPage] = useState(-1);
     const { userData } = currentUser();
-    const { getPostData } = useAsyncAPI();
+    const { pagePosts } = useAsyncAPI();
     const stateRef = useRef();
     const token = useToken();
     const location = useLocation();
@@ -23,11 +24,28 @@ export const PostFeed = () => {
     stateRef.current = postObjects;
 
     useEffect(() => {
-        getPostData(location.pathname, userData['id'], buildPosts);
+        callPagePosts();
         window.addEventListener('scroll', handleScroll);
 
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+
+    useEffect(() => {
+        if (!isFetching) return;
+        callPagePosts();
+    }, [isFetching]);
+
+    const callPagePosts = () => {
+        const page = (postObjects.length / 5);
+
+        console.log(lastFetchedPage);
+
+        if (page === lastFetchedPage) return;
+        setLastFetchedPage(page);
+        console.log(lastFetchedPage);
+
+        pagePosts(location.pathname, userData['id'], page, buildPosts);
+    }
 
     const handleScroll = () => {
         const innerHeight = window.innerHeight;
@@ -36,8 +54,7 @@ export const PostFeed = () => {
         const bottomBuffer = offsetHeight / 5
 
         if (innerHeight + scrollTop < (offsetHeight - bottomBuffer)) return;
-
-        console.log("FETCHING");
+        setIsFetching(true);
     }
 
     const buildNewPost = (data) => {
@@ -51,14 +68,15 @@ export const PostFeed = () => {
     }
 
     const buildPosts = (data) => {
-        const posts = data.map((postData) => {
+        const posts = postObjects.concat(data.map((postData) => {
             return <NewPost
                 key={postData['post_id']}
                 postData={postData}
                 unrenderPost={unrenderPost}
             />
-        });
+        }));
         setPostObjects(posts);
+        setIsFetching(false);
     }
 
     const unrenderPost = (postId) => {

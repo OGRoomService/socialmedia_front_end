@@ -321,7 +321,7 @@ export function useAsyncAPI() {
         setUsername(response);
     }
 
-    async function getPostData(pathname, userId, callback) {
+    async function pagePosts(pathname, userId, page, callback) {
         if (!token.token) return;
         const uToken = JSON.parse(token.token)['access_token'];
         let fetchUrl = '';
@@ -342,7 +342,7 @@ export function useAsyncAPI() {
                 };
                 break;
             default:
-                fetchUrl = 'http://rowanspace.xyz:8080/api/posts/get_posts';
+                fetchUrl = `http://rowanspace.xyz:8080/api/posts/page_posts?page=${page}`;
                 fetchConfig = {
                     method: 'get',
                     headers: {
@@ -355,7 +355,9 @@ export function useAsyncAPI() {
             .then(data => {
                 return data.json();
             });
-        callback(response);
+
+            console.log(response.content);
+        callback(response.content);
     }
 
     return {
@@ -366,7 +368,7 @@ export function useAsyncAPI() {
         fetchProfilePictureFromId,
         createComment,
         deletePost,
-        getPostData,
+        pagePosts,
         deleteComment,
         likeComment
     }
