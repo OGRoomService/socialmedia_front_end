@@ -6,7 +6,8 @@ import {
     Text,
     IconButton,
     Stack,
-    Spacer
+    Spacer,
+    Link
 } from "@chakra-ui/react";
 import { useAsyncAPI } from "../../api/api";
 import { currentUser } from "../../api/user";
@@ -65,13 +66,14 @@ export const Comment = ({ commentData, postId, unrenderComment }) => {
                 h={'100%'}
                 w={'100%'}
             >
-                <Text
+                <Link
                     fontSize={'sm'}
                     fontWeight={'bold'}
                     top={0}
+                    href={`/u/${username}`}
                 >
                     {`${username}: `}
-                </Text>
+                </Link>
                 <Text
                     fontSize={'sm'}
                     fontWeight={'normal'}

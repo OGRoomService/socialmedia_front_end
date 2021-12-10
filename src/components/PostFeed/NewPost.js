@@ -18,7 +18,8 @@ import {
     IconButton,
     useColorModeValue,
     Spacer,
-    List
+    List,
+    Link
 } from "@chakra-ui/react"
 
 export const NewPost = ({ postData, unrenderPost }) => {
@@ -167,9 +168,9 @@ export const NewPost = ({ postData, unrenderPost }) => {
                         size='sm'
                         src={profilePicture}
                     />
-                    <Text>
+                    <Link href={`/u/${username}`}>
                         {username}
-                    </Text>
+                    </Link>
                     <Spacer />
                     {ShowDelete()}
                 </HStack>
