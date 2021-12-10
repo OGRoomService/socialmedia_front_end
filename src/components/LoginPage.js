@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import Footer from "./Footer";
-import { PostUserLogin } from "../api/api";
+import { PostUserLogin, useAsyncAPI } from "../api/api";
 import { Header } from "./Header";
-import { Text,
+import {
+    Text,
     Input,
     Link,
     Heading,
@@ -18,8 +19,10 @@ import { useHistory } from "react-router";
 import { useToken } from "../api/token";
 import { currentUser } from "../api/user";
 
-export const LoginPage = () => {
-    const [apiData, setApiData] = PostUserLogin();
+export const LoginPage = ({ loginUser }) => {
+    const [submitted, setSubmitted] = useState(false);
+    const [isHandling, setIsHandling] = useState(false);
+    const [hasError, setHasError] = useState(false);
     const [formData, setFormData] = useState({
         username: '',
         password: '',
@@ -29,10 +32,7 @@ export const LoginPage = () => {
         username: '',
         password: ''
     });
-    const { setToken } = useToken();
-    const { setUser } = currentUser();
-    const history = useHistory();
-    let handlingResponse = false;
+    const { userLogin } = useAsyncAPI();
 
     const validate = () => {
         let formErrors = {};
@@ -59,28 +59,9 @@ export const LoginPage = () => {
         });
     }
 
-    const handleResponse = () => {
-        if (handlingResponse) return;
-        if (!apiData || !apiData.data || !apiData.data.data) return;
-
-        const tokenData = apiData.data.data.tokens;
-        const userData = apiData.data.data.user;
-
-        handlingResponse = true;
-
-        setToken({
-            access_token: tokenData.access_token,
-            refresh_token: tokenData.refresh_token,
-            remember: formData.remember
-        });
-        setUser(userData);
-        //history.go(0);
-    }
-
-    const submitForm = e => {
+    const submitForm = (e) => {
         e.preventDefault();
-
-        if (apiData.pending) return;
+        
         if (!validate()) {
             return;
         } else {
@@ -88,14 +69,30 @@ export const LoginPage = () => {
                 username: '',
                 password: ''
             });
-            handlingResponse = false;
+            setIsHandling(true)
         }
-        setApiData({
-            username: formData.username,
-            password: formData.password
-        });
+        if (submitted || isHandling) return;
+        setSubmitted(true);
+        userLogin(formData.username, formData.password, handleResponse);
     }
 
+    const handleResponse = (response) => {
+        setSubmitted(false);
+        if (!response) {
+            setHasError(true);
+            return;
+        }
+        setIsHandling(true);
+        loginUser(response, formData.remember);
+        /* setToken({
+            access_token: tokenData.access_token,
+            refresh_token: tokenData.refresh_token,
+            remember: formData.remember
+        });
+        setUser(userData);
+        setLoggedIn(true); */
+        //history.go(0);
+    }
 
     const customTheme = extendTheme({
 
@@ -125,11 +122,11 @@ export const LoginPage = () => {
                 <Heading as="h2" size="4x5" mb="6">
                     <Text fontSize={{ base: "20px", sm: "20px", md: "20px", lg: "35px", xl: "80px" }}> Rowanspace </Text>
                 </Heading>
-                <Center 
+                <Center
                     w={'100%'}
                 >
                     <Stack
-                        w={{base:'450px', sm:'350px', md:'350px', lg:'45%'}}
+                        w={{ base: '450px', sm: '350px', md: '350px', lg: '45%' }}
                         maxW={'600px'}
                     >
                         <Text>
@@ -171,8 +168,7 @@ export const LoginPage = () => {
                             type='button'
                             value='Login' />
 
-                        {apiData.error && <Text>Invalid Username or Password!</Text>}
-                        {apiData.complete && handleResponse()}
+                        {hasError && <Text>Invalid Username or Password!</Text>}
 
                         <Link color="teal.500" href="/recover_password">Forgotten Password?</Link>
 

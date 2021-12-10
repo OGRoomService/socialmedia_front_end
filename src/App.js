@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Redirect, Route, Switch } from 'react-router';
 
 import UserPage from './components/UserPage';
@@ -17,64 +17,80 @@ import { ResetPassword } from './components/PasswordRecovery/ResetPassword';
 import { ChakraProvider } from '@chakra-ui/react';
 
 export default function App() {
-    const { token } = useToken();
-    const { hasData } = currentUser();
-    
-    if (token &&
-        token['access_token'] &&
-        !hasData()) {
-        return(<LoginPage />);
+    const { token, setToken } = useToken();
+    const { hasData, setUser } = currentUser();
+
+    const loginUser = (data, remember) => {
+        const tokenData = data.tokens;
+        const userData = data.user;
+
+        setToken({
+            access_token: tokenData.access_token,
+            refresh_token: tokenData.refresh_token,
+            remember: remember
+        });
+        setUser(userData);
     }
-    // If the token doesn't exist, only allow access to login and registration page
-    if (!token || !hasData()) {
+
+    const checkLogin = () => {
+        // If there is a token but no user data, render the login page
+        if (token &&
+            token['access_token'] &&
+            !hasData()) {
+            return (<LoginPage loginUser={loginUser} />);
+        }
+
+        // If the token doesn't exist, only allow access to login and registration page
+        if (!token || !hasData()) {
+            return (
+                <ChakraProvider>
+                    <Switch>
+    
+                        <Route exact path="/" component={() => <LoginPage key={'loginpage'}  loginUser={loginUser} />} />
+    
+                        <Route exact path="/register"
+                            component={Registration} />
+    
+                        <Route exact path="/recover_password"
+                            component={RecoverPassword} />
+    
+                        <Route exact path="/reset_password"
+                            component={ResetPassword} />
+    
+                        <Route>
+                            <Redirect to='/' />
+                        </Route>
+    
+                    </Switch>
+                </ChakraProvider>
+            )
+        }
+        
+        // Render the rest of the website
         return (
             <ChakraProvider>
                 <Switch>
-
-                    <Route exact path="/">
-                        <LoginPage />
-                    </Route>
-
-                    <Route exact path="/register"
-                        component={Registration} />
-
-                    <Route exact path="/recover_password"
-                        component={RecoverPassword} />
-
-                    <Route exact path="/reset_password"
-                        component={ResetPassword} />
-
-                    <Route>
+    
+                    <Route exact path="/" component={() => <MainPage key={'mainpage'} />} />
+    
+                    <Route exact path="/register">
                         <Redirect to='/' />
                     </Route>
-
+    
+                    <Route path="/u/:username" component={() => <ProfilePage key={window.location.pathname} />} />
+    
+                    <Route exact path="/settings">
+                        <Settings />
+                    </Route>
+    
+                    <Route>
+                        <NotFound />
+                    </Route>
+    
                 </Switch>
             </ChakraProvider>
         )
     }
-    return (
-        <ChakraProvider>
-            <Switch>
 
-                <Route exact path="/">
-                    <MainPage />
-                </Route>
-
-                <Route exact path="/register">
-                    <Redirect to='/' />
-                </Route>
-
-                <Route path="/u/:username" component={() => <ProfilePage key={window.location.pathname} />} />
-
-                <Route exact path="/settings">
-                    <Settings />
-                </Route>
-
-                <Route>
-                    <NotFound />
-                </Route>
-
-            </Switch>
-        </ChakraProvider>
-    )
+    return (checkLogin())
 }

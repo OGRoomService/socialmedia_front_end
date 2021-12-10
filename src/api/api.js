@@ -115,6 +115,29 @@ export const PostGetAllPosts = () => {
 export function useAsyncAPI() {
     const { token } = useToken();
 
+    async function userLogin(username, password, callback) {
+        const response = await fetch(url + '/users/login', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'username': username,
+                'password': password
+            })
+        })
+            .then(data => {
+                switch (data.status) {
+                    case 200:
+                    case 201:
+                        return data.json();
+                    default:
+                        return null;
+                }
+            });
+        callback(response);
+    }
+
     async function fetchUserProfile(username, setProfileData) {
         if (!token) return;
         const uToken = token['access_token'];
@@ -385,7 +408,8 @@ export function useAsyncAPI() {
         pagePosts,
         deleteComment,
         likeComment,
-        fetchUserProfile
+        fetchUserProfile,
+        userLogin
     }
 }
 

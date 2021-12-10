@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 export function useToken() {
     const getToken = () => {
@@ -29,9 +29,21 @@ export function useToken() {
         setToken(tokenToSave);
     }
 
+    const getParsedToken = () => {
+        try {
+            return JSON.parse(token);
+        } catch (e) {
+            if (token) {
+                return token;
+            } else {
+                return null;
+            }
+        }
+    }
+
     return {
         setToken: saveToken,
         deleteToken: deleteToken,
-        token: JSON.parse(token)
+        token: getParsedToken()
     }
 }
