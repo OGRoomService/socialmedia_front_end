@@ -131,7 +131,7 @@ const LoggedInHeader = () => {
                                 pr={2}
                                 rounded={'full'}
                                 onClick={() =>
-                                    history.push('/profile')
+                                    history.push(`/u/${userData['username']}`)
                                 }
                             >
                                 {userData['username']}

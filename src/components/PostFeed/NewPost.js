@@ -55,9 +55,12 @@ export const NewPost = ({ postData, unrenderPost }) => {
 
         if (fieldValue.length <= 255) {
             setCommentText(fieldValue);
-        } else {
-            target.value = commentText;
         }
+    }
+    
+    const handleSubmit = () => {
+        setCommentText("");
+        createComment(commentText, postData['post_id'], buildNewComment);
     }
 
     const parsePostDate = () => {
@@ -238,10 +241,11 @@ export const NewPost = ({ postData, unrenderPost }) => {
                         onChange={(e) =>
                             updateField(e)
                         }
+                        value={commentText}
                     />
                     <Button
                         onClick={() => {
-                            createComment(commentText, postData['post_id'], buildNewComment)
+                            handleSubmit()
                         }}
                     >
                         Post

@@ -115,6 +115,30 @@ export const PostGetAllPosts = () => {
 export function useAsyncAPI() {
     const token = useToken();
 
+    async function fetchUserProfile(username, setProfileData) {
+        if (!token.token) return;
+        const uToken = JSON.parse(token.token)['access_token'];
+        const endpoint = `/users/get_by_name?username=${username}`;
+
+        const response = await fetch(url + endpoint, {
+            method: 'get',
+            headers: {
+                'Authorization': 'Bearer ' + uToken
+            }
+        })
+            .then(data => {
+                switch (data.status) {
+                    case 200:
+                    case 201:
+                        return data.json();
+                    default:
+                        return null
+                }
+            });
+
+        setProfileData(response);
+    }
+
     async function fetchProfilePicture(setProfilePicture) {
         if (!token.token) return;
         const uToken = JSON.parse(token.token)['access_token'];
@@ -321,7 +345,7 @@ export function useAsyncAPI() {
         setUsername(response);
     }
 
-    async function pagePosts(pathname, userId, page, callback) {
+    async function pagePosts(userId, page, callback) {
         if (!token.token) return;
         const uToken = JSON.parse(token.token)['access_token'];
         const fetchConfig = {
@@ -332,18 +356,21 @@ export function useAsyncAPI() {
         };
         let fetchEndpoint = '';
 
-        switch (pathname) {
-            case '/profile':
-                fetchEndpoint = `/posts/page_posts_by_id?page=${page}&userId=${userId}`;
-                break;
-            default:
-                fetchEndpoint = `/posts/page_posts?page=${page}`;
+        if (userId) {
+            fetchEndpoint = `/posts/page_posts_by_id?page=${page}&userId=${userId}`;
+        } else {
+            fetchEndpoint = `/posts/page_posts?page=${page}`;
         }
         const response = await fetch(url + fetchEndpoint, fetchConfig)
             .then(data => {
-                return data.json();
+                switch (data.status) {
+                    case 200:
+                    case 201:
+                        return data.json();
+                    default:
+                        return null
+                }
             });
-
         callback(response);
     }
 
@@ -357,7 +384,8 @@ export function useAsyncAPI() {
         deletePost,
         pagePosts,
         deleteComment,
-        likeComment
+        likeComment,
+        fetchUserProfile
     }
 }
 

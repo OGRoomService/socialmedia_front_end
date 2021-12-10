@@ -30,9 +30,12 @@ export const CreateNewPost = ({ buildNewPost }) => {
 
         if (fieldValue.length <= 255) {
             setText(fieldValue);
-        } else {
-            target.value = text;
         }
+    }
+
+    const handleSubmit = () => {
+        setText('');
+        createPost(text, buildNewPost);
     }
 
     return (
@@ -79,13 +82,14 @@ export const CreateNewPost = ({ buildNewPost }) => {
                             onChange={(e) =>
                                 updateField(e)
                             }
+                            value={text}
                         />
                         <Stack
                             direction={'row'}
                         >
                             <Button
                                 onClick={() => {
-                                    createPost(text, buildNewPost)
+                                    handleSubmit()
                                 }}
                             >
                                 Post

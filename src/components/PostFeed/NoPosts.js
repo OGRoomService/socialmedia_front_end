@@ -6,7 +6,7 @@ import {
     Text
 } from "@chakra-ui/react";
 
-export const NoPosts = () => {
+export const NoPosts = ({ isUser }) => {
     return (
         <Box
             mb='5'
@@ -21,7 +21,8 @@ export const NoPosts = () => {
             <Text
                 pt={2}
             >
-                Create your first post now...
+                {isUser ? "Create your first post now..." : "This user has no posts..."}
+                
             </Text>
         </Box>
     )

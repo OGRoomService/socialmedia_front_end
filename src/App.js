@@ -59,13 +59,7 @@ export default function App() {
                     <Redirect to='/' />
                 </Route>
 
-                <Route path="/u/:id">
-                    <UserPage />
-                </Route>
-
-                <Route exact path="/profile">
-                    <ProfilePage />
-                </Route>
+                <Route path="/u/:username" component={() => <ProfilePage key={window.location.pathname} />} />
 
                 <Route exact path="/settings">
                     <Settings />

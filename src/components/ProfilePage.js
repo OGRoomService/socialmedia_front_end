@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Footer from "./Footer";
 import { Header } from "./Header";
 import "../styles/main.css";
@@ -16,16 +16,33 @@ import {
 import { PostFeed } from "./PostFeed/PostFeed";
 import { currentUser } from "../api/user";
 import { useAsyncAPI } from "../api/api";
+import { useHistory, useLocation, useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 
 export default function ProfilePage() {
     const [profilePicture, setProfilePicture] = useState(null);
-    const { fetchProfilePicture } = useAsyncAPI();
-    const userData = currentUser();
+    const [profileData, setProfileData] = useState({});
+    const [postFeed, setPostFeed] = useState(null);
+    const { fetchUserProfile, fetchProfilePictureFromId } = useAsyncAPI();
+    const { userData } = currentUser();
+    const { username } = useParams();
+    const history = useHistory();
 
     useEffect(() => {
-        fetchProfilePicture(setProfilePicture);
+        fetchUserProfile(username, setProfileData);
     }, []);
+
+    useEffect(() => {
+        if (!profileData) {
+            history.push('/notfound');
+            return;
+        }
+        if (JSON.stringify(profileData) === '{}') return;
+        fetchProfilePictureFromId(profileData['id'], setProfilePicture);
+        setPostFeed(
+            <PostFeed profileData={profileData} />
+        );
+    }, [profileData]);
 
     return (
         <Flex
@@ -62,7 +79,7 @@ export default function ProfilePage() {
                                 p={3}
                                 fontSize='3xl'
                             >
-                                {userData ? userData.userData['username'] : '...'}
+                                {profileData ? profileData['username'] : '...'}
                             </Text>
                         </Stack>
                     </Center>
@@ -75,7 +92,7 @@ export default function ProfilePage() {
                         }}>
                             <Stack w={'100%'}>
                                 <Spacer pt={2} />
-                                <PostFeed />
+                                {postFeed}
                             </Stack>
                         </Center>
                     </Center>

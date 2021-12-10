@@ -11,15 +11,13 @@ import {
 } from "@chakra-ui/react"
 import { useAsyncAPI } from "../../api/api";
 
-export const PostFeed = () => {
+export const PostFeed = ({ profileData }) => {
     const [postObjects, setPostObjects] = useState([]);
     const [isFetching, setIsFetching] = useState(false);
     const [lastFetchedPage, setLastFetchedPage] = useState(-1);
-    const { userData } = currentUser();
     const { pagePosts } = useAsyncAPI();
+    const { userData } = currentUser();
     const stateRef = useRef();
-    const token = useToken();
-    const location = useLocation();
 
     stateRef.current = postObjects;
 
@@ -41,7 +39,8 @@ export const PostFeed = () => {
         if (page === lastFetchedPage) return;
         setLastFetchedPage(page);
 
-        pagePosts(location.pathname, userData['id'], page, buildPosts);
+
+        pagePosts((profileData ? profileData['id'] : null), page, buildPosts);
     }
 
     const handleScroll = () => {
@@ -55,6 +54,7 @@ export const PostFeed = () => {
     }
 
     const buildNewPost = (data) => {
+        if (!data) return;
         const newPosts =
             [<NewPost
                 key={data['post_id']}
@@ -65,6 +65,7 @@ export const PostFeed = () => {
     }
 
     const buildPosts = (data) => {
+        if (!data) return;
         const posts = postObjects.concat(data.map((postData) => {
             return <NewPost
                 key={postData['post_id']}
@@ -85,20 +86,30 @@ export const PostFeed = () => {
     const renderPosts = () => {
         if (postObjects.length <= 0) {
             return (
-                <NoPosts />
-            )
+                profileData ? <NoPosts isUser={profileData['id'] == userData['id']} /> :
+                    <NoPosts />
+            );
         } else {
             return (
                 <List>
                     {postObjects}
                 </List>
-            )
+            );
+        }
+    }
+
+    const ShowCreateNewPost = () => {
+        if (profileData &&
+            profileData['id'] != userData['id']) {
+            return null;
+        } else {
+            return (<CreateNewPost buildNewPost={buildNewPost} />);
         }
     }
 
     return (
         <Box w='100%' p='1'>
-            <CreateNewPost buildNewPost={buildNewPost} />
+            {ShowCreateNewPost()}
             {renderPosts()}
         </Box>
     );
