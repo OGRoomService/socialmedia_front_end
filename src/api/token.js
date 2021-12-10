@@ -32,6 +32,6 @@ export function useToken() {
     return {
         setToken: saveToken,
         deleteToken: deleteToken,
-        token
+        token: JSON.parse(token)
     }
 }

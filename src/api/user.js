@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useToken } from "./token";
 
 export function currentUser() {
+    const { token } = useToken();
     const baseUrl = 'http://rowanspace.xyz:8080/api'
-    const token = useToken();
     const userTokenName = 'current_user';
 
     const getUserData = () => {
@@ -13,7 +13,7 @@ export function currentUser() {
             const parsedUser = JSON.parse(currentUser);
 
 
-            if (parsedUser['id']){
+            if (parsedUser['id']) {
                 return parsedUser;
             }
         }
@@ -23,9 +23,9 @@ export function currentUser() {
     const [userData, setUserData] = useState(getUserData());
 
     const hasData = () => {
-        if (userData['id'])
-            return true;
-        return false;
+        if (!userData || !userData['id'])
+            return false;
+        return true;
     }
 
     useEffect(() => {
@@ -43,8 +43,8 @@ export function currentUser() {
     }
 
     async function fetchUser() {
-        if (!token.token) return;
-        const uToken = JSON.parse(token.token)['access_token'];
+        if (!token) return;
+        const uToken = token['access_token'];
 
         const response = await fetch(baseUrl + '/users/get_self', {
             method: 'get',

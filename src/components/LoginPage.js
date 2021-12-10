@@ -74,7 +74,7 @@ export const LoginPage = () => {
             remember: formData.remember
         });
         setUser(userData);
-        history.go(0);
+        //history.go(0);
     }
 
     const submitForm = e => {

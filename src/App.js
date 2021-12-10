@@ -19,7 +19,12 @@ import { ChakraProvider } from '@chakra-ui/react';
 export default function App() {
     const { token } = useToken();
     const { hasData } = currentUser();
-
+    
+    if (token &&
+        token['access_token'] &&
+        !hasData()) {
+        return(<LoginPage />);
+    }
     // If the token doesn't exist, only allow access to login and registration page
     if (!token || !hasData()) {
         return (

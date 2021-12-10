@@ -113,11 +113,11 @@ export const PostGetAllPosts = () => {
 }
 
 export function useAsyncAPI() {
-    const token = useToken();
+    const { token } = useToken();
 
     async function fetchUserProfile(username, setProfileData) {
-        if (!token.token) return;
-        const uToken = JSON.parse(token.token)['access_token'];
+        if (!token) return;
+        const uToken = token['access_token'];
         const endpoint = `/users/get_by_name?username=${username}`;
 
         const response = await fetch(url + endpoint, {
@@ -140,8 +140,8 @@ export function useAsyncAPI() {
     }
 
     async function fetchProfilePicture(setProfilePicture) {
-        if (!token.token) return;
-        const uToken = JSON.parse(token.token)['access_token'];
+        if (!token) return;
+        const uToken = token['access_token'];
 
         const response = await fetch(url + '/users/get_profile_picture', {
             method: 'get',
@@ -158,8 +158,8 @@ export function useAsyncAPI() {
     }
 
     async function fetchProfilePictureFromId(userId, setProfilePicture) {
-        if (!token.token) return;
-        const uToken = JSON.parse(token.token)['access_token'];
+        if (!token) return;
+        const uToken = token['access_token'];
 
         const response = await fetch(url + '/users/get_profile_picture_from_id', {
             method: 'post',
@@ -183,8 +183,8 @@ export function useAsyncAPI() {
         const postText = text.trim();
 
         if (postText.length <= 0) return;
-        if (!token.token) return;
-        const uToken = JSON.parse(token.token)['access_token'];
+        if (!token) return;
+        const uToken = token['access_token'];
 
         const response = await fetch(url + '/posts/create', {
             method: 'post',
@@ -206,8 +206,8 @@ export function useAsyncAPI() {
         const postText = text.trim();
 
         if (postText.length <= 0) return;
-        if (!token.token) return;
-        const uToken = JSON.parse(token.token)['access_token'];
+        if (!token) return;
+        const uToken = token['access_token'];
 
         const response = await fetch(url + '/posts/comment_on_post', {
             method: 'post',
@@ -227,8 +227,8 @@ export function useAsyncAPI() {
     }
 
     async function likePost(setNumLikes, setHasLiked, postId) {
-        if (!token.token) return;
-        const uToken = JSON.parse(token.token)['access_token'];
+        if (!token) return;
+        const uToken = token['access_token'];
 
         const response = await fetch(url + '/posts/like_post', {
             method: 'post',
@@ -252,8 +252,8 @@ export function useAsyncAPI() {
     }
 
     async function likeComment(setNumLikes, setHasLiked, commentId) {
-        if (!token.token) return;
-        const uToken = JSON.parse(token.token)['access_token'];
+        if (!token) return;
+        const uToken = token['access_token'];
 
         const response = await fetch(url + '/comments/like_comment', {
             method: 'post',
@@ -277,8 +277,8 @@ export function useAsyncAPI() {
     }
 
     async function deletePost(postId, callback) {
-        if (!token.token) return;
-        const uToken = JSON.parse(token.token)['access_token'];
+        if (!token) return;
+        const uToken = token['access_token'];
 
         const response = await fetch(url + '/posts/delete_post', {
             method: 'post',
@@ -301,8 +301,8 @@ export function useAsyncAPI() {
     }
 
     async function deleteComment(postId, commentId, callback) {
-        if (!token.token) return;
-        const uToken = JSON.parse(token.token)['access_token'];
+        if (!token) return;
+        const uToken = token['access_token'];
 
         const response = await fetch(url + '/comments/delete_comment', {
             method: 'post',
@@ -326,8 +326,8 @@ export function useAsyncAPI() {
     }
 
     async function getUsername(setUsername, userId) {
-        if (!token.token) return;
-        const uToken = JSON.parse(token.token)['access_token'];
+        if (!token) return;
+        const uToken = token['access_token'];
 
         const response = await fetch(url + '/users/get_username_from_id', {
             method: 'post',
@@ -346,8 +346,8 @@ export function useAsyncAPI() {
     }
 
     async function pagePosts(userId, page, callback) {
-        if (!token.token) return;
-        const uToken = JSON.parse(token.token)['access_token'];
+        if (!token) return;
+        const uToken = token['access_token'];
         const fetchConfig = {
             method: 'get',
             headers: {

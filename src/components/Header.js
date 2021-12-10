@@ -66,8 +66,8 @@ const LoggedInHeader = () => {
     const [profilePicture, setProfilePicture] = useState(null);
     const { colorMode, toggleColorMode } = useColorMode();
     const { userData } = currentUser();
+    const { token } = useToken();
     const history = useHistory();
-    const token = useToken();
     const baseUrl = 'http://rowanspace.xyz:8080/api';
 
     useEffect(() => {
@@ -75,8 +75,8 @@ const LoggedInHeader = () => {
     }, []);
 
     async function fetchProfilePicture() {
-        if (!token.token) return;
-        const uToken = JSON.parse(token.token)['access_token'];
+        if (!token) return;
+        const uToken = token['access_token'];
 
         const response = await fetch(baseUrl + '/users/get_profile_picture', {
             method: 'get',
