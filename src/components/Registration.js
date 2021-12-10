@@ -1,20 +1,10 @@
 import React, { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import { PostNewUserEndpoint } from "../api/api";
-import { Header } from "./Header";
+import RegHeader from "./RegHeader";
 import Footer from "./Footer";
 import '../styles/register.css'
-import {
-    Heading,
-    Text,
-    Input,
-    Link,
-    Flex,
-    Stack,
-    Center,
-    extendTheme,
-    ThemeProvider
-} from "@chakra-ui/react";
+import { Heading, Text, Input, Link, ThemeProvider, CSSReset, theme, Flex, Stack} from "@chakra-ui/react";
 
 export const Registration = () => {
     const [formData, setFormData] = useState({
@@ -97,7 +87,7 @@ export const Registration = () => {
 
     const submitForm = e => {
         e.preventDefault();
-
+        
         if (!validate(formData)) {
             console.log("Form validation failed!");
             return;
@@ -110,107 +100,84 @@ export const Registration = () => {
         });
     }
 
-
-    const customTheme = extendTheme({
-
-
-        breakpoints:
-        {
-            colors: {},
-            fonts: {},
-            fontSzes: {},
-            sm: "360px", //Galaxy s5
-            md: "375px", //I phone X
-            dt: "376px",
-            lg: "960px",
-            xl: "1200px",
-        }
-
-    })
-
     return (
-        <Flex
-            flexDir={'column'}
-            minH={'100vh'}
-        >
-            <ThemeProvider theme={customTheme}>
-            <Header />
-            <Heading as="h2" size="4x5">
-                    <Text fontSize={{ base: "20px", sm: "20px", md: "20px", lg: "35px", xl: "80px" }}> Rowanspace </Text>
-            </Heading>
-            <Center w={'100%'}>
-                <Stack
-                    w={{base:'350px', sm:'350px', md:'350px', lg:'45%'}}
-                    maxW={'600px'}
-                >
-                    <Text fontWeight={'bold'}>Please fill out information below</Text>
-                    <Text>
-                        Username
-                    </Text>
-                    <Input
-                        name="username"
-                        type="text"
-                        placeholder="username"
-                        defaultValue={formData.username}
-                        onChange={handleChange}
-                        required />
+        <ThemeProvider theme={theme}>
+        <CSSReset />
+            <RegHeader />
+            <Flex h="100%" w="100%" flexDirection={"row"} alignItems="center">
+                <Heading as="h2" size="4x5" mb="6"><Text fontSize="6xl" mt="20"> Rowanspace </Text></Heading>
+                    <Flex w="20em" h="50%" flexDirection={"column"} pos="fixed" alignItems="center" top="10%" left="38%" margin="center" theme>
+            
+                    <Stack>
+                        <p><b>Please fill out information below</b></p>
+                        <p>
+                            <label className="form-header"
+                            htmlFor="uname">Username</label>
+                            <Input
+                                id="username"
+                                name="username"
+                                type="text"
+                                placeholder="username"
+                                defaultValue={formData.username}
+                                onChange={handleChange} 
+                                required />
+                        </p>
 
-                    {formErrors.username && <Text>{formErrors.username}</Text>}
+                        {formErrors.username && <span className="error-message">{formErrors.username}</span>}
 
-                    <Text>
-                        Email
-                    </Text>
-                    <Input
-                        name="email"
-                        type="email"
-                        placeholder="email"
-                        defaultValue={formData.email}
-                        onChange={handleChange} />
+                        <p>
+                            <label htmlFor="uemail">Email</label>
+                            <Input
+                                id="email"
+                                name="email"
+                                type="email"
+                                placeholder="email"
+                                defaultValue={formData.email}
+                                onChange={handleChange} />
+                        </p>
 
-                    {formErrors.email && <Text>{formErrors.email}</Text>}
+                        {formErrors.email && <span className="error-message">{formErrors.email}</span>}
 
-                    <Text>
-                        Password
-                    </Text>
-                    <Input
-                        name="password"
-                        type="password"
-                        placeholder="Password"
-                        defaultValue={formData.password}
-                        onChange={handleChange} />
+                        <p>
+                            <label htmlFor="pass">Password</label>
+                            <Input
+                                id="password"
+                                name="password"
+                                type="password"
+                                placeholder="Password"
+                                defaultValue={formData.password}
+                                onChange={handleChange} />
+                        </p>
 
-                    {formErrors.password && <Text>{formErrors.password}</Text>}
+                        {formErrors.password && <span className="error-message">{formErrors.password}</span>}
 
-                    <Text>
-                        Confirm Password
-                    </Text>
-                    <Input
-                        id="vpassword"
-                        name="vpassword"
-                        type="password"
-                        placeholder="Confirm Password"
-                        defaultValue={formData.vpassword}
-                        onChange={handleChange} />
+                        <p>
+                            <label htmlFor="vpass">Confirm password</label>
+                            <Input
+                                id="vpassword"
+                                name="vpassword"
+                                type="password"
+                                placeholder="Confirm Password"
+                                defaultValue={formData.vpassword}
+                                onChange={handleChange} />
+                        </p>
 
-                    {formErrors.vpassword && <Text>{formErrors.vpassword}</Text>}
+                        {formErrors.vpassword && <span className="error-message">{formErrors.vpassword}</span>}
 
-                    <Input
-                        className='button'
-                        onClick={submitForm}
-                        type='button'
-                        value="Register" />
+                        <Input
+                            className='button'
+                            onClick={submitForm}
+                            type='button'
+                            value="Register" />
 
-                    {formErrors.api && <Text>{formErrors.api}</Text>}
-                    <Center w={'100%'}>
-                        <Text>
-                            Already have an account? <Link color="teal.500" href="/login">Login here!</Link>
-                        </Text>
-                    </Center>
+                        {formErrors.api && <span className="error-message">{formErrors.api}</span>}
+                        <p>Already have an account? <Link color="teal.500" href="/login">Login here!</Link></p>
+                    </Stack>
                     {apiData.complete && handleResponse()}
-                </Stack>
-            </Center>
-            <Footer />
-        </ThemeProvider>
         </Flex>
+        </Flex>
+
+             <Footer />
+        </ThemeProvider>
     );
 }

@@ -4,7 +4,7 @@ import { ChakraProvider, Input, Button } from "@chakra-ui/react"
 import { useToken } from "../api/token";
 import { useHistory } from "react-router";
 
-export const Header = () => {
+export const ProfileHeader = () => {
     const token = useToken();
     const history = useHistory();
 
@@ -20,7 +20,7 @@ export const Header = () => {
                     <ul>
                         <li><a href="/">Post Feed</a></li>
                         <li><Input id="search-bar" type="text" placeholder="Search..." /></li>
-                        <li className="right-align"><a href="/profile">Profile</a></li>
+                        {/* <li className="right-align"><a href="/profile">Profile</a></li> */}
                         <li className="right-align"><a href="/">Settings</a></li>
                         <li className="right-align">
                             <Button

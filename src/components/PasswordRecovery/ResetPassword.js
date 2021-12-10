@@ -1,17 +1,9 @@
 import React, { useState } from "react"
-import { PostResetPasswordEndpoint } from "../../api/api";
-import { Header } from "../Header";
+import { Text, Input, Link, Heading, ThemeProvider, theme, CSSReset, Checkbox, Stack, Flex } from "@chakra-ui/react"
+
+import { PostForgotPasswordEndpoint, PostResetPasswordEndpoint } from "../../api/api";
+import { LoginHeader } from "../LoginHeader";
 import Footer from "../Footer";
-import {
-    Text,
-    Input,
-    Link,
-    Heading,
-    Box,
-    Stack,
-    Flex,
-    Center
-} from "@chakra-ui/react"
 
 
 export const ResetPassword = ({ match, location }) => {
@@ -23,7 +15,7 @@ export const ResetPassword = ({ match, location }) => {
         password: '',
         vpassword: ''
     });
-    const [, setApiData] = PostResetPasswordEndpoint();
+    const [apiData, setApiData] = PostResetPasswordEndpoint();
     const [submitted, setSubmitted] = useState(false);
     const token = (new URLSearchParams(location.search)).get('token');
 
@@ -73,59 +65,61 @@ export const ResetPassword = ({ match, location }) => {
 
     const preSubmitForm = () => {
         return (
-            <Stack>
-                <Heading size="lg">Reset Your Password</Heading>
-                <Text fontWeight='bold'>Enter new password</Text>
-                <Input
-                    name="password"
-                    type="password"
-                    placeholder="Password"
-                    onChange={handleChange} />
+            <Flex w="20em" h="100%" flexDirection={"column"} pos="fixed" alignItems="center" top="10%" left="38%" theme>
+                <Stack>
+                    <Heading size="lg">Reset Your Password</Heading>
+                    <Text fontWeight='bold'>Enter new password</Text>
+                    <Input
+                        id="password"
+                        name="password"
+                        type="password"
+                        placeholder="Password"
+                        onChange={handleChange} />
 
-                {formErrors.password && <Text>{formErrors.password}</Text>}
+                    {formErrors.password && <span className="error-message">{formErrors.password}</span>}
 
-                <Text fontWeight='bold'>Confirm password</Text>
-                <Input
-                    name="vpassword"
-                    type="password"
-                    placeholder="Password"
-                    onChange={handleChange} />
+                    <Text fontWeight='bold'>Confirm password</Text>
+                    <Input
+                        id="vpassword"
+                        name="vpassword"
+                        type="password"
+                        placeholder="Password"
+                        onChange={handleChange} />
 
-                {formErrors.vpassword && <Text>{formErrors.vpassword}</Text>}
+                    {formErrors.vpassword && <span className="error-message">{formErrors.vpassword}</span>}
 
-                <Input
-                    className='button'
-                    onClick={submitForm}
-                    type='button'
-                    value='Reset' />
-            </Stack>
+                    <Input
+                        className='button'
+                        onClick={submitForm}
+                        type='button'
+                        value='Reset' />
+                </Stack>
+            </Flex>
         );
     }
 
     const submittedForm = () => {
         return (
-            <Box>
+            <Flex w="20em" h="100%" flexDirection={"column"} pos="fixed" alignItems="center" top="10%" left="38%" theme>
                 <Heading>Password Reset!</Heading>
                 <Text>You can now login with your new password!</Text>
                 <Link color="teal.500" href="/">Back to Login</Link>
-            </Box>
+            </Flex>
         );
     }
 
     return (
-        <Flex
-            flexDir={'column'}
-            minH={'100vh'}
-        >
-            <Header />
-            <Heading as="h2" size="4x5" mb="6"><Text fontSize="6xl" mt="20"> Rowanspace </Text></Heading>
-            <Center w={'100%'}>
+        <ThemeProvider theme={theme}>
+            <CSSReset />
+            <LoginHeader />
+            <Flex h="100%" w="100%" flexDirection={"row"} alignItems="center">
+                <Heading as="h2" size="4x5" mb="6"><Text fontSize="6xl" mt="20"> Rowanspace </Text></Heading>
                 {submitted ?
                     submittedForm() :
                     preSubmitForm()
                 }
-            </Center>
+            </Flex>
             <Footer />
-        </Flex>
+        </ThemeProvider>
     )
 }

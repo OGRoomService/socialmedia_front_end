@@ -1,257 +1,101 @@
-import React, { useEffect, useRef, useState } from "react";
-import { BsHeart, BsHeartFill } from 'react-icons/bs';
-import { GoTrashcan } from 'react-icons/go';
-import ResizeTextarea from "react-textarea-autosize";
-import { Button } from "@chakra-ui/react"
-import { useAsyncAPI } from '../../api/api'
-import { currentUser } from "../../api/user";
-import { Comment } from "./Comment";
-import {
-    Flex,
-    Box,
-    Textarea,
-    Avatar,
-    HStack,
-    Text,
-    Divider,
-    Center,
-    IconButton,
-    useColorModeValue,
-    Spacer,
-    List
-} from "@chakra-ui/react"
+import React, { Component, useEffect, useState } from "react";
+//import '../styles/post.css';
+import { Button, ChakraProvider } from "@chakra-ui/react"
+import { Flex, Heading, Circle, Input, extendTheme } from "@chakra-ui/react"
+import { GetAllPosts } from "../../api/api";
 
-export const NewPost = ({ postData, unrenderPost }) => {
-    const [numLikes, setNumLikes] = useState(0);
-    const [hasLiked, setHasLiked] = useState(false);
-    const [username, setUsername] = useState('');
-    const [commentText, setCommentText] = useState('');
-    const [comments, setComments] = useState(null);
-    const [profilePicture, setProfilePicture] = useState(null);
-    const [date, setDate] = useState('');
-    const { likePost, getUsername, fetchProfilePictureFromId } = useAsyncAPI();
-    const { createComment, deletePost } = useAsyncAPI();
-    const { userData } = currentUser();
-    const stateRef = useRef();
-    const posterId = 'posterId';
 
-    stateRef.current = comments;
+// const theme = extendTheme({
+//     colors: {
+//       brand: {
+//         100: "#f7fafc",
+//         // ...
+//         900: "#1a202c",
+//       },
+//     },
+//   })
+const theme = extendTheme({
+    colors: {
+        brand: {
+            100: "#f7fafc",
+            // ...
+            900: "#1a202c",
+        },
+    },
+})
 
-    useEffect(() => {
-        setNumLikes(postData['likes']);
 
-        if (postData['usersThatLiked'].includes(userData['id'])) {
-            setHasLiked(true);
-        }
-        fetchProfilePictureFromId(postData[posterId], setProfilePicture);
-        parsePostDate();
-        getUsername(setUsername, postData[posterId]);
-        buildComments();
-    }, []);
+//   const likeColor = e => {
+//     e.preventDefault();
 
-    const updateField = (e) => {
-        const target = e.target;
-        const fieldValue = target.value;
+//     console.log("I have been pressed");
+//     Heading.textColor = 'black';
 
-        if (fieldValue.length <= 255) {
-            setCommentText(fieldValue);
-        }
-    }
-    
-    const handleSubmit = () => {
-        setCommentText("");
-        createComment(commentText, postData['post_id'], buildNewComment);
-    }
 
-    const parsePostDate = () => {
-        const postTime = Date.parse(postData['postDate']);
-        const now = Date.now();
-        const dateDiffInSec = Math.abs((now - postTime) / 1000);
-        const secondsInDay = (60 * 60 * 24)
-        const secondsInMonth = (secondsInDay * 30);
-        let date = '';
+// }
 
-        if (dateDiffInSec < (60 * 60 * 24)) {
-            if (dateDiffInSec < 60) {
-                date = `${dateDiffInSec.toFixed(0)} seconds ago`;
-            } else if (dateDiffInSec < 60 * 60) {
-                date = `${(dateDiffInSec / 60).toFixed(0)} minutes ago`;
-            } else {
-                date = `${(dateDiffInSec / (60 * 60)).toFixed(0)} hours ago`;
-            }
-        } else if (dateDiffInSec < secondsInMonth) {
-            date = `${(dateDiffInSec / secondsInDay).toFixed(0)} days ago`;
-        } else {
-            const newDate = new Date(postTime).toLocaleDateString();
+//   document.getElementById('like').onclick = () => {
+//     console.log("I have been pressed");
+//     like.style.color = 'black';
+// }
 
-            date = `${newDate}`;
-        }
-        setDate(date);
-    }
-
-    const buildNewComment = (data) => {
-        const newComment =
-            <Comment
-                key={data['comment_id']}
-                commentData={data}
-                postId={postData['post_id']}
-                unrenderComment={unrenderComment}
-            />
-        const newArray = [...comments, newComment];
-
-        setComments(newArray);
-    }
-
-    const buildComments = () => {
-        const arrComments = postData['post_comments'];
-
-        const comments = arrComments.map((commentData) => {
-            return <Comment
-                key={commentData['comment_id']}
-                commentData={commentData}
-                postId={postData['post_id']}
-                unrenderComment={unrenderComment}
-            />
-        });
-        setComments(comments);
-    }
-
-    const unrenderComment = (commentId) => {
-        const objects = stateRef.current.filter(obj => obj.key != commentId);
-
-        setComments(objects);
-    }
-
-    const ShowDelete = () => {
-        let hasAdmin = false;
-
-        userData['roles'].forEach(x => {
-            if (x.name === "ROLE_ADMIN") {
-                hasAdmin = true;
-            }
-        });
-        if (userData['id'] === postData[posterId] ||
-                hasAdmin) {
-            return (
-                <IconButton
-                    variant={'ghost'}
-                    icon={<GoTrashcan />}
-                    onClick={() =>
-                        deletePost(postData['post_id'], unrenderPost)
-                    }
-                    _hover={{ color: 'gray', stroke: 'gray' }}
-                    _active={{}}
-                    _focus={{}}
-                />
-            )
-        }
-        return;
-    }
-
+export const NewPost = ({postData}) => {
     return (
-        <Box
-            mb='5'
-            borderWidth="1px"
-            borderRadius="lg"
-            bg={useColorModeValue('gray.100', 'gray.700')}
-        >
-            <Box
-                p="3"
-                fontWeight="semibold"
-            >
-                <HStack
-                    spacing='15px'
-                    mb={3}
-                >
-                    <Avatar
-                        size='sm'
-                        src={profilePicture}
-                    />
-                    <Text>
-                        {username}
-                    </Text>
-                    <Spacer />
-                    {ShowDelete()}
-                </HStack>
-                <Flex>
-                    <Text
-                        fontSize='sm'
-                        fontWeight='normal'
-                        wordBreak={'break-word'}
-                    >
-                        {postData['post_text']}
-                    </Text>
+        <ChakraProvider theme={theme}>
+
+            {/* <div>
+            <div class="containerP">
+                
+                    <div class="containerU">
+                            <div class="containerPFP">
+                                <p>_PFP_</p>
+                            </div>
+                        </div> 
+                        <div class="containerP" id="containerP-p">
+                        <h4>Post Content</h4>
+                        </div>
+                        <div class="containerP" id="containerP-c">
+                            <p>Like</p>
+                        <input type="text" placeholder="comment"/>
+                        </div>
+                
+            </div>
+        </div> */}
+
+
+            <Flex w="750px" h="225px" c-flex flexDirection={"column"} align="center" /*bgGradient="linear(to-t, green.200, pink.500)" border="2px" borderColor="black" */ bg="brand.100">
+                <Flex w="100%" h="65px" c-flex flexDirection={"row"} justifyContent={"Left"} borderColor="black">
+                    <Circle size="60px" bg="black" color="white">
+                        PFP
+                    </Circle>
                 </Flex>
-                <Divider
-                    mt={3}
-                />
-                <HStack>
-                    <IconButton
-                        variant={'ghost'}
-                        icon={
-                            hasLiked ?
-                                <BsHeartFill
-                                    transform={'scale(1.5)'}
-                                    color='red'
-                                /> :
-                                <BsHeart
-                                    transform={'scale(1.5)'}
-                                    color='currentColor'
-                                />
-                        }
-                        onClick={() =>
-                            likePost(setNumLikes, setHasLiked, postData['post_id'])
-                        }
-                        _hover={{ color: 'gray', stroke: 'gray' }}
-                        _active={{}}
-                        _focus={{}}
-                    />
-                    <Center
-                        h={'100%'}
-                        w={'100%'}
-                    >
-                        <Text fontSize='sm'>
-                            {numLikes} likes
-                        </Text>
-                        <Spacer />
-                        <Text
-                            fontSize={'sm'}
-                            fontWeight={'normal'}
-                        >
-                            {date}
-                        </Text>
-                    </Center>
-                </HStack>
-                <Divider />
-                <List
-                    mt={3}
-                    mb={3}
-                >
-                    {comments}
-                </List>
-                <HStack>
-                    <Textarea
-                        minH="unset"
-                        overflow="hidden"
-                        w="100%"
-                        resize="none"
-                        minRows={1}
-                        as={ResizeTextarea}
-                        placeholder={'Write a comment...'}
-                        onChange={(e) =>
-                            updateField(e)
-                        }
-                        value={commentText}
-                    />
-                    <Button
-                        onClick={() => {
-                            handleSubmit()
-                        }}
-                    >
-                        Post
+                <Flex w="100%" h="100px" c-flexDirection={"column"} borderColor="black" border="2px" borderColor="black">
+                    {postData.post_text}
+                    {console.log(postData)}
+                    {console.log(postData.post_text)}
+                </Flex>
+
+                <Flex w="65%" h="18%" c-flexDirection={"row"} borderColor="black">
+                    <Button w="100px" marginTop={"10px"} id='like' /*onClick={likeColor}> */>
+                        <Heading as="h6" size="2xl" isTruncated textColor={"#800000"}>
+                            ♡
+                        </Heading>
                     </Button>
-                </HStack>
-            </Box>
-        </Box>
+                    <Input type="text" placeholder="comment" />
+                </Flex>
+
+                {/* <Box w="50%" h="50%" c-flex bgGradient="linear(to-t, green.200, pink.500)">
+        <Circle size="200px" bg="black" color="white">
+            PFP
+        </Circle>
+           
+        </Box> 
+         <Box w="30%" h="200px" c-flex align="center" bgGradient="linear(to-t, red.200, blue.500)"> 
+            Hello Good Morning
+        </Box>  */}
+
+
+            </Flex>
+        </ChakraProvider>
     )
 }

@@ -1,104 +1,48 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import Footer from "./Footer";
-import { Header } from "./Header";
+import { ProfileHeader } from "./ProfileHeader";
 import "../styles/main.css";
-import {
-    Box,
-    Flex,
-    Avatar,
-    Spacer,
-    Stack,
-    Text,
-    Button,
-    Center,
-    useColorModeValue
-} from "@chakra-ui/react"
-import { PostFeed } from "./PostFeed/PostFeed";
-import { currentUser } from "../api/user";
-import { useAsyncAPI } from "../api/api";
-import { useHistory, useLocation, useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { Box, Flex, Heading, Circle, Button, Input } from "@chakra-ui/react"
+import { ChakraProvider } from "@chakra-ui/react"
 
 
 export default function ProfilePage() {
-    const [profilePicture, setProfilePicture] = useState(null);
-    const [profileData, setProfileData] = useState({});
-    const [postFeed, setPostFeed] = useState(null);
-    const { fetchUserProfile, fetchProfilePictureFromId } = useAsyncAPI();
-    const { userData } = currentUser();
-    const { username } = useParams();
-    const history = useHistory();
-
-    useEffect(() => {
-        fetchUserProfile(username, setProfileData);
-    }, []);
-
-    useEffect(() => {
-        if (!profileData) {
-            history.push('/notfound');
-            return;
-        }
-        if (JSON.stringify(profileData) === '{}') return;
-        fetchProfilePictureFromId(profileData['id'], setProfilePicture);
-        setPostFeed(
-            <PostFeed profileData={profileData} />
-        );
-    }, [profileData]);
-
     return (
-        <Flex
-            flexDir={'column'}
-            minH={'100vh'}
-        >
-            <Box>
-                <Header />
-                <Flex
-                    bg={useColorModeValue('gray.100', 'gray.700')}
-                    p={4}
-                    boxShadow={'base'}
-                >
-                    <Center w='67%'>
-                        <Stack
-                            direction={'row'}
-                            align={'center'}
-                        >
-                            <Button
-                                size={'2xl'}
-                                variant={"ghost"}
-                                _hover={{}}
-                                _active={{}}
-                                _focus={{}}
-                            >
-                                <Avatar
-                                    size={'2xl'}
-                                    src={profilePicture}
-                                    _hover={{ color: 'gray' }}
-                                    variant='alsdf;'
-                                />
-                            </Button>
-                            <Text
-                                p={3}
-                                fontSize='3xl'
-                            >
-                                {profileData ? profileData['username'] : '...'}
-                            </Text>
-                        </Stack>
-                    </Center>
-                </Flex>
-                <Flex w='100%'>
-                    <Center w={'100%'}>
-                        <Center w={{
-                            base: '97%',
-                            lg: '45%'
-                        }}>
-                            <Stack w={'100%'}>
-                                <Spacer pt={2} />
-                                {postFeed}
-                            </Stack>
-                        </Center>
-                    </Center>
-                </Flex>
-            </Box>
-            <Footer />
+        <ChakraProvider>
+           <ProfileHeader />
+        <br/>
+        <Heading as="h2" size="3xl" isTruncated>
+            Profile page
+            <br/>
+        </Heading>
+        
+        <Flex h="100%" w="100%" flexDirection={"column"} alignItems="center">
+
+        <Flex w="100%" h="500px" c-flex flexDirection={"row"} align="center" /*bgGradient="linear(to-t, green.200, pink.500)" border="2px, black" */ verticalAlign={"middle"}>
+            <Flex w="50%" h="50%">
+            <Circle size="200px" bg="black" color="white">
+                Profile Picture
+            </Circle>
+
+            <Heading as="h3" size="3xl" isTruncated marginTop="100px">
+            USERNAME
+            </Heading>
+               {/* Hello Good Morning */}
+            </Flex> 
+            {/* <Box w="30%" h="200px" c-flex align="center" bgGradient="linear(to-t, red.200, blue.500)"> 
+                Hello Good Morning
+            </Box> 
+            */}
         </Flex>
+
+        <Heading as="h3" size="3xl" isTruncated>
+            USER BIO
+        </Heading>
+
+        </Flex>
+        <br/>
+        <Footer />
+        </ChakraProvider>
+
     )
 }

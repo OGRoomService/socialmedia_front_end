@@ -1,24 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Text, Input, Link, Heading, ThemeProvider, theme, CSSReset, Checkbox, Stack, Flex, extendTheme } from "@chakra-ui/react"
 import Footer from "./Footer";
 import { PostUserLogin } from "../api/api";
-import { Header } from "./Header";
-import { Text,
-    Input,
-    Link,
-    Heading,
-    ThemeProvider,
-    CSSReset,
-    Checkbox,
-    Stack,
-    Flex,
-    extendTheme,
-    Center
-} from "@chakra-ui/react"
-import { useHistory } from "react-router";
-import { useToken } from "../api/token";
-import { currentUser } from "../api/user";
+import { LoginHeader } from "./LoginHeader";
 
-export const LoginPage = () => {
+
+import '../styles/login.css';
+
+export const LoginPage = ({ setToken }) => {
     const [apiData, setApiData] = PostUserLogin();
     const [formData, setFormData] = useState({
         username: '',
@@ -29,9 +18,6 @@ export const LoginPage = () => {
         username: '',
         password: ''
     });
-    const { setToken } = useToken();
-    const { setUser } = currentUser();
-    const history = useHistory();
     let handlingResponse = false;
 
     const validate = () => {
@@ -61,20 +47,15 @@ export const LoginPage = () => {
 
     const handleResponse = () => {
         if (handlingResponse) return;
-        if (!apiData || !apiData.data || !apiData.data.data) return;
-
-        const tokenData = apiData.data.data.tokens;
-        const userData = apiData.data.data.user;
+        if (!apiData.data) return;
 
         handlingResponse = true;
 
         setToken({
-            access_token: tokenData.access_token,
-            refresh_token: tokenData.refresh_token,
+            access_token: apiData.data.data.access_token,
+            refresh_token: apiData.data.data.refresh_token,
             remember: formData.remember
-        });
-        setUser(userData);
-        history.go(0);
+        })
     }
 
     const submitForm = e => {
@@ -103,55 +84,51 @@ export const LoginPage = () => {
         breakpoints:
         {
             colors: {},
-            fonts: {},
-            fontSzes: {},
+            fonts:{},
+            fontSzes:{},
             sm: "360px", //Galaxy s5
-            md: "375px", //I phone X
-            dt: "376px",
+            md: "376px", //I phone X
             lg: "960px",
             xl: "1200px",
         }
 
-    })
+    }) 
 
     return (
-        <Flex
-            flexDir={'column'}
-            minH={'100vh'}
-        >
-            <ThemeProvider theme={customTheme}>
-                <CSSReset />
-                <Header />
-                <Heading as="h2" size="4x5" mb="6">
-                    <Text fontSize={{ base: "20px", sm: "20px", md: "20px", lg: "35px", xl: "80px" }}> Rowanspace </Text>
-                </Heading>
-                <Center 
-                    w={'100%'}
-                >
-                    <Stack
-                        w={{base:'450px', sm:'350px', md:'350px', lg:'45%'}}
-                        maxW={'600px'}
-                    >
-                        <Text>
-                            Username
-                        </Text>
+        <ThemeProvider theme={customTheme}>
+            <CSSReset />
+            <LoginHeader />
+             <Flex  h="100%" w="100%" flexDirection={"row"} alignItems="center" mb="0px">
+                <Heading as="h2" size="4x5" mb="6"><Text fontSize={{ base: "20px", sm: "20px", md: "20px", lg:"45px", xl:"80px" }} mt="32px"> Rowanspace </Text></Heading> 
+    
+                {/* <Flex w={{ base: "20em", sm: "7em", md: "7em" }} h="100%" flexDirection={"column"} pos="fixed" alignItems="center" top="10%" left="38%" theme bgColor={["red", "blue", "yellow", "purple", "pink"]}>
+
+                    <Stack>
+                        <label
+                            className="form-header"
+                            htmlFor="login-username">
+                            Username</label>
                         <Input
+                            id="login-username"
                             name="username"
                             type="text"
                             placeholder="username"
                             onChange={handleUpdate} />
 
-                        {formErrors.username && <Text>{formErrors.username}</Text>}
+                        {formErrors.username && <span className="error-message">{formErrors.username}</span>}
 
-                        <Text>
-                            Password
-                        </Text>
+                        <label className="form-header"
+                            htmlFor="login-password">
+                            Password</label>
+
+                        {formErrors.password && <span className="error-message">{formErrors.password}</span>}
+
                         <Input
+                            id="login-password"
                             name="password"
                             type="password"
                             placeholder="Password"
                             onChange={handleUpdate} />
-                        {formErrors.password && <Text>{formErrors.password}</Text>}
 
                         <Checkbox
                             name="remember"
@@ -171,18 +148,72 @@ export const LoginPage = () => {
                             type='button'
                             value='Login' />
 
-                        {apiData.error && <Text>Invalid Username or Password!</Text>}
+                        {apiData.error && <span>Invalid Username or Password!</span>}
                         {apiData.complete && handleResponse()}
 
                         <Link color="teal.500" href="/recover_password">Forgotten Password?</Link>
 
-                        <Text>
-                            Don't have an account? <Link color="teal.500" href="/register">Sign up here!</Link>
-                        </Text>
+                        <p>Don't have an account? <Link color="teal.500" href="/register">Sign up here!</Link></p>
                     </Stack>
-                </Center>
-                <Footer />
-            </ThemeProvider>
-        </Flex>
+                        </Flex> */}
+            
+            <Flex  ml={{base: "100px", sm: "50px", lg: "300px"}} h="100px" w={{ base: "300px", sm: "100pxpx", md: "100px", lg:"450px" }} pos="fixed" flexDirection={"column"} h="100%" mt="4%" top="7%">
+            <Stack>
+                        <label fontSize="10px"
+                            className="form-header"
+                            htmlFor="login-username">
+                            Username</label>
+                        <Input
+                            id="login-username"
+                            name="username"
+                            type="text"
+                            placeholder="username"
+                            onChange={handleUpdate} />
+
+                        {formErrors.username && <span className="error-message">{formErrors.username}</span>}
+
+                        <label className="form-header"
+                            htmlFor="login-password">
+                            Password</label>
+
+                        {formErrors.password && <span className="error-message">{formErrors.password}</span>}
+
+                        <Input
+                            id="login-password"
+                            name="password"
+                            type="password"
+                            placeholder="Password"
+                            onChange={handleUpdate} />
+
+                        <Checkbox
+                            name="remember"
+                            onChange={(e) =>
+                                setFormData({
+                                    ...formData,
+                                    [e.currentTarget.name]: e.currentTarget.checked
+                                })
+                            }
+                        >
+                            Remember me
+                        </Checkbox>
+
+                        <Input
+                            className='button'
+                            onClick={submitForm}
+                            type='button'
+                            value='Login' />
+
+                        {apiData.error && <span>Invalid Username or Password!</span>}
+                        {apiData.complete && handleResponse()}
+
+                        <Link color="teal.500" href="/recover_password">Forgotten Password?</Link>
+
+                        <p>Don't have an account? <Link color="teal.500" href="/register">Sign up here!</Link></p>
+                    </Stack>
+            </Flex>
+            </Flex>
+            
+            <Footer />
+        </ThemeProvider>
     )
 }

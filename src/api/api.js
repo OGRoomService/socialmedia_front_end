@@ -1,8 +1,16 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useToken } from "./token";
 
 const url = 'http://rowanspace.xyz:8080/api'
+
+const axiosGetConfig = {
+    headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': 'true',
+        'Access-Control-Allow-Headers': '*',
+    },
+    mode: 'cors'
+}
 
 const axiosPostConfig = {
     headers: {
@@ -56,6 +64,100 @@ export const UseApi = (fn) => {
     return [response, (...args) => setRequest(fn(...args))];
 }
 
+export const GetAllPosts = () => {
+    return (
+        [
+            {
+                "post_id": 11,
+                "poster_id": 6,
+                "original_poster_id": 6,
+                "post_text": "testing1",
+                "postPictureLink": null,
+                "likes": 0,
+                "usersThatLiked": [],
+                "dislikes": 0,
+                "usersThatDisliked": [],
+                "post_comments": [],
+                "post_date": "2021-11-22T03:24:58.254+00:00"
+            },
+            {
+                "post_id": 12,
+                "poster_id": 6,
+                "original_poster_id": 6,
+                "post_text": "testing2",
+                "postPictureLink": null,
+                "likes": 0,
+                "usersThatLiked": [],
+                "dislikes": 0,
+                "usersThatDisliked": [],
+                "post_comments": [],
+                "post_date": "2021-11-22T03:25:12.380+00:00"
+            },
+            {
+                "post_id": 13,
+                "poster_id": 6,
+                "original_poster_id": 6,
+                "post_text": "testing3",
+                "postPictureLink": null,
+                "likes": 0,
+                "usersThatLiked": [],
+                "dislikes": 0,
+                "usersThatDisliked": [],
+                "post_comments": [],
+                "post_date": "2021-11-22T03:25:14.492+00:00"
+            },
+            {
+                "post_id": 14,
+                "poster_id": 6,
+                "original_poster_id": 6,
+                "post_text": "testing4",
+                "postPictureLink": null,
+                "likes": 0,
+                "usersThatLiked": [],
+                "dislikes": 0,
+                "usersThatDisliked": [],
+                "post_comments": [],
+                "post_date": "2021-11-22T03:25:16.726+00:00"
+            },
+            {
+                "post_id": 15,
+                "poster_id": 6,
+                "original_poster_id": 6,
+                "post_text": "testing5",
+                "postPictureLink": null,
+                "likes": 0,
+                "usersThatLiked": [],
+                "dislikes": 0,
+                "usersThatDisliked": [],
+                "post_comments": [],
+                "post_date": "2021-11-22T03:25:20.352+00:00"
+            },
+            {
+                "post_id": 16,
+                "poster_id": 6,
+                "original_poster_id": 6,
+                "post_text": "testing6",
+                "postPictureLink": null,
+                "likes": 0,
+                "usersThatLiked": [],
+                "dislikes": 0,
+                "usersThatDisliked": [],
+                "post_comments": [],
+                "post_date": "2021-11-22T03:25:22.510+00:00"
+            }
+        ]
+    )
+}
+
+/* export const GetAllPosts = () => {
+    return UseApi(data => ({
+        config: axiosGetConfig,
+        url: url + '/posts/get_posts',
+        method: 'GET',
+        headers: data
+    }));
+} */
+
 export const PostResetPasswordEndpoint = () => {
     return UseApi(data => ({
         config: axiosPostConfig,
@@ -91,313 +193,3 @@ export const PostUserLogin = () => {
         data
     }));
 }
-
-export const GetUserProfilePicture = () => {
-    return UseApi(data => ({
-        headers: {
-            'Authorization': 'Bearer ' + data
-        },
-        url: url + '/users/get_profile_picture',
-        method: 'GET'
-    }));
-}
-
-export const PostGetAllPosts = () => {
-    return UseApi(data => ({
-        method: 'get',
-        url: url + '/posts/get_posts',
-        headers: {
-            'Authorization': data['Authorization']
-        },
-    }));
-}
-
-export function useAsyncAPI() {
-    const token = useToken();
-
-    async function fetchUserProfile(username, setProfileData) {
-        if (!token.token) return;
-        const uToken = JSON.parse(token.token)['access_token'];
-        const endpoint = `/users/get_by_name?username=${username}`;
-
-        const response = await fetch(url + endpoint, {
-            method: 'get',
-            headers: {
-                'Authorization': 'Bearer ' + uToken
-            }
-        })
-            .then(data => {
-                switch (data.status) {
-                    case 200:
-                    case 201:
-                        return data.json();
-                    default:
-                        return null
-                }
-            });
-
-        setProfileData(response);
-    }
-
-    async function fetchProfilePicture(setProfilePicture) {
-        if (!token.token) return;
-        const uToken = JSON.parse(token.token)['access_token'];
-
-        const response = await fetch(url + '/users/get_profile_picture', {
-            method: 'get',
-            headers: {
-                'Authorization': 'Bearer ' + uToken
-            }
-        })
-            .then(data => {
-                return data.blob();
-            });
-        const imgURL = URL.createObjectURL(response);
-
-        setProfilePicture(imgURL);
-    }
-
-    async function fetchProfilePictureFromId(userId, setProfilePicture) {
-        if (!token.token) return;
-        const uToken = JSON.parse(token.token)['access_token'];
-
-        const response = await fetch(url + '/users/get_profile_picture_from_id', {
-            method: 'post',
-            headers: {
-                'Authorization': 'Bearer ' + uToken,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                "user_id": userId
-            })
-        })
-            .then(data => {
-                return data.blob();
-            });
-        const imgURL = URL.createObjectURL(response);
-
-        setProfilePicture(imgURL);
-    }
-
-    async function createPost(text, buildNewPost) {
-        const postText = text.trim();
-
-        if (postText.length <= 0) return;
-        if (!token.token) return;
-        const uToken = JSON.parse(token.token)['access_token'];
-
-        const response = await fetch(url + '/posts/create', {
-            method: 'post',
-            headers: {
-                'Authorization': 'Bearer ' + uToken,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                'post_text': postText
-            })
-        })
-            .then(data => {
-                return data.json();
-            });
-        buildNewPost(response);
-    }
-
-    async function createComment(text, postId, buildNewPost) {
-        const postText = text.trim();
-
-        if (postText.length <= 0) return;
-        if (!token.token) return;
-        const uToken = JSON.parse(token.token)['access_token'];
-
-        const response = await fetch(url + '/posts/comment_on_post', {
-            method: 'post',
-            headers: {
-                'Authorization': 'Bearer ' + uToken,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                'post_id': postId,
-                'comment_text': postText
-            })
-        })
-            .then(data => {
-                return data.json();
-            });
-        buildNewPost(response);
-    }
-
-    async function likePost(setNumLikes, setHasLiked, postId) {
-        if (!token.token) return;
-        const uToken = JSON.parse(token.token)['access_token'];
-
-        const response = await fetch(url + '/posts/like_post', {
-            method: 'post',
-            headers: {
-                'Authorization': 'Bearer ' + uToken,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                'post_id': postId
-            })
-        })
-            .then(data => {
-                return data.json();
-            });
-        setNumLikes(response['likes']);
-        if (response['liked'] === 'true') {
-            setHasLiked(true);
-        } else {
-            setHasLiked(false);
-        }
-    }
-
-    async function likeComment(setNumLikes, setHasLiked, commentId) {
-        if (!token.token) return;
-        const uToken = JSON.parse(token.token)['access_token'];
-
-        const response = await fetch(url + '/comments/like_comment', {
-            method: 'post',
-            headers: {
-                'Authorization': 'Bearer ' + uToken,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                'comment_id': commentId
-            })
-        })
-            .then(data => {
-                return data.json();
-            });
-        setNumLikes(response['likes']);
-        if (response['liked'] === 'true') {
-            setHasLiked(true);
-        } else {
-            setHasLiked(false);
-        }
-    }
-
-    async function deletePost(postId, callback) {
-        if (!token.token) return;
-        const uToken = JSON.parse(token.token)['access_token'];
-
-        const response = await fetch(url + '/posts/delete_post', {
-            method: 'post',
-            headers: {
-                'Authorization': 'Bearer ' + uToken,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                'post_id': postId
-            })
-        })
-            .then(data => {
-                return data.json();
-            });
-        const failed = response['failed'];
-
-        if (failed === 'false') {
-            callback(postId);
-        }
-    }
-
-    async function deleteComment(postId, commentId, callback) {
-        if (!token.token) return;
-        const uToken = JSON.parse(token.token)['access_token'];
-
-        const response = await fetch(url + '/comments/delete_comment', {
-            method: 'post',
-            headers: {
-                'Authorization': 'Bearer ' + uToken,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                'post_id': postId,
-                'comment_id': commentId
-            })
-        })
-            .then(data => {
-                return data.json();
-            });
-        const failed = response['failed'];
-
-        if (failed === 'false') {
-            callback(commentId);
-        }
-    }
-
-    async function getUsername(setUsername, userId) {
-        if (!token.token) return;
-        const uToken = JSON.parse(token.token)['access_token'];
-
-        const response = await fetch(url + '/users/get_username_from_id', {
-            method: 'post',
-            headers: {
-                'Authorization': 'Bearer ' + uToken,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                'user_id': userId
-            })
-        })
-            .then(data => {
-                return data.text();
-            });
-        setUsername(response);
-    }
-
-    async function pagePosts(userId, page, callback) {
-        if (!token.token) return;
-        const uToken = JSON.parse(token.token)['access_token'];
-        const fetchConfig = {
-            method: 'get',
-            headers: {
-                'Authorization': 'Bearer ' + uToken
-            }
-        };
-        let fetchEndpoint = '';
-
-        if (userId) {
-            fetchEndpoint = `/posts/page_posts_by_id?page=${page}&userId=${userId}`;
-        } else {
-            fetchEndpoint = `/posts/page_posts?page=${page}`;
-        }
-        const response = await fetch(url + fetchEndpoint, fetchConfig)
-            .then(data => {
-                switch (data.status) {
-                    case 200:
-                    case 201:
-                        return data.json();
-                    default:
-                        return null
-                }
-            });
-        callback(response);
-    }
-
-    return {
-        fetchProfilePicture,
-        createPost,
-        likePost,
-        getUsername,
-        fetchProfilePictureFromId,
-        createComment,
-        deletePost,
-        pagePosts,
-        deleteComment,
-        likeComment,
-        fetchUserProfile
-    }
-}
-
-/* const parse = (fn) => {
-    const data = fn['data'];
-    let headers = axiosGetConfig['headers'];
-
-    for(const[key, value] of Object.entries(data['headers'])) {
-        headers[key] = value;
-    }
-
-    fn['headers'] = headers;
-    delete fn['data'];
-    return fn;
-} */
