@@ -1,6 +1,5 @@
 import React from "react";
 import logo from "../Rowan.png";
-import '../styles/footer.css';
 import {
     Flex,
     Image,

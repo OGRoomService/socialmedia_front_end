@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom';
 import { PostNewUserEndpoint } from "../api/api";
 import { Header } from "./Header";
 import Footer from "./Footer";
-import '../styles/register.css'
 import {
     Heading,
     Text,
@@ -203,7 +202,7 @@ export const Registration = () => {
                     {formErrors.api && <Text>{formErrors.api}</Text>}
                     <Center w={'100%'}>
                         <Text>
-                            Already have an account? <Link color="teal.500" href="/login">Login here!</Link>
+                            Already have an account? <Link color="teal.500" href="/">Login here!</Link>
                         </Text>
                     </Center>
                     {apiData.complete && handleResponse()}

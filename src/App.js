@@ -1,15 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Redirect, Route, Switch } from 'react-router';
 
-import UserPage from './components/UserPage';
 import { MainPage } from './components/MainPage';
 import ProfilePage from './components/ProfilePage';
 import { LoginPage } from './components/LoginPage';
 import { Registration } from './components/Registration';
-import { Settings } from './components/Settings';
 import NotFound from './components/NotFound';
 
-import './App.css';
 import { useToken } from './api/token';
 import { currentUser } from './api/user';
 import { RecoverPassword } from './components/PasswordRecovery/RecoverPassword';
@@ -46,8 +43,6 @@ export default function App() {
                 <ChakraProvider>
                     <Switch>
     
-                        <Route exact path="/" component={() => <LoginPage key={'loginpage'}  loginUser={loginUser} />} />
-    
                         <Route exact path="/register"
                             component={Registration} />
     
@@ -57,9 +52,7 @@ export default function App() {
                         <Route exact path="/reset_password"
                             component={ResetPassword} />
     
-                        <Route>
-                            <Redirect to='/' />
-                        </Route>
+                        <Route component={() => <LoginPage key={'loginpage'}  loginUser={loginUser} />} />
     
                     </Switch>
                 </ChakraProvider>
@@ -78,10 +71,6 @@ export default function App() {
                     </Route>
     
                     <Route path="/u/:username" component={() => <ProfilePage key={window.location.pathname} />} />
-    
-                    <Route exact path="/settings">
-                        <Settings />
-                    </Route>
     
                     <Route>
                         <NotFound />

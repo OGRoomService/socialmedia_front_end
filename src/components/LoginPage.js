@@ -15,9 +15,6 @@ import {
     extendTheme,
     Center
 } from "@chakra-ui/react"
-import { useHistory } from "react-router";
-import { useToken } from "../api/token";
-import { currentUser } from "../api/user";
 
 export const LoginPage = ({ loginUser }) => {
     const [submitted, setSubmitted] = useState(false);
@@ -84,14 +81,6 @@ export const LoginPage = ({ loginUser }) => {
         }
         setIsHandling(true);
         loginUser(response, formData.remember);
-        /* setToken({
-            access_token: tokenData.access_token,
-            refresh_token: tokenData.refresh_token,
-            remember: formData.remember
-        });
-        setUser(userData);
-        setLoggedIn(true); */
-        //history.go(0);
     }
 
     const customTheme = extendTheme({
