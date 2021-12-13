@@ -86,6 +86,7 @@ export default function ProfilePage() {
     const closeModal = () => {
         URL.revokeObjectURL(uploadedImage);
         setUploadedImage(null);
+        setUploadError('');
         onClose();
     }
 
