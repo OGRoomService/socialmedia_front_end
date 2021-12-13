@@ -58,7 +58,7 @@ export const LoginPage = ({ loginUser }) => {
 
     const submitForm = (e) => {
         e.preventDefault();
-        
+
         if (!validate()) {
             return;
         } else {
@@ -77,9 +77,9 @@ export const LoginPage = ({ loginUser }) => {
         setSubmitted(false);
         if (!response) {
             setHasError(true);
+            setIsHandling(false);
             return;
         }
-        setIsHandling(true);
         loginUser(response, formData.remember);
     }
 
