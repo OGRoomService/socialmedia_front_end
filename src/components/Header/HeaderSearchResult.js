@@ -1,19 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useAsyncAPI } from '../../api/api'
 import {
-    Flex,
-    Box,
-    Textarea,
     Avatar,
-    HStack,
     Text,
-    Divider,
     Center,
-    IconButton,
-    useColorModeValue,
-    Spacer,
-    List,
-    Link,
     Stack,
     Button
 } from "@chakra-ui/react"
@@ -48,7 +38,10 @@ export const HeaderSearchResult = ({ userData }) => {
                         size='sm'
                         src={profilePicture}
                     />
-                    <Text>
+                    <Text
+                        display={'flex'}
+                        alignItems={'center'}
+                    >
                         {userData['username']}
                     </Text>
                 </Stack>

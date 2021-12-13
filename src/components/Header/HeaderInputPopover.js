@@ -24,10 +24,9 @@ export const HeaderInputPopover = () => {
     const [inputText, setInputText] = useState('');
     const [listResults, setListResults] = useState([]);
     const [typingTimer, setTypingTimer] = useState(null);
-    const [closeTimer, setCloseTimer] = useState(null);
     const { pageUsers } = useAsyncAPI();
     const textRef = useRef();
-    const typingTimeout = 700;
+    const typingTimeout = 200;
     const closeTimeout = 300;
     const pageSize = 7;
 
@@ -52,8 +51,11 @@ export const HeaderInputPopover = () => {
     }
 
     const handleResults = (results) => {
+        setIsSearching(false);
+
         if (results.totalElements === 0) {
             setNoResults(true);
+            setListResults([]);
             return;
         }
         const objResults = results.content.map((userData) => {
@@ -63,7 +65,6 @@ export const HeaderInputPopover = () => {
             />
         });
         setListResults(objResults);
-        setIsSearching(false);
     }
 
     const popoverBody = () => {
@@ -101,13 +102,6 @@ export const HeaderInputPopover = () => {
         }
     }
 
-    const onPopoverClose = () => {
-        clearTimeout(typingTimer);
-        setIsSearching(false);
-        setNoResults(false);
-        setListResults([]);
-    }
-
     const onPopoverOpen = () => {
         queryUsers();
     }
@@ -136,7 +130,6 @@ export const HeaderInputPopover = () => {
                         }}
                         onBlur={() => {
                             setInputFocused(false);
-                            setCloseTimer(setTimeout(onPopoverClose, closeTimeout));
                         }}
                         onChange={(e) => {
                             handleChange(e.currentTarget);
