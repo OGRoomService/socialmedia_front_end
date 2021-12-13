@@ -115,6 +115,32 @@ export const PostGetAllPosts = () => {
 export function useAsyncAPI() {
     const { token } = useToken();
 
+    async function updateProfilePicture(image, callback) {
+        if (!token) return;
+        const uToken = token['access_token'];
+        const formData = new FormData();
+        
+        formData.append('image', image);
+
+        const response = await fetch(url + '/users/update_profile_picture', {
+            method: 'post',
+            headers: {
+                'Authorization': 'Bearer ' + uToken
+            },
+            body: formData
+        })
+            .then(data => {
+                switch (data.status) {
+                    case 200:
+                    case 201:
+                        return data.text();
+                    default:
+                        return null;
+                }
+            });
+        callback(response);
+    }
+
     async function pageUsers(username, page, count, callback) {
         if (!token) return;
         const uToken = token['access_token'];
@@ -431,7 +457,8 @@ export function useAsyncAPI() {
         likeComment,
         fetchUserProfile,
         userLogin,
-        pageUsers
+        pageUsers,
+        updateProfilePicture
     }
 }
 
