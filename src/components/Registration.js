@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import { PostNewUserEndpoint } from "../api/api";
-import { Header } from "./Header";
+import { Header } from "./Header/Header";
 import Footer from "./Footer";
 import {
     Heading,

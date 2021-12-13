@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { PostForgotPasswordEndpoint } from "../../api/api";
-import { Header } from "../Header";
+import { Header } from "../Header/Header";
 import Footer from "../Footer";
 import {
     Text,

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Footer from "./Footer";
-import { PostUserLogin, useAsyncAPI } from "../api/api";
-import { Header } from "./Header";
+import { useAsyncAPI } from "../api/api";
+import { Header } from "./Header/Header";
 import {
     Text,
     Input,

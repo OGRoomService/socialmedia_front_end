@@ -34,12 +34,10 @@ export const PostFeed = ({ profileData }) => {
     }, [isFetching]);
 
     const callPagePosts = () => {
-        const page = (postObjects.length / 5);
+        const page = Math.floor(postObjects.length / 5);
 
         if (page === lastFetchedPage) return;
         setLastFetchedPage(page);
-
-
         pagePosts((profileData ? profileData['id'] : null), page, buildPosts);
     }
 
